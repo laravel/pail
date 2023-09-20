@@ -26,7 +26,7 @@ Difference from other log tailing packages:
 Get started with **Pail** by installing the package via Composer:
 
 ```bash
-composer require nunomaduro/pail
+composer require nunomaduro/pail:dev-main
 ```
 
 ## Usage
