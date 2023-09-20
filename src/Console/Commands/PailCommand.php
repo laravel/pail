@@ -40,7 +40,7 @@ final class PailCommand extends Command
             $optionsExplained = " (Filtering by {$options})";
         }
 
-        $this->components->info('Tailing application logs'. $optionsExplained);
+        $this->components->info('Tailing application logs'.$optionsExplained);
         $this->comment('  <fg=yellow;options=bold>Press Ctrl+C to exit</>');
         $this->newLine();
 
@@ -48,9 +48,6 @@ final class PailCommand extends Command
         $this->trap([SIGINT, SIGTERM], fn () => $file->destroy());
 
         try {
-
-
-
             $processFactory->run($file, $this->output, $this->laravel->basePath(), $options);
         } catch (ProcessSignaledException $e) {
             if (in_array($e->getSignal(), [SIGINT, SIGTERM], true)) {
