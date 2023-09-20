@@ -18,7 +18,7 @@ final readonly class TailProcessFactory
     /**
      * Creates a new instance of the tail process factory.
      */
-    public function run(TailedFile $file, OutputInterface $output, string $basePath, ?string $filter): void
+    public function run(TailedFile $file, OutputInterface $output, string $basePath, TailOptions $options): void
     {
         $printer = new CliPrinter($output, $basePath);
 
@@ -26,20 +26,20 @@ final readonly class TailProcessFactory
             ->tty(false)
             ->run(
                 $this->command($file),
-                function (string $type, string $buffer) use ($filter, $printer): void {
+                function (string $type, string $buffer) use ($options, $printer): void {
                     /** @var array<int, string> $lines */
                     $lines = Str::of($buffer)
                         ->explode("\n")
                         ->filter(fn (string $line): bool => $line !== '')
                         ->when(
-                            $filter,
-                            fn (Collection $lines, string $filter): Collection => $lines->filter(
-                                fn (string $line): bool => str_contains($line, $filter)
+                            is_string($options->filter),
+                            fn (Collection $lines): Collection => $lines->filter(
+                                fn (string $line): bool => str_contains($line, $options->filter) // @phpstan-ignore-line
                             )
                         )->values();
 
                     foreach ($lines as $line) {
-                        $printer->print($line);
+                        $printer->print($options, $line);
                     }
                 }
             );

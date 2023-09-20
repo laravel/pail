@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NunoMaduro\Pail;
 
 use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Support\Facades\Auth;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -26,7 +27,19 @@ final readonly class Handler
     public function log(MessageLogged $messageLogged): void
     {
         if ($this->tailedFile->exists()) {
-            $this->logger->log($messageLogged->level, $messageLogged->message, $messageLogged->context);
+
+            $context = ['__pail' => [
+                'user_id' => null,
+            ]];
+
+            if ($userId = Auth::user()?->id ?? null) {
+                $context['__pail']['user_id'] = (string) $userId;
+            }
+
+            $this->logger->log($messageLogged->level, $messageLogged->message, array_merge(
+                $messageLogged->context,
+                $context
+            ));
         }
     }
 }

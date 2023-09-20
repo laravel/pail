@@ -7,6 +7,7 @@ namespace NunoMaduro\Pail\Console\Commands;
 use Illuminate\Console\Command;
 use NunoMaduro\Pail\Guards\EnsurePcntlIsAvailable;
 use NunoMaduro\Pail\TailedFile;
+use NunoMaduro\Pail\TailOptions;
 use NunoMaduro\Pail\TailProcessFactory;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 
@@ -18,7 +19,7 @@ final class PailCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'pail {--filter= : Filter the tail}';
+    protected $signature = 'pail {--filter= : Filter the tail} {--user= : Filter the tail by the authenticated user ID}';
 
     /**
      * {@inheritdoc}
@@ -32,7 +33,14 @@ final class PailCommand extends Command
     {
         EnsurePcntlIsAvailable::check();
 
-        $this->components->info('Tailing application logs.');
+        $optionsExplained = '';
+        $options = TailOptions::fromCommand($this);
+
+        if ((string) $options !== '') {
+            $optionsExplained = " (Filtering by {$options})";
+        }
+
+        $this->components->info('Tailing application logs'. $optionsExplained);
         $this->comment('  <fg=yellow;options=bold>Press Ctrl+C to exit</>');
         $this->newLine();
 
@@ -40,11 +48,10 @@ final class PailCommand extends Command
         $this->trap([SIGINT, SIGTERM], fn () => $file->destroy());
 
         try {
-            $filter = $this->option('filter');
 
-            assert(is_string($filter) || $filter === null);
 
-            $processFactory->run($file, $this->output, $this->laravel->basePath(), $filter);
+
+            $processFactory->run($file, $this->output, $this->laravel->basePath(), $options);
         } catch (ProcessSignaledException $e) {
             if (in_array($e->getSignal(), [SIGINT, SIGTERM], true)) {
                 $this->newLine();

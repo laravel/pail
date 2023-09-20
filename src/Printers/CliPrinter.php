@@ -6,6 +6,7 @@ namespace NunoMaduro\Pail\Printers;
 
 use Illuminate\Support\Carbon;
 use NunoMaduro\Pail\Contracts\Printer;
+use NunoMaduro\Pail\TailOptions;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function Termwind\render;
@@ -28,11 +29,11 @@ final readonly class CliPrinter implements Printer
     /**
      * {@inheritdoc}
      */
-    public function print(string $logMessage): void
+    public function print(TailOptions $options, string $logMessage): void
     {
         renderUsing($this->output);
 
-        /** @var array{message: string, context: array{exception?: array{class: string, file: string}}, level_name: string, datetime: string} $logMessage */
+        /** @var array{message: string, context: array{__pail: array{user_id: string,}, exception?: array{class: string, file: string}}, level_name: string, datetime: string} $logMessage */
         $logMessage = json_decode($logMessage, true, 512, JSON_THROW_ON_ERROR);
 
         [
@@ -53,6 +54,12 @@ final readonly class CliPrinter implements Printer
             'class' => $levelName,
             'file' => '',
         ];
+
+        if (is_string($options->userId)) {
+            if ((string) $context['__pail']['user_id'] !== $options->userId) {
+                return;
+            }
+        }
 
         $file = str_replace($this->basePath.'/', '', (string) $href);
 
