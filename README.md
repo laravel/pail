@@ -37,6 +37,12 @@ To start tailing logs, run the `pail` command:
 php artisan pail
 ```
 
+To increase the verbosity of the output, avoiding truncation (...), use the `-v` option:
+
+```bash
+php artisan pail -v
+```
+
 To filter logs by its content, use the `--filter` option:
 
 ```bash
