@@ -1,0 +1,48 @@
+<p align="center">
+    <img src="https://raw.githubusercontent.com/nunomaduro/pail/master/docs/example.png" height="300" alt="Skeleton Php">
+    <p align="center">
+        <a href="https://github.com/nunomaduro/pail/actions"><img alt="GitHub Workflow Status (master)" src="https://github.com/nunomaduro/pail/actions/workflows/tests.yml/badge.svg"></a>
+        <a href="https://packagist.org/packages/nunomaduro/pail"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/nunomaduro/pail"></a>
+        <a href="https://packagist.org/packages/nunomaduro/pail"><img alt="Latest Version" src="https://img.shields.io/packagist/v/nunomaduro/pail"></a>
+        <a href="https://packagist.org/packages/nunomaduro/pail"><img alt="License" src="https://img.shields.io/packagist/l/nunomaduro/pail"></a>
+    </p>
+</p>
+
+------
+
+**Pail** is an experimental package (or, who knows, perhaps a future Laravel feature?) designed with a single goal in mind: to provide an effortless way to tail logs in our Laravel applications.
+
+Difference from other log tailing packages:
+
+- 🌟 An intuitive, streamlined CLI experience.
+- 🔄 **Compatibility with any log driver**. Whether you're integrated with [Sentry](https://sentry.io) or [Bugsnag](https://bugsnag.com), **Pail** is crafted to work alongside.
+
+🚧 **Note:** As of now, **Pail** is still in its proof-of-concept phase. It's an idea in the making, not yet optimized for production scenarios.
+
+## Installation
+
+> **Requires [PHP 8.2+](https://php.net/releases/)**
+
+Get started with **Pail** by installing the package via Composer:
+
+```bash
+composer require nunomaduro/pail
+```
+
+## Usage
+
+To start tailing logs, run the `pail` command:
+
+```bash
+php artisan pail
+```
+
+To filter logs by its content, use the `--filter` option:
+
+```bash
+php artisan pail --filter="Illuminate\Database"
+```
+
+## License
+
+**Pail** was created by **[Nuno Maduro](https://twitter.com/enunomaduro)** under the **[MIT license](https://opensource.org/licenses/MIT)**.

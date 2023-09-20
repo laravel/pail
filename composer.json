@@ -1,0 +1,68 @@
+{
+    "name": "nunomaduro/pail",
+    "description": "Effortlessly tail Logs in Laravel",
+    "keywords": ["php", "tail", "laravel", "logs"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nuno Maduro",
+            "email": "enunomaduro@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2.0",
+        "illuminate/console": "^10.24.0",
+        "illuminate/contracts": "^10.24.0",
+        "illuminate/log": "^10.24.0",
+        "illuminate/process": "^10.24.0",
+        "illuminate/support": "^10.24.0",
+        "ext-pcntl": "*"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.13.2",
+        "pestphp/pest": "^2.19.2",
+        "phpstan/phpstan": "^1.10.35",
+        "rector/rector": "^0.18.3",
+        "symfony/var-dumper": "^6.3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "NunoMaduro\\Pail\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "refacto": "rector",
+        "lint": "pint",
+        "test:refacto": "rector --dry-run",
+        "test:lint": "pint --test",
+        "test:types": "phpstan analyse --ansi",
+        "test:unit": "pest --colors=always",
+        "test": [
+            "@test:refacto",
+            "@test:lint",
+            "@test:types",
+            "@test:unit"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NunoMaduro\\Pail\\PailServiceProvider"
+            ]
+        }
+    }
+}
