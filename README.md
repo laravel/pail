@@ -14,8 +14,8 @@
 
 Difference from other log tailing packages:
 
-- 🌟 An intuitive, streamlined CLI experience.
-- 🔄 **Compatibility with any log driver**. Whether you're integrated with [Sentry](https://sentry.io) or [Bugsnag](https://bugsnag.com), **Pail** is crafted to work alongside.
+- 🌌 A user-friendly, sleek CLI interface.
+- ⚗️ **Compatibility with any log driver**. Whether you're integrated with [Sentry](https://sentry.io) or [Bugsnag](https://bugsnag.com), **Pail** is crafted to work alongside.
 
 🚧 **Note:** As of now, **Pail** is still in its proof-of-concept phase. It's an idea in the making, not yet optimized for production scenarios.
 
@@ -26,7 +26,7 @@ Difference from other log tailing packages:
 Get started with **Pail** by installing the package via Composer:
 
 ```bash
-composer require nunomaduro/pail
+composer require nunomaduro/pail:dev-main
 ```
 
 ## Usage
