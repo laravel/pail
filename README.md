@@ -16,7 +16,7 @@ Difference from other log tailing packages:
 
 - 🌌 A user-friendly, sleek CLI interface.
 - ⚗️ **Compatibility with any log driver**. Whether you're integrated with [Sentry](https://sentry.io) or [Bugsnag](https://bugsnag.com), **Pail** is crafted to work alongside.
-- ?? **Filter logs by the authenticated user**. Yes, you read it right. **Pail** can filter logs by the authenticated user, the one that triggered the request.
+- 🔑 **Filter logs by the authenticated user**. Yes, you read it right. **Pail** can filter logs by the authenticated user, the one that triggered the request.
 
 🚧 **Note:** As of now, **Pail** is still in its proof-of-concept phase. It's an idea in the making, not yet optimized for production scenarios.
 
