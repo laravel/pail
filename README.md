@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/nunomaduro/pail/master/docs/example.png" height="300" alt="Skeleton Php">
+    <img src="https://raw.githubusercontent.com/nunomaduro/pail/master/docs/example.png" style="width:70%;" alt="Skeleton Php">
     <p align="center">
         <a href="https://github.com/nunomaduro/pail/actions"><img alt="GitHub Workflow Status (master)" src="https://github.com/nunomaduro/pail/actions/workflows/tests.yml/badge.svg"></a>
         <a href="https://packagist.org/packages/nunomaduro/pail"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/nunomaduro/pail"></a>
