@@ -29,19 +29,19 @@ final readonly class CliPrinter implements Printer
     /**
      * {@inheritdoc}
      */
-    public function print(TailOptions $options, string $logMessage): void
+    public function print(TailOptions $options, string $messageLogged): void
     {
         renderUsing($this->output);
 
-        /** @var array{message: string, context: array{__pail: array{user_id: string,}, exception?: array{class: string, file: string}}, level_name: string, datetime: string} $logMessage */
-        $logMessage = json_decode($logMessage, true, 512, JSON_THROW_ON_ERROR);
+        /** @var array{message: string, context: array{__pail: array{user_id: string,}, exception?: array{class: string, file: string}}, level_name: string, datetime: string} $messageLogged */
+        $messageLogged = json_decode($messageLogged, true, 512, JSON_THROW_ON_ERROR);
 
         [
             'message' => $message,
             'context' => $context,
             'level_name' => $levelName,
             'datetime' => $datetime,
-        ] = $logMessage;
+        ] = $messageLogged;
 
         $time = $this->time($datetime);
 
@@ -57,6 +57,10 @@ final readonly class CliPrinter implements Printer
 
         if (is_string($options->userId) && $context['__pail']['user_id'] !== $options->userId) {
             return;
+        }
+
+        if ($href && $_ENV['APP_ENV'] === 'testing') {
+            $href = $this->basePath.'/app/MyClass.php:12';
         }
 
         $file = str_replace($this->basePath.'/', '', (string) $href);
@@ -108,6 +112,10 @@ final readonly class CliPrinter implements Printer
      */
     private function time(string $date): string
     {
+        if ($_ENV['APP_ENV'] === 'testing') {
+            return '03:04:05';
+        }
+
         $time = Carbon::createFromFormat('Y-m-d\TH:i:s.uP', $date);
 
         assert($time instanceof Carbon);

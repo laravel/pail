@@ -14,5 +14,5 @@ interface Printer
     /**
      * Prints the given buffer.
      */
-    public function print(TailOptions $options, string $logMessage): void;
+    public function print(TailOptions $options, string $messageLogged): void;
 }

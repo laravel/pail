@@ -22,12 +22,11 @@ final readonly class Handler
     }
 
     /**
-     * Reports the given exception.
+     * Reports the given message logged.
      */
     public function log(MessageLogged $messageLogged): void
     {
         if ($this->tailedFile->exists()) {
-
             $context = ['__pail' => [
                 'user_id' => null,
             ]];
