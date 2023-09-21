@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 /*
@@ -23,13 +24,11 @@ uses(Tests\TestCase::class)
         $_ENV['COLUMNS'] = 50;
     })->afterEach(function () {
         if ($GLOBALS['process']) {
-            $GLOBALS['process']->signal(SIGTERM);
-
-            $GLOBALS['process']->wait();
-
-            unlink(storage_path('logs/pail.log'));
+            (fn () => $this->process->stop())->call($GLOBALS['process']);
 
             $GLOBALS['process'] = null;
+
+            File::deleteDirectory(storage_path('pail'));
         }
     })->in(__DIR__);
 

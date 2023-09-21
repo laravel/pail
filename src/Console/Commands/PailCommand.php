@@ -29,7 +29,7 @@ final class PailCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(TailedFile $file, TailProcessFactory $processFactory): void
+    public function handle(TailProcessFactory $processFactory): void
     {
         EnsurePcntlIsAvailable::check();
 
@@ -44,6 +44,7 @@ final class PailCommand extends Command
         $this->comment('  <fg=yellow;options=bold>Press Ctrl+C to exit</>');
         $this->newLine();
 
+        $file = new TailedFile(storage_path('pail/'.getmypid().'.pail'));
         $file->create();
         $this->trap([SIGINT, SIGTERM], fn () => $file->destroy());
 

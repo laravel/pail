@@ -20,21 +20,11 @@ final class PailServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(
-            TailedFile::class,
-            static fn (Application $app): TailedFile => new TailedFile($app->storagePath('logs/pail.log'))
+            TailedFiles::class,
+            static fn (Application $app): TailedFiles => new TailedFiles($app->storagePath('pail'))
         );
 
-        $this->app->singleton(Handler::class, function (Application $app): Handler {
-            /** @var LoggerFactory $loggerFactory */
-            $loggerFactory = $app->make(LoggerFactory::class);
-
-            $logger = $loggerFactory->create();
-
-            /** @var TailedFile $tailedFile */
-            $tailedFile = $app->make(TailedFile::class);
-
-            return new Handler($logger, $tailedFile);
-        });
+        $this->app->singleton(Handler::class);
     }
 
     /**
