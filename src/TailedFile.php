@@ -94,8 +94,6 @@ final readonly class TailedFile implements \Stringable
             return false;
         }
 
-        $pid = (int) explode('.', basename($this->file))[0];
-
-        return (! posix_kill($pid, 0)) || time() - filemtime($this->file) > self::TTL;
+        return time() - filemtime($this->file) > self::TTL;
     }
 }

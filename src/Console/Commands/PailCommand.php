@@ -44,7 +44,7 @@ final class PailCommand extends Command
         $this->comment('  <fg=yellow;options=bold>Press Ctrl+C to exit</>');
         $this->newLine();
 
-        $file = new TailedFile(storage_path('pail/'.getmypid().'.pail'));
+        $file = new TailedFile(storage_path('pail/'.uniqid().'.pail'));
         $file->create();
         $this->trap([SIGINT, SIGTERM], fn () => $file->destroy());
 
