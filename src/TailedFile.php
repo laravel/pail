@@ -10,6 +10,11 @@ namespace NunoMaduro\Pail;
 final readonly class TailedFile implements \Stringable
 {
     /**
+     * The time to live of the tailed file.
+     */
+    private const TTL = 3600;
+
+    /**
      * Creates a new instance of the tailed file.
      */
     public function __construct(
@@ -59,10 +64,7 @@ final readonly class TailedFile implements \Stringable
      */
     public function log(string $level, string $message, array $context = []): void
     {
-        $pid = (int) explode('.', basename($this->file))[0];
-
-        // TODO: Use lotery to determine if the file is still alive.
-        if (! posix_kill($pid, 0)) {
+        if ($this->isStale()) {
             $this->destroy();
 
             return;
@@ -81,5 +83,19 @@ final readonly class TailedFile implements \Stringable
     public function __toString(): string
     {
         return $this->file;
+    }
+
+    /**
+     * Determines if the tailed file is staled.
+     */
+    private function isStale(): bool
+    {
+        if (($int = random_int(0, 10)) !== 10) {
+            return false;
+        }
+
+        $pid = (int) explode('.', basename($this->file))[0];
+
+        return (! posix_kill($pid, 0)) || time() - filemtime($this->file) > self::TTL;
     }
 }

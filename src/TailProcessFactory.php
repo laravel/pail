@@ -22,7 +22,7 @@ final readonly class TailProcessFactory
     {
         $printer = new CliPrinter($output, $basePath);
 
-        Process::forever()
+        Process::timeout(3600)
             ->tty(false)
             ->run(
                 $this->command($file),
