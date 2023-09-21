@@ -55,10 +55,8 @@ final readonly class CliPrinter implements Printer
             'file' => '',
         ];
 
-        if (is_string($options->userId)) {
-            if ((string) $context['__pail']['user_id'] !== $options->userId) {
-                return;
-            }
+        if (is_string($options->userId) && $context['__pail']['user_id'] !== $options->userId) {
+            return;
         }
 
         $file = str_replace($this->basePath.'/', '', (string) $href);

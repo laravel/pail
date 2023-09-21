@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 /**
  * @internal
  */
-final readonly class TailOptions
+final readonly class TailOptions implements \Stringable
 {
     /**
      * Creates a new instance of the tail options.
