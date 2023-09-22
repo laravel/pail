@@ -4,18 +4,25 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Pail;
 
+use Illuminate\Console\Events\CommandFinished;
+use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\Facades\Auth;
 
 /**
  * @internal
  */
-final readonly class Handler
+final class Handler
 {
+    /**
+     * The last lifecycle captured event.
+     */
+    private CommandStarting|CommandFinished|null $lastLifecycleEvent = null;
+
     /**
      * Creates a new instance of the handler.
      */
-    public function __construct(private TailedFiles $tailedFiles)
+    public function __construct(private readonly TailedFiles $tailedFiles)
     {
         //
     }
@@ -25,13 +32,7 @@ final readonly class Handler
      */
     public function log(MessageLogged $messageLogged): void
     {
-        $context = ['__pail' => [
-            'user_id' => null,
-        ]];
-
-        if ($userId = Auth::user()?->id ?? null) {
-            $context['__pail']['user_id'] = (string) $userId;
-        }
+        $context = $this->context();
 
         $this->tailedFiles->each(
             static function (TailedFile $tailedFile) use ($messageLogged, $context): void {
@@ -44,5 +45,38 @@ final readonly class Handler
                 );
             }
         );
+    }
+
+    /**
+     * Sets the last application lifecycle event.
+     */
+    public function setLastLifecycleEvent(CommandStarting|CommandFinished $event): void
+    {
+        $this->lastLifecycleEvent = $event;
+    }
+
+    /**
+     * Builds the context array.
+     *
+     * @return array<string, mixed>
+     */
+    private function context(): array
+    {
+        $lastLifecycleEventClass = $this->lastLifecycleEvent ? $this->lastLifecycleEvent::class : null;
+
+        $context = ['__pail' => ['origin' => match ($lastLifecycleEventClass) {
+            CommandStarting::class => [
+                'type' => 'console',
+                'command' => $this->lastLifecycleEvent->command, // @phpstan-ignore-line
+            ],
+            default => [
+                'type' => 'http',
+                'method' => request()->method(), // @phpstan-ignore-line
+                'path' => request()->path(), // @phpstan-ignore-line
+                'auth_id' => Auth::id(),
+            ],
+        }]];
+
+        return collect($context)->filter()->toArray();
     }
 }

@@ -21,6 +21,7 @@ $GLOBALS['process'] = null;
 
 uses(Tests\TestCase::class)
     ->beforeEach(function () {
+        putenv('COLUMNS=50');
         $_ENV['COLUMNS'] = 50;
     })->afterEach(function () {
         if ($GLOBALS['process']) {
@@ -62,8 +63,6 @@ expect()->extend('toPail', function (string $expectedOutput) {
 
     $output = $GLOBALS['process']->output();
     $output = preg_replace('/\e\[[\d;]*m/', '', $output);
-
-    $space = ' ';
 
     $output = Str::of($output)
         ->explode("\n")

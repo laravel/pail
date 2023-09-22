@@ -14,7 +14,7 @@ final readonly class MessageLogged
     /**
      * Creates a new instance of the message logged.
      *
-     * @param  array{__pail: array{user_id: string,}, exception?: array{class: string, file: string}}  $context
+     * @param  array{__pail: array{origin: array{type: string, command: string, method: string, path: string, auth_id: string}}, exception: array{class: string, file: string}}  $context
      */
     private function __construct(
         private string $message,
@@ -30,7 +30,7 @@ final readonly class MessageLogged
      */
     public static function fromJson(string $json): self
     {
-        /** @var array{message: string, context: array{__pail: array{user_id: string,}, exception?: array{class: string, file: string}}, level_name: string, datetime: string} $array */
+        /** @var array{message: string, context: array{__pail: array{origin: array{type: string, command: string, method: string, path: string, auth_id: string}}, exception: array{class: string, file: string}}, level_name: string, datetime: string} $array */
         $array = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         [
@@ -72,7 +72,7 @@ final readonly class MessageLogged
      */
     public function classOrType(): string
     {
-        return $this->context['exception']['class'] ?? $this->levelName;
+        return $this->context['exception']['class'] ?? strtoupper($this->levelName);
     }
 
     /**
@@ -94,18 +94,29 @@ final readonly class MessageLogged
     }
 
     /**
-     * Gets the log message's file.
+     * Gets the log message's file, if any.
      */
-    public function file(): string
+    public function file(): ?string
     {
-        return $this->context['exception']['file'] ?? '';
+        return $this->context['exception']['file'] ?? null;
     }
 
     /**
-     * Gets the log message's user id.
+     * Gets the log message's auth id.
      */
-    public function userId(): ?string
+    public function authId(): ?string
     {
-        return $this->context['__pail']['user_id'] ?? null;
+        return $this->context['__pail']['origin']['auth_id'] ?? null;
+    }
+
+    /**
+     * Gets the log message's origin.
+     */
+    public function origin(): Origin\Console|Origin\Http
+    {
+        return match ($this->context['__pail']['origin']['type']) {
+            'console' => Origin\Console::fromArray($this->context['__pail']['origin']),
+            default => Origin\Http::fromArray($this->context['__pail']['origin']),
+        };
     }
 }

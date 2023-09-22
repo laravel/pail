@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Pail;
 
+use Illuminate\Console\Events\CommandFinished;
+use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\ServiceProvider;
@@ -42,8 +44,20 @@ final class PailServiceProvider extends ServiceProvider
             $handler->log($messageLogged);
         });
 
-        $this->commands([
-            PailCommand::class,
-        ]);
+        $events->listen([
+            CommandStarting::class,
+            CommandFinished::class,
+        ], function (CommandStarting|CommandFinished $lifecycleEvent): void {
+            /** @var Handler $handler */
+            $handler = $this->app->make(Handler::class);
+
+            $handler->setLastLifecycleEvent($lifecycleEvent);
+        });
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                PailCommand::class,
+            ]);
+        }
     }
 }

@@ -7,6 +7,8 @@ namespace NunoMaduro\Pail\Printers;
 use NunoMaduro\Pail\Contracts\Printer;
 use NunoMaduro\Pail\TailOptions;
 use NunoMaduro\Pail\ValueObjects\MessageLogged;
+use NunoMaduro\Pail\ValueObjects\Origin\Console;
+use NunoMaduro\Pail\ValueObjects\Origin\Http;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function Termwind\render;
@@ -35,43 +37,49 @@ final readonly class CliPrinter implements Printer
 
         $messageLogged = MessageLogged::fromJson($messageLogged);
 
-        if (is_string($options->userId) && $messageLogged->userId() !== $options->userId) {
+        if (is_string($options->authId) && $messageLogged->authId() !== $options->authId) {
             return;
         }
 
         $classOrType = $messageLogged->classOrType();
         $color = $messageLogged->color();
-        $file = $this->truncateFile($messageLogged->file(), $classOrType);
+        $fileHtml = $this->fileHtml($messageLogged->file(), $classOrType);
         $message = $this->truncateMessage($messageLogged->message());
-        $messageClasses = $this->output->isVerbose() ? '' : 'truncate';
         $time = $messageLogged->time();
+        $originHtml = $this->originHtml($messageLogged->origin(), $message);
+
+        $messageClasses = $this->output->isVerbose() ? '' : 'truncate';
 
         render(<<<HTML
             <div class="max-w-150">
-                <div class="flex mx-2">
+                <div class="flex mr-2">
                     <div>
-                        <span class="text-gray-500">$time</span>
+                        <span class="mr-1 text-gray">☰</span>
+                        <span class="text-gray">$time</span>
                         <span class="px-1 text-$color font-bold">$classOrType</span>
                     </div>
                     <span class="flex-1 content-repeat-[.] text-gray"></span>
-                    <span class="text-gray ml-1">
-                       $file
-                    </span>
+                    $fileHtml
                 </div>
-                <div class="ml-2 $messageClasses">
-                    <span class="">$message</span>
+                <div class="flex mx-2 $messageClasses">
+                    <span>$message</span>
+                    <span class="flex-1" />
+                    $originHtml
                 </div>
             </div>
         HTML);
-
     }
 
     /**
-     * Truncates the file name, if needed.
+     * Gets the file html.
      */
-    private function truncateFile(string $file, string $classOrType): string
+    private function fileHtml(?string $file, string $classOrType): ?string
     {
-        if ($file && $_ENV['APP_ENV'] === 'testing') {
+        if (is_null($file)) {
+            return null;
+        }
+
+        if ($_ENV['APP_ENV'] === 'testing') {
             $file = $this->basePath.'/app/MyClass.php:12';
         }
 
@@ -86,10 +94,14 @@ final readonly class CliPrinter implements Printer
         }
 
         if ($file === '…') {
-            return '';
+            return null;
         }
 
-        return $file;
+        return <<<HTML
+            <span class="text-gray ml-1">
+                $file
+            </span>
+        HTML;
     }
 
     /**
@@ -106,5 +118,31 @@ final readonly class CliPrinter implements Printer
         }
 
         return $message;
+    }
+
+    /**
+     * Gets the origin html.
+     */
+    private function originHtml(Console|Http $origin, string $message): ?string
+    {
+        if ($origin instanceof Console) {
+            $originContent = "› artisan {$origin->command}";
+        } else {
+            if (str_starts_with($path = $origin->path, '/') === false) {
+                $path = '/'.$origin->path;
+            }
+
+            $originContent = "{$origin->method} {$path}";
+        }
+
+        $originContentSize = max(0, min(terminal()->width() - strlen($originContent) - 5, 145));
+
+        if (strlen($message) > $originContentSize) {
+            return null;
+        }
+
+        return <<<HTML
+            <span class="text-gray">$originContent</span>
+        HTML;
     }
 }

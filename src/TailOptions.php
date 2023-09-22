@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace NunoMaduro\Pail;
 
 use Illuminate\Console\Command;
+use Stringable;
 
 /**
  * @internal
  */
-final readonly class TailOptions implements \Stringable
+final readonly class TailOptions implements Stringable
 {
     /**
      * Creates a new instance of the tail options.
      */
-    private function __construct(
+    public function __construct(
         public ?string $filter,
-        public ?string $userId,
+        public ?string $authId,
     ) {
         //
     }
@@ -27,12 +28,12 @@ final readonly class TailOptions implements \Stringable
     public static function fromCommand(Command $command): self
     {
         $filter = $command->option('filter');
-        $userId = $command->option('user');
+        $authId = $command->option('auth') ?? $command->option('user');
 
         assert(is_string($filter) || $filter === null);
-        assert(is_string($userId) || $userId === null);
+        assert(is_string($authId) || $authId === null);
 
-        return new self($filter, $userId);
+        return new self($filter, $authId);
     }
 
     /**
@@ -46,8 +47,8 @@ final readonly class TailOptions implements \Stringable
             $options .= "filter: {$this->filter}";
         }
 
-        if (is_string($this->userId)) {
-            $options .= ($options === '' ? '' : ', ')."user: {$this->userId}";
+        if (is_string($this->authId)) {
+            $options .= ($options === '' ? '' : ', ')."user: {$this->authId}";
         }
 
         return $options;

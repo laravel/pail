@@ -19,7 +19,10 @@ final class PailCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'pail {--filter= : Filter the tail} {--user= : Filter the tail by the authenticated user ID}';
+    protected $signature = 'pail
+        {--filter= : Filter the tail}
+        {--auth= : Filter the tail by the authenticated ID}
+        {--user= : Filter the tail by the authenticated ID}';
 
     /**
      * {@inheritdoc}
