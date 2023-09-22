@@ -26,7 +26,10 @@ final class PailServiceProvider extends ServiceProvider
             static fn (Application $app): TailedFiles => new TailedFiles($app->storagePath('pail'))
         );
 
-        $this->app->singleton(Handler::class);
+        $this->app->singleton(Handler::class, fn (Application $app): Handler => new Handler(
+            $app->make(TailedFiles::class), // @phpstan-ignore-line
+            $app->runningInConsole(),
+        ));
     }
 
     /**

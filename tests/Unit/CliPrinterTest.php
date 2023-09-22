@@ -42,8 +42,9 @@ test('output', function () {
     ], null);
 
     expect($output)->toBe(<<<'EOF'
-        ☰ 03:04:05 INFO ................................
-          Hello World                  › artisan inspire
+        ┌ 03:04:05 INFO ─────────────────────────────────┐
+        │ Hello World                                    │
+        └─────────────────────────────────────── inspire ┘
 
         EOF,
     );
@@ -67,8 +68,9 @@ test('responsive output', function () {
     ], null);
 
     expect($output)->toBe(<<<'EOF'
-        ☰ 03:04:05 INFO ..
-          My info message…
+        ┌ 03:04:05 INFO ───┐
+        │ My info message… │
+        └───────── inspire ┘
 
         EOF,
     );
@@ -89,14 +91,16 @@ test('output exceptions', function () {
                     'type' => 'http',
                     'method' => 'GET',
                     'path' => '/logs',
+                    'auth_id' => null,
                 ],
             ],
         ],
     ], null);
 
     expect($output)->toBe(<<<'EOF'
-        ☰ 03:04:05 Exception ........ app/MyClass.php:12
-          Exception message                    GET /logs
+        ┌ 03:04:05 Exception ──────── app/MyClass.php:12 ┐
+        │ Exception message                              │
+        └──────────────────── GET /logs | Auth ID: guest ┘
 
         EOF,
     );
@@ -119,14 +123,16 @@ test('responsive output exceptions', function () {
                     'type' => 'http',
                     'method' => 'GET',
                     'path' => '/logs',
+                    'auth_id' => null,
                 ],
             ],
         ],
     ], null);
 
     expect($output)->toBe(<<<'EOF'
-        ☰ 03:04:05 Exception  a…
-          Exception message tha…
+        ┌ 03:04:05 Exception  a… ┐
+        │ Exception message tha… │
+        └ GET /logs | Auth ID: guest ┘
 
         EOF,
     );
@@ -140,8 +146,9 @@ test('output with auth id options', function () {
         'context' => [
             '__pail' => [
                 'origin' => [
-                    'type' => 'console',
-                    'command' => 'inspire',
+                    'type' => 'http',
+                    'method' => 'GET',
+                    'path' => 'logs',
                     'auth_id' => '123',
                 ],
             ],
@@ -150,16 +157,18 @@ test('output with auth id options', function () {
 
     $output = output($message, new TailOptions(null, null));
     expect($output)->toBe(<<<'EOF'
-        ☰ 03:04:05 INFO ................................
-          Hello World                  › artisan inspire
+        ┌ 03:04:05 INFO ─────────────────────────────────┐
+        │ Hello World                                    │
+        └────────────────────── GET /logs | Auth ID: 123 ┘
 
         EOF,
     );
 
     $output = output($message, new TailOptions(null, '123'));
     expect($output)->toBe(<<<'EOF'
-        ☰ 03:04:05 INFO ................................
-          Hello World                  › artisan inspire
+        ┌ 03:04:05 INFO ─────────────────────────────────┐
+        │ Hello World                                    │
+        └────────────────────── GET /logs | Auth ID: 123 ┘
 
         EOF,
     );

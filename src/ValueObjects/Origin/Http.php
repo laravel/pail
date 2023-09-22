@@ -15,6 +15,7 @@ final readonly class Http
     public function __construct(
         public string $method,
         public string $path,
+        public ?string $authId,
     ) {
         //
     }
@@ -22,13 +23,13 @@ final readonly class Http
     /**
      * Creates a new instance of the http origin from the given json string.
      *
-     * @param  array{method: string, path: string}  $array
+     * @param  array{method: string, path: string, auth_id: string}  $array
      */
     public static function fromArray(array $array): self
     {
-        ['method' => $method, 'path' => $path] = $array;
+        ['method' => $method, 'path' => $path, 'auth_id' => $authId] = $array;
 
-        return new self($method, $path);
+        return new self($method, $path, (string) $authId);
 
     }
 }

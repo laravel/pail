@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace NunoMaduro\Pail\Printers;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use NunoMaduro\Pail\Contracts\Printer;
 use NunoMaduro\Pail\TailOptions;
 use NunoMaduro\Pail\ValueObjects\MessageLogged;
-use NunoMaduro\Pail\ValueObjects\Origin\Console;
 use NunoMaduro\Pail\ValueObjects\Origin\Http;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -41,30 +42,43 @@ final readonly class CliPrinter implements Printer
             return;
         }
 
-        $classOrType = $messageLogged->classOrType();
+        $classOrType = $this->truncateClassOrType($messageLogged->classOrType());
         $color = $messageLogged->color();
-        $fileHtml = $this->fileHtml($messageLogged->file(), $classOrType);
         $message = $this->truncateMessage($messageLogged->message());
         $time = $messageLogged->time();
-        $originHtml = $this->originHtml($messageLogged->origin(), $message);
+
+        $tagsHtml = $this->tagsHtml($messageLogged);
+        $fileHtml = $this->fileHtml($messageLogged->file(), $classOrType);
 
         $messageClasses = $this->output->isVerbose() ? '' : 'truncate';
 
         render(<<<HTML
             <div class="max-w-150">
-                <div class="flex mr-2">
+                <div class="flex">
                     <div>
-                        <span class="mr-1 text-gray">☰</span>
+                        <span class="mr-1 text-gray">┌</span>
                         <span class="text-gray">$time</span>
                         <span class="px-1 text-$color font-bold">$classOrType</span>
                     </div>
-                    <span class="flex-1 content-repeat-[.] text-gray"></span>
-                    $fileHtml
+                    <span class="flex-1 content-repeat-[─] text-gray"></span>
+                    <span class="text-gray">
+                        $fileHtml
+                        <span class="text-gray">┐</span>
+                    </span>
                 </div>
-                <div class="flex mx-2 $messageClasses">
-                    <span>$message</span>
-                    <span class="flex-1" />
-                    $originHtml
+                <div class="flex $messageClasses">
+                    <span>
+                        <span class="mr-1 text-gray">│</span>
+                        <span>$message</span>
+                    </span>
+                    <span class="flex-1"></span>
+                    <span class="flex-1 text-gray text-right">│</span>
+                </div>
+                <div class="flex text-gray">
+                    <span>└</span>
+                    <span class="mr-1 flex-1 content-repeat-[─]"></span>
+                    $tagsHtml
+                    <span class="ml-1">┘</span>
                 </div>
             </div>
         HTML);
@@ -86,6 +100,15 @@ final readonly class CliPrinter implements Printer
         $file = str_replace($this->basePath.'/', '', $file);
 
         if (! $this->output->isVerbose()) {
+            $file = (string) Str::of($file)
+                ->explode('/')
+                ->when(
+                    fn (Collection $file): bool => $file->count() > 4,
+                    fn (Collection $file): Collection => $file->take(2)->merge(
+                        ['…', (string) $file->last()],
+                    ),
+                )->implode('/');
+
             $fileSize = max(0, min(terminal()->width() - strlen($classOrType) - 16, 145));
 
             if (strlen($file) > $fileSize) {
@@ -97,11 +120,32 @@ final readonly class CliPrinter implements Printer
             return null;
         }
 
+        $file = str_replace('……', '…', $file);
+
         return <<<HTML
-            <span class="text-gray ml-1">
+            <span class="text-gray mx-1">
                 $file
             </span>
         HTML;
+    }
+
+    /**
+     * Truncates the class or type, if needed.
+     */
+    private function truncateClassOrType(string $classOrType): string
+    {
+        if ($this->output->isVerbose()) {
+            return $classOrType;
+        }
+
+        return Str::of($classOrType)
+            ->explode('\\')
+            ->when(
+                fn (Collection $classOrType): bool => $classOrType->count() > 4,
+                fn (Collection $classOrType): Collection => $classOrType->take(2)->merge(
+                    ['…', (string) $classOrType->last()]
+                ),
+            )->implode('\\');
     }
 
     /**
@@ -121,28 +165,28 @@ final readonly class CliPrinter implements Printer
     }
 
     /**
-     * Gets the origin html.
+     * Gets the tags html.
      */
-    private function originHtml(Console|Http $origin, string $message): ?string
+    public function tagsHtml(MessageLogged $messageLogged): string
     {
-        if ($origin instanceof Console) {
-            $originContent = "› artisan {$origin->command}";
-        } else {
+        $origin = $messageLogged->origin();
+
+        if ($origin instanceof Http) {
             if (str_starts_with($path = $origin->path, '/') === false) {
                 $path = '/'.$origin->path;
             }
 
-            $originContent = "{$origin->method} {$path}";
+            $tags = [
+                strtoupper($origin->method) => $path,
+                'Auth ID: ' => $origin->authId ?: 'guest',
+            ];
+        } else {
+            $tags = [
+                '' => $origin->command ?: 'artisan',
+            ];
         }
 
-        $originContentSize = max(0, min(terminal()->width() - strlen($originContent) - 5, 145));
-
-        if (! $this->output->isVerbose() && strlen($message) > $originContentSize) {
-            return null;
-        }
-
-        return <<<HTML
-            <span class="text-gray">$originContent</span>
-        HTML;
+        return collect($tags)
+            ->map(fn (string $value, string $key): string => "<span class=\"font-bold\">$key $value</span>")->implode(' | ');
     }
 }

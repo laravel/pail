@@ -36,8 +36,8 @@ final class PailCommand extends Command
     {
         EnsurePcntlIsAvailable::check();
 
-        $optionsExplained = '';
         $options = TailOptions::fromCommand($this);
+        $optionsExplained = '';
 
         if ((string) $options !== '') {
             $optionsExplained = " (Filtering by {$options})";

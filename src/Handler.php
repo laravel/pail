@@ -22,8 +22,10 @@ final class Handler
     /**
      * Creates a new instance of the handler.
      */
-    public function __construct(private readonly TailedFiles $tailedFiles)
-    {
+    public function __construct(
+        private readonly TailedFiles $tailedFiles,
+        private readonly bool $runningInConsole,
+    ) {
         //
     }
 
@@ -64,10 +66,13 @@ final class Handler
     {
         $lastLifecycleEventClass = $this->lastLifecycleEvent ? $this->lastLifecycleEvent::class : null;
 
-        $context = ['__pail' => ['origin' => match ($lastLifecycleEventClass) {
-            CommandStarting::class => [
+        $context = ['__pail' => ['origin' => match (true) {
+            $lastLifecycleEventClass === CommandStarting::class => [
                 'type' => 'console',
                 'command' => $this->lastLifecycleEvent->command, // @phpstan-ignore-line
+            ],
+            $this->runningInConsole => [
+                'type' => 'console',
             ],
             default => [
                 'type' => 'http',
