@@ -137,7 +137,7 @@ final readonly class CliPrinter implements Printer
 
         $originContentSize = max(0, min(terminal()->width() - strlen($originContent) - 5, 145));
 
-        if (strlen($message) > $originContentSize) {
+        if (! $this->output->isVerbose() && strlen($message) > $originContentSize) {
             return null;
         }
 
