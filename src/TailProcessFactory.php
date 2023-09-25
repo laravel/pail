@@ -2,10 +2,10 @@
 
 namespace Laravel\Pail;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Laravel\Pail\Printers\CliPrinter;
+use Laravel\Pail\ValueObjects\MessageLogged;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TailProcessFactory
@@ -22,20 +22,12 @@ class TailProcessFactory
             ->run(
                 $this->command($file),
                 function (string $type, string $buffer) use ($options, $printer): void {
-                    /** @var array<int, string> $lines */
-                    $lines = Str::of($buffer)
+                    Str::of($buffer)
                         ->explode("\n")
-                        ->filter(fn (string $line): bool => $line !== '')
-                        ->when(
-                            is_string($options->filter),
-                            fn (Collection $lines) => $lines->filter(
-                                fn (string $line): bool => str_contains($line, $options->filter) // @phpstan-ignore-line
-                            )
-                        )->values();
-
-                    foreach ($lines as $line) {
-                        $printer->print($options, $line);
-                    }
+                        ->filter(fn (string $line) => $line !== '')
+                        ->map(fn (string $line) => MessageLogged::fromJson($line))
+                        ->filter(fn (MessageLogged $messageLogged) => $options->accepts($messageLogged))
+                        ->each(fn (MessageLogged $messageLogged) => $printer->print($messageLogged, $options));
                 }
             );
     }

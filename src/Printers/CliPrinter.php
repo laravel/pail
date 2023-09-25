@@ -5,7 +5,6 @@ namespace Laravel\Pail\Printers;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Pail\Contracts\Printer;
-use Laravel\Pail\TailOptions;
 use Laravel\Pail\ValueObjects\MessageLogged;
 use Laravel\Pail\ValueObjects\Origin\Http;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,16 +26,8 @@ class CliPrinter implements Printer
     /**
      * {@inheritdoc}
      */
-    public function print(TailOptions $options, string $messageLogged): void
+    public function print(MessageLogged $messageLogged): void
     {
-        renderUsing($this->output);
-
-        $messageLogged = MessageLogged::fromJson($messageLogged);
-
-        if (is_string($options->authId) && $messageLogged->authId() !== $options->authId) {
-            return;
-        }
-
         $classOrType = $this->truncateClassOrType($messageLogged->classOrType());
         $color = $messageLogged->color();
         $message = $this->truncateMessage($messageLogged->message());
@@ -47,6 +38,7 @@ class CliPrinter implements Printer
 
         $messageClasses = $this->output->isVerbose() ? '' : 'truncate';
 
+        renderUsing($this->output);
         render(<<<HTML
             <div class="max-w-150">
                 <div class="flex">

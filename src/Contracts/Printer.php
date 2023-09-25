@@ -3,11 +3,12 @@
 namespace Laravel\Pail\Contracts;
 
 use Laravel\Pail\TailOptions;
+use Laravel\Pail\ValueObjects\MessageLogged;
 
 interface Printer
 {
     /**
-     * Prints the given buffer.
+     * Prints the given message logged.
      */
-    public function print(TailOptions $options, string $messageLogged): void;
+    public function print(MessageLogged $messageLogged): void;
 }

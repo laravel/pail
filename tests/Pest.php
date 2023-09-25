@@ -42,10 +42,10 @@ uses(Tests\TestCase::class)
 |
 */
 
-expect()->extend('toPail', function (string $expectedOutput) {
+expect()->extend('toPail', function (string $expectedOutput, array $options = []) {
     if ($GLOBALS['process'] === null) {
         $process = $GLOBALS['process'] = Process::path(__DIR__.'/Fixtures')
-            ->start('php artisan pail');
+            ->start('php artisan pail '.collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '));
 
         $GLOBALS['process'] = $process;
 
@@ -67,14 +67,20 @@ expect()->extend('toPail', function (string $expectedOutput) {
         ->map(fn (string $line) => rtrim($line))
         ->implode("\n");
 
-    expect($output)->toBe(<<<'EOF'
+    $filtersExplained = '';
 
-           INFO  Tailing application logs.
+    if (count($options) > 0) {
+        $filtersExplained = ' (Filtering by '.collect($options)->map(fn ($value, $key) => "{$key}: {$value}")->implode(', ').')';
+    }
+
+    expect($output)->toBe(<<<EOF
+
+           INFO  Tailing application logs$filtersExplained.
 
           Press Ctrl+C to exit
 
-
-        EOF.$expectedOutput
+        $expectedOutput
+        EOF,
     );
 
     return $this;

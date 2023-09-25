@@ -3,6 +3,7 @@
 namespace Laravel\Pail;
 
 use Illuminate\Console\Command;
+use Laravel\Pail\ValueObjects\MessageLogged;
 use Stringable;
 
 class TailOptions implements Stringable
@@ -11,8 +12,8 @@ class TailOptions implements Stringable
      * Creates a new instance of the tail options.
      */
     public function __construct(
-        public ?string $filter,
-        public ?string $authId,
+        private ?string $filter,
+        private ?string $authId,
     ) {
         //
     }
@@ -28,7 +29,23 @@ class TailOptions implements Stringable
         assert(is_string($filter) || $filter === null);
         assert(is_string($authId) || $authId === null);
 
-        return new self($filter, $authId);
+        return new static($filter, $authId);
+    }
+
+    /**
+     * Whether the tail options accept the given message logged.
+     */
+    public function accepts(MessageLogged $messageLogged): bool
+    {
+        if (is_string($this->authId) && $messageLogged->authId() !== $this->authId) {
+            return false;
+        }
+
+        if (is_string($this->filter) && ! str_contains(strtolower((string) $messageLogged), $this->filter)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

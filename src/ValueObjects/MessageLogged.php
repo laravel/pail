@@ -3,8 +3,9 @@
 namespace Laravel\Pail\ValueObjects;
 
 use Illuminate\Support\Carbon;
+use Stringable;
 
-class MessageLogged
+class MessageLogged implements Stringable
 {
     /**
      * Creates a new instance of the message logged.
@@ -113,5 +114,18 @@ class MessageLogged
             'console' => Origin\Console::fromArray($this->context['__pail']['origin']),
             default => Origin\Http::fromArray($this->context['__pail']['origin']),
         };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __toString(): string
+    {
+        return json_encode([
+            'message' => $this->message,
+            'datetime' => $this->datetime,
+            'level_name' => $this->levelName,
+            'context' => $this->context,
+        ], JSON_THROW_ON_ERROR);
     }
 }
