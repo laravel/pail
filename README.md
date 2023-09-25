@@ -65,14 +65,6 @@ You may also want to filter logs by their level, using the `--level` option:
 php artisan pail --level=error
 ```
 
-#### `--channel`
-
-To filter logs by their channel, use the `--channel` option:
-
-```bash
-php artisan pail --channel=papertrail
-```
-
 #### `--user`
 
 To filter logs by the authenticated user, the one that triggered the request, you can use the `--user` option:
