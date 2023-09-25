@@ -1,19 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail;
+namespace Laravel\Pail;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
-use NunoMaduro\Pail\Printers\CliPrinter;
+use Laravel\Pail\Printers\CliPrinter;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * @internal
- */
-final readonly class TailProcessFactory
+class TailProcessFactory
 {
     /**
      * Creates a new instance of the tail process factory.
@@ -33,7 +28,7 @@ final readonly class TailProcessFactory
                         ->filter(fn (string $line): bool => $line !== '')
                         ->when(
                             is_string($options->filter),
-                            fn (Collection $lines): Collection => $lines->filter(
+                            fn (Collection $lines) => $lines->filter(
                                 fn (string $line): bool => str_contains($line, $options->filter) // @phpstan-ignore-line
                             )
                         )->values();
@@ -48,7 +43,7 @@ final readonly class TailProcessFactory
     /**
      * Returns the raw command.
      */
-    private function command(TailedFile $file): string
+    protected function command(TailedFile $file): string
     {
         return '\\tail -F "'.$file->__toString().'"';
     }

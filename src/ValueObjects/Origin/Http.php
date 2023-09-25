@@ -1,13 +1,8 @@
 <?php
 
-declare(strict_types=1);
+namespace Laravel\Pail\ValueObjects\Origin;
 
-namespace NunoMaduro\Pail\ValueObjects\Origin;
-
-/**
- * @internal
- */
-final readonly class Http
+class Http
 {
     /**
      * Creates a new instance of the http origin.

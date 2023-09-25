@@ -1,14 +1,9 @@
 <?php
 
-declare(strict_types=1);
+namespace Laravel\Pail\Contracts;
 
-namespace NunoMaduro\Pail\Contracts;
+use Laravel\Pail\TailOptions;
 
-use NunoMaduro\Pail\TailOptions;
-
-/**
- * @internal
- */
 interface Printer
 {
     /**

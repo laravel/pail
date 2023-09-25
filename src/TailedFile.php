@@ -1,24 +1,21 @@
 <?php
 
-declare(strict_types=1);
+namespace Laravel\Pail;
 
-namespace NunoMaduro\Pail;
+use Stringable;
 
-/**
- * @internal
- */
-final readonly class TailedFile implements \Stringable
+class TailedFile implements Stringable
 {
     /**
      * The time to live of the tailed file.
      */
-    private const TTL = 3600;
+    protected const TTL = 3600;
 
     /**
      * Creates a new instance of the tailed file.
      */
     public function __construct(
-        private string $file,
+        protected string $file,
     ) {
         //
     }
@@ -88,7 +85,7 @@ final readonly class TailedFile implements \Stringable
     /**
      * Determines if the tailed file is staled.
      */
-    private function isStale(): bool
+    protected function isStale(): bool
     {
         if (($int = random_int(0, 10)) !== 10) {
             return false;

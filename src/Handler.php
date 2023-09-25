@@ -1,30 +1,25 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail;
+namespace Laravel\Pail;
 
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * @internal
- */
-final class Handler
+class Handler
 {
     /**
      * The last lifecycle captured event.
      */
-    private CommandStarting|CommandFinished|null $lastLifecycleEvent = null;
+    protected CommandStarting|CommandFinished|null $lastLifecycleEvent = null;
 
     /**
      * Creates a new instance of the handler.
      */
     public function __construct(
-        private readonly TailedFiles $tailedFiles,
-        private readonly bool $runningInConsole,
+        protected TailedFiles $tailedFiles,
+        protected bool $runningInConsole,
     ) {
         //
     }
@@ -62,7 +57,7 @@ final class Handler
      *
      * @return array<string, mixed>
      */
-    private function context(): array
+    protected function context(): array
     {
         $lastLifecycleEventClass = $this->lastLifecycleEvent ? $this->lastLifecycleEvent::class : null;
 

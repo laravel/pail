@@ -19,7 +19,7 @@ require __DIR__.'/../../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../../vendor/orchestra/testbench-core/laravel/bootstrap/app.php';
 
-$app->register(\NunoMaduro\Pail\PailServiceProvider::class);
+$app->register(\Laravel\Pail\PailServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

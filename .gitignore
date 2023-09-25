@@ -1,9 +1,6 @@
-/.phpunit.result.cache
-/.phpunit.cache
-/.php-cs-fixer.cache
-/.php-cs-fixer.php
-/composer.lock
+/node_modules
+/public/app.js.LICENSE.txt
+/vendor
+composer.lock
 /phpunit.xml
-/vendor/
-*.swp
-*.swo
+.phpunit.result.cache

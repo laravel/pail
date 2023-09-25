@@ -1,16 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail;
+namespace Laravel\Pail;
 
 use Illuminate\Console\Command;
 use Stringable;
 
-/**
- * @internal
- */
-final readonly class TailOptions implements Stringable
+class TailOptions implements Stringable
 {
     /**
      * Creates a new instance of the tail options.

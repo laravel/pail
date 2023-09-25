@@ -1,33 +1,28 @@
+<p align="center"><img src="/art/logo.jpg" style="width:70%;" alt="Logo Laravel Pail"></p>
+
 <p align="center">
-    <img src="https://raw.githubusercontent.com/nunomaduro/pail/master/docs/demo.jpg" style="width:70%;" alt="Pail">
-    <p align="center">
-        <a href="https://github.com/nunomaduro/pail/actions"><img alt="GitHub Workflow Status (master)" src="https://github.com/nunomaduro/pail/actions/workflows/tests.yml/badge.svg"></a>
-        <a href="https://packagist.org/packages/nunomaduro/pail"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/nunomaduro/pail"></a>
-        <a href="https://packagist.org/packages/nunomaduro/pail"><img alt="Latest Version" src="https://img.shields.io/packagist/v/nunomaduro/pail"></a>
-        <a href="https://packagist.org/packages/nunomaduro/pail"><img alt="License" src="https://img.shields.io/packagist/l/nunomaduro/pail"></a>
-    </p>
+<a href="https://github.com/laravel/pail/actions"><img src="https://github.com/laravel/pail/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/pail"><img src="https://img.shields.io/packagist/dt/laravel/pail" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/pail"><img src="https://img.shields.io/packagist/v/laravel/pail" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/pail"><img src="https://img.shields.io/packagist/l/laravel/pail" alt="License"></a>
 </p>
 
-------
+## Introduction
 
-**Pail** is an experimental package (or, who knows, perhaps a future Laravel feature?) designed with a single goal in mind: to provide an effortless way to tail logs in our Laravel applications.
+**Laravel Pail** is a package that allows you to easily delve into your Laravel application's log files directly from the command line. Unlike other log tailing packages, **Pail** is designed to work with any log driver, including [Sentry](https://sentry.io) or [Flare](https://flareapp.io).
 
-Difference from other log tailing packages:
-
-- 🌌 A user-friendly, sleek CLI interface.
-- ⚗️ **Compatibility with any log driver**. You don't need to use `app.log` or `laravel.log`. Whether you're integrated with [Sentry](https://sentry.io) or [Bugsnag](https://bugsnag.com), **Pail** is crafted to work alongside.
-- 🔑 **Filter logs by the authenticated user**. Yes, you read it right. **Pail** can filter logs by the authenticated user, the one that triggered the request.
-
-🚧 **Note:** As of now, **Pail** is still in its proof-of-concept phase. It's an idea in the making, not yet optimized for production scenarios. Any feedback is welcome!
+In addition, **Pail** focuses on the developer experience: it provides a sleek CLI interface, with a user-friendly design, and a set of useful filters to help you find what you're looking for.
 
 ## Installation
 
 > **Requires [PHP 8.2+](https://php.net/releases/)**
 
-Get started with **Pail** by installing the package via Composer:
+To get started, install Pail into your project using the Composer package manager:
+
+> **Note:** Pail is currently in development, therefore you should install it using the `dev-main` branch.
 
 ```bash
-composer require nunomaduro/pail:dev-main
+composer require laravel/pail:dev-main
 ```
 
 ## Usage
@@ -44,18 +39,52 @@ To increase the verbosity of the output, avoiding truncation (...), use the `-v`
 php artisan pail -v
 ```
 
-To filter logs by its content, use the `--filter` option:
+### Filtering logs
+
+#### `--filter`
+
+Sometimes, you may want to filter logs by their content and for that, you can use the `--filter` option:
 
 ```bash
-php artisan pail --filter="Illuminate\Database"
+php artisan pail --filter="SQL statement"
 ```
 
-To filter logs by the authenticated user, the one that triggered the request, use the `--user` option:
+#### `--level`
+
+You may also want to filter logs by their level, using the `--level` option:
+
+```bash
+php artisan pail --level=error
+```
+
+#### `--channel`
+
+To filter logs by their channel, use the `--channel` option:
+
+```bash
+php artisan pail --channel=papertrail
+```
+
+#### `--user`
+
+To filter logs by the authenticated user, the one that triggered the request, you can use the `--user` option:
 
 ```bash
 php artisan pail --user=1
 ```
 
+## Contributing
+
+Thank you for considering contributing to Laravel Pail! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+Please review [our security policy](https://github.com/laravel/folio/security/policy) on how to report security vulnerabilities.
+
 ## License
 
-**Pail** was created by **[Nuno Maduro](https://twitter.com/enunomaduro)** under the **[MIT license](https://opensource.org/licenses/MIT)**.
+Laravel Pail is open-sourced software licensed under the [MIT license](LICENSE.md).

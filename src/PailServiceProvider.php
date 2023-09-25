@@ -1,20 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail;
+namespace Laravel\Pail;
 
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\ServiceProvider;
-use NunoMaduro\Pail\Console\Commands\PailCommand;
+use Laravel\Pail\Console\Commands\PailCommand;
 
-/**
- * @internal
- */
-final class PailServiceProvider extends ServiceProvider
+class PailServiceProvider extends ServiceProvider
 {
     /**
      * Registers the application services.
@@ -23,10 +18,10 @@ final class PailServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             TailedFiles::class,
-            static fn (Application $app): TailedFiles => new TailedFiles($app->storagePath('pail'))
+            fn (Application $app) => new TailedFiles($app->storagePath('pail'))
         );
 
-        $this->app->singleton(Handler::class, fn (Application $app): Handler => new Handler(
+        $this->app->singleton(Handler::class, fn (Application $app) => new Handler(
             $app->make(TailedFiles::class), // @phpstan-ignore-line
             $app->runningInConsole(),
         ));

@@ -1,6 +1,7 @@
 parameters:
-    level: max
     paths:
         - src
+
+    level: max
 
     reportUnmatchedIgnoredErrors: true

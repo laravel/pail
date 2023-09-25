@@ -1,8 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail;
+namespace Laravel\Pail;
 
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
@@ -10,16 +8,13 @@ use Monolog\Level;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
-/**
- * @internal
- */
-final readonly class LoggerFactory
+class LoggerFactory
 {
     /**
      * Creates a new instance of the logger factory.
      */
     public function __construct(
-        private TailedFile $tailedFile,
+        protected TailedFile $tailedFile,
     ) {
         //
     }

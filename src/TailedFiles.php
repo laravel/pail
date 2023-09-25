@@ -1,21 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail;
+namespace Laravel\Pail;
 
 use Closure;
 
-/**
- * @internal
- */
-final readonly class TailedFiles
+class TailedFiles
 {
     /**
      * Creates a new instance of the tailed files.
      */
     public function __construct(
-        private string $path,
+        protected string $path,
     ) {
         //
     }

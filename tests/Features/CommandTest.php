@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 test('debug messages', function () {
     expect('app("log")->debug("my debug message")')->toPail(<<<'EOF'
         ┌ 03:04:05 DEBUG ────────────────────────────────┐

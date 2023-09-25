@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Support\Str;
-use NunoMaduro\Pail\Printers\CliPrinter;
-use NunoMaduro\Pail\TailOptions;
+use Laravel\Pail\Printers\CliPrinter;
+use Laravel\Pail\TailOptions;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 function output(array $message, ?TailOptions $options): string

@@ -1,20 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail\Console\Commands;
+namespace Laravel\Pail\Console\Commands;
 
 use Illuminate\Console\Command;
-use NunoMaduro\Pail\Guards\EnsurePcntlIsAvailable;
-use NunoMaduro\Pail\TailedFile;
-use NunoMaduro\Pail\TailOptions;
-use NunoMaduro\Pail\TailProcessFactory;
+use Laravel\Pail\Guards\EnsurePcntlIsAvailable;
+use Laravel\Pail\TailedFile;
+use Laravel\Pail\TailOptions;
+use Laravel\Pail\TailProcessFactory;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 
-/**
- * @internal
- */
-final class PailCommand extends Command
+class PailCommand extends Command
 {
     /**
      * {@inheritdoc}

@@ -1,15 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail\Guards;
+namespace Laravel\Pail\Guards;
 
 use RuntimeException;
 
-/**
- * @internal
- */
-final readonly class EnsurePcntlIsAvailable
+class EnsurePcntlIsAvailable
 {
     /**
      * Checks if the pcntl extension is available.

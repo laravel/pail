@@ -1,26 +1,21 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail\ValueObjects;
+namespace Laravel\Pail\ValueObjects;
 
 use Illuminate\Support\Carbon;
 
-/**
- * @internal
- */
-final readonly class MessageLogged
+class MessageLogged
 {
     /**
      * Creates a new instance of the message logged.
      *
      * @param  array{__pail: array{origin: array{type: string, command: string, method: string, path: string, auth_id: string}}, exception: array{class: string, file: string}}  $context
      */
-    private function __construct(
-        private string $message,
-        private string $datetime,
-        private string $levelName,
-        private array $context,
+    protected function __construct(
+        protected string $message,
+        protected string $datetime,
+        protected string $levelName,
+        protected array $context,
     ) {
         //
     }

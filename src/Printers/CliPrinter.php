@@ -1,30 +1,25 @@
 <?php
 
-declare(strict_types=1);
-
-namespace NunoMaduro\Pail\Printers;
+namespace Laravel\Pail\Printers;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use NunoMaduro\Pail\Contracts\Printer;
-use NunoMaduro\Pail\TailOptions;
-use NunoMaduro\Pail\ValueObjects\MessageLogged;
-use NunoMaduro\Pail\ValueObjects\Origin\Http;
+use Laravel\Pail\Contracts\Printer;
+use Laravel\Pail\TailOptions;
+use Laravel\Pail\ValueObjects\MessageLogged;
+use Laravel\Pail\ValueObjects\Origin\Http;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function Termwind\render;
 use function Termwind\renderUsing;
 use function Termwind\terminal;
 
-/**
- * @internal
- */
-final readonly class CliPrinter implements Printer
+class CliPrinter implements Printer
 {
     /**
      * Creates a new instance printer instance.
      */
-    public function __construct(private OutputInterface $output, private string $basePath)
+    public function __construct(protected OutputInterface $output, protected string $basePath)
     {
         //
     }
@@ -87,7 +82,7 @@ final readonly class CliPrinter implements Printer
     /**
      * Gets the file html.
      */
-    private function fileHtml(?string $file, string $classOrType): ?string
+    protected function fileHtml(?string $file, string $classOrType): ?string
     {
         if (is_null($file)) {
             return null;
@@ -103,8 +98,8 @@ final readonly class CliPrinter implements Printer
             $file = (string) Str::of($file)
                 ->explode('/')
                 ->when(
-                    fn (Collection $file): bool => $file->count() > 4,
-                    fn (Collection $file): Collection => $file->take(2)->merge(
+                    fn (Collection $file) => $file->count() > 4,
+                    fn (Collection $file) => $file->take(2)->merge(
                         ['…', (string) $file->last()],
                     ),
                 )->implode('/');
@@ -132,7 +127,7 @@ final readonly class CliPrinter implements Printer
     /**
      * Truncates the class or type, if needed.
      */
-    private function truncateClassOrType(string $classOrType): string
+    protected function truncateClassOrType(string $classOrType): string
     {
         if ($this->output->isVerbose()) {
             return $classOrType;
@@ -141,8 +136,8 @@ final readonly class CliPrinter implements Printer
         return Str::of($classOrType)
             ->explode('\\')
             ->when(
-                fn (Collection $classOrType): bool => $classOrType->count() > 4,
-                fn (Collection $classOrType): Collection => $classOrType->take(2)->merge(
+                fn (Collection $classOrType) => $classOrType->count() > 4,
+                fn (Collection $classOrType) => $classOrType->take(2)->merge(
                     ['…', (string) $classOrType->last()]
                 ),
             )->implode('\\');
@@ -151,7 +146,7 @@ final readonly class CliPrinter implements Printer
     /**
      * Truncates the message, if needed.
      */
-    private function truncateMessage(string $message): string
+    protected function truncateMessage(string $message): string
     {
         if (! $this->output->isVerbose()) {
             $messageSize = max(0, min(terminal()->width() - 5, 145));
