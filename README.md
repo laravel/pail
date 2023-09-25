@@ -16,6 +16,7 @@ In addition, Pail focuses on the developer experience: it provides a sleek CLI i
 ## Installation
 
 > **Requires [PHP 8.2+](https://php.net/releases/)**
+> **Requires Laravel ^10.24**
 
 To get started, install Pail into your project using the Composer package manager:
 
