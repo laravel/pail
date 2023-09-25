@@ -1,6 +1,6 @@
 <?php
 
-test('accepts filter', function () {
+test('accepts level', function () {
     expect([
         'throw new RuntimeException("my re exception")',
         'app("log")->critical("my cr message")',
@@ -12,15 +12,13 @@ test('accepts filter', function () {
 
         EOF,
         [
-            'filter' => 'my cr message',
+            'level' => 'critical',
         ]);
 });
 
-test('filters by entire log message', function () {
+test('is case insensitive', function () {
     expect([
-        'throw new RuntimeException("my re exception")',
         'app("log")->critical("my cr message")',
-        'throw new Exception("my e message")',
     ])->toPail(<<<'EOF'
         ┌ 03:04:05 CRITICAL ─────────────────────────────┐
         │ my cr message                                  │
@@ -28,6 +26,6 @@ test('filters by entire log message', function () {
 
         EOF,
         [
-            'filter' => 'critical',
+            'level' => 'CRitiCAL',
         ]);
 });

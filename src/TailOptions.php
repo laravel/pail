@@ -12,8 +12,10 @@ class TailOptions implements Stringable
      * Creates a new instance of the tail options.
      */
     public function __construct(
-        private ?string $filter,
-        private ?string $authId,
+        protected ?string $authId,
+        protected ?string $level,
+        protected ?string $filter,
+        protected ?string $message,
     ) {
         //
     }
@@ -23,13 +25,19 @@ class TailOptions implements Stringable
      */
     public static function fromCommand(Command $command): self
     {
-        $filter = $command->option('filter');
         $authId = $command->option('auth') ?? $command->option('user');
-
-        assert(is_string($filter) || $filter === null);
         assert(is_string($authId) || $authId === null);
 
-        return new static($filter, $authId);
+        $level = $command->option('level');
+        assert(is_string($level) || $level === null);
+
+        $filter = $command->option('filter');
+        assert(is_string($filter) || $filter === null);
+
+        $message = $command->option('message');
+        assert(is_string($message) || $message === null);
+
+        return new static($authId, $level, $filter, $message);
     }
 
     /**
@@ -41,7 +49,15 @@ class TailOptions implements Stringable
             return false;
         }
 
-        if (is_string($this->filter) && ! str_contains(strtolower((string) $messageLogged), $this->filter)) {
+        if (is_string($this->level) && strtolower($messageLogged->level()) !== strtolower($this->level)) {
+            return false;
+        }
+
+        if (is_string($this->filter) && ! str_contains(strtolower((string) $messageLogged), strtolower($this->filter))) {
+            return false;
+        }
+
+        if (is_string($this->message) && ! str_contains(strtolower($messageLogged->message()), strtolower($this->message))) {
             return false;
         }
 
@@ -53,16 +69,13 @@ class TailOptions implements Stringable
      */
     public function __toString(): string
     {
-        $options = '';
-
-        if (is_string($this->filter)) {
-            $options .= "filter: {$this->filter}";
-        }
-
-        if (is_string($this->authId)) {
-            $options .= ($options === '' ? '' : ', ')."user: {$this->authId}";
-        }
-
-        return $options;
+        return collect([
+            'authId' => $this->authId,
+            'level' => $this->level,
+            'filter' => $this->filter,
+            'message' => $this->message,
+        ])->filter(fn ($value) => $value !== null)
+            ->map(fn ($value, string $key) => "{$key}: {$value}")
+            ->implode(', ');
     }
 }

@@ -16,6 +16,8 @@ class PailCommand extends Command
      */
     protected $signature = 'pail
         {--filter= : Filter the tail}
+        {--message= : Filter the tail by the message}
+        {--level= : Filter the tail by the level}
         {--auth= : Filter the tail by the authenticated ID}
         {--user= : Filter the tail by the authenticated ID}';
 

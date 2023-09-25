@@ -90,6 +90,14 @@ class MessageLogged implements Stringable
     }
 
     /**
+     * Gets the log message's level.
+     */
+    public function level(): string
+    {
+        return $this->levelName;
+    }
+
+    /**
      * Gets the log message's file, if any.
      */
     public function file(): ?string

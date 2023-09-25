@@ -43,10 +43,18 @@ php artisan pail -v
 
 #### `--filter`
 
-Sometimes, you may want to filter logs by their content and for that, you can use the `--filter` option:
+Sometimes, you may want to filter logs by their entire content and for that, you can use the `--filter` option:
 
 ```bash
-php artisan pail --filter="SQL statement"
+php artisan pail --filter="RuntimeException"
+```
+
+#### `--message`
+
+You may also want to filter logs only by their message, using the `--message` option:
+
+```bash
+php artisan pail --message="User created"
 ```
 
 #### `--level`

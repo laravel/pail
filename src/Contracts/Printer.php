@@ -2,7 +2,6 @@
 
 namespace Laravel\Pail\Contracts;
 
-use Laravel\Pail\TailOptions;
 use Laravel\Pail\ValueObjects\MessageLogged;
 
 interface Printer

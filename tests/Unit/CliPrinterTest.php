@@ -2,16 +2,17 @@
 
 use Illuminate\Support\Str;
 use Laravel\Pail\Printers\CliPrinter;
-use Laravel\Pail\TailOptions;
+use Laravel\Pail\ValueObjects\MessageLogged;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-function output(array $message, ?TailOptions $options): string
+function output(array $message): string
 {
-    $options ??= new TailOptions(null, null);
     $output = new BufferedOutput();
     $printer = new CliPrinter($output, base_path());
 
-    $printer->print($options, json_encode($message));
+    $printer->print(
+        MessageLogged::fromJson(json_encode($message))
+    );
 
     $output = $output->fetch();
     $output = preg_replace('/\e\[[\d;]*m/', '', $output);
@@ -134,43 +135,4 @@ test('responsive output exceptions', function () {
 
         EOF,
     );
-});
-
-test('output with auth id options', function () {
-    $message = [
-        'message' => 'Hello World',
-        'level_name' => 'info',
-        'datetime' => '2021-01-01 00:00:00',
-        'context' => [
-            '__pail' => [
-                'origin' => [
-                    'type' => 'http',
-                    'method' => 'GET',
-                    'path' => 'logs',
-                    'auth_id' => '123',
-                ],
-            ],
-        ],
-    ];
-
-    $output = output($message, new TailOptions(null, null));
-    expect($output)->toBe(<<<'EOF'
-        ┌ 03:04:05 INFO ─────────────────────────────────┐
-        │ Hello World                                    │
-        └────────────────────── GET /logs | Auth ID: 123 ┘
-
-        EOF,
-    );
-
-    $output = output($message, new TailOptions(null, '123'));
-    expect($output)->toBe(<<<'EOF'
-        ┌ 03:04:05 INFO ─────────────────────────────────┐
-        │ Hello World                                    │
-        └────────────────────── GET /logs | Auth ID: 123 ┘
-
-        EOF,
-    );
-
-    $output = output($message, new TailOptions(null, '1234'));
-    expect($output)->toBe('');
 });
