@@ -46,7 +46,7 @@ php artisan pail -v
 Sometimes, you may want to filter logs by their entire content and for that, you can use the `--filter` option:
 
 ```bash
-php artisan pail --filter="RuntimeException"
+php artisan pail --filter="QueryException"
 ```
 
 #### `--message`
