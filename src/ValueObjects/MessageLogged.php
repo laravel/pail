@@ -35,7 +35,7 @@ class MessageLogged
             'context' => $context,
         ] = $array;
 
-        return new self($message, $datetime, $levelName, $context);
+        return new static($message, $datetime, $levelName, $context);
     }
 
     /**

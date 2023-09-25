@@ -22,6 +22,6 @@ class Console
     {
         $command = $array['command'] ?? null;
 
-        return new self($command);
+        return new static($command);
     }
 }

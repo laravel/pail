@@ -24,7 +24,7 @@ class Http
     {
         ['method' => $method, 'path' => $path, 'auth_id' => $authId] = $array;
 
-        return new self($method, $path, (string) $authId);
+        return new static($method, $path, (string) $authId);
 
     }
 }
