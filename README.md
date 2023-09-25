@@ -9,9 +9,9 @@
 
 ## Introduction
 
-**Laravel Pail** is a package that allows you to easily delve into your Laravel application's log files directly from the command line. Unlike other log tailing packages, **Pail** is designed to work with any log driver, including [Sentry](https://sentry.io) or [Flare](https://flareapp.io).
+**Laravel Pail** is a package that allows you to easily delve into your Laravel application's log files directly from the command line. Unlike other log tailing packages, **Pail** is designed to work with **any log driver**, including [Sentry](https://sentry.io) or [Flare](https://flareapp.io).
 
-In addition, **Pail** focuses on the developer experience: it provides a sleek CLI interface, with a user-friendly design, and a set of useful filters to help you find what you're looking for.
+In addition, Pail focuses on the developer experience: it provides a sleek CLI interface, with a user-friendly design, and a set of useful filters to help you find what you're looking for.
 
 ## Installation
 
