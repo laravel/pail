@@ -29,18 +29,22 @@ class Handler
      */
     public function log(MessageLogged $messageLogged): void
     {
+        $tailedFiles = $this->tailedFiles->all();
+
+        if ($tailedFiles->isEmpty()) {
+            return;
+        }
+
         $context = $this->context();
 
-        $this->tailedFiles->each(
-            static function (TailedFile $tailedFile) use ($messageLogged, $context): void {
-                $tailedFile->log(
-                    $messageLogged->level,
-                    $messageLogged->message, array_merge(
-                        $messageLogged->context,
-                        $context
-                    ),
-                );
-            }
+        $tailedFiles->each(
+            fn (TailedFile $tailedFile) => $tailedFile->log(
+                $messageLogged->level,
+                $messageLogged->message, array_merge(
+                    $messageLogged->context,
+                    $context
+                ),
+            ),
         );
     }
 
