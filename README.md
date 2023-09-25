@@ -19,10 +19,10 @@ In addition, Pail focuses on the developer experience: it provides a sleek CLI i
 
 To get started, install Pail into your project using the Composer package manager:
 
-> **Note:** Pail is currently in development, therefore you should install it using the `dev-main` branch.
+> **Note:** Pail is currently in development and is not yet ready for production use.
 
 ```bash
-composer require laravel/pail:dev-main
+composer require laravel/pail:1.x-dev
 ```
 
 ## Usage
