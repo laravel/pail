@@ -2,7 +2,7 @@
 
 namespace Laravel\Pail;
 
-use Closure;
+use Illuminate\Support\Collection;
 
 class TailedFiles
 {
@@ -16,16 +16,13 @@ class TailedFiles
     }
 
     /**
-     * Runs the given callback for each tailed file.
+     * Returns the list of tailed files.
+     *
+     * @return \Illuminate\Support\Collection<int, TailedFile>
      */
-    public function each(Closure $callback): void
+    public function all(): Collection
     {
-        $files = glob($this->path.'/*.pail');
-
-        if (is_array($files)) {
-            foreach ($files as $file) {
-                $callback(new TailedFile($file));
-            }
-        }
+        return collect(glob($this->path.'/*.pail'))
+            ->map(fn (string $file) => new TailedFile($file));
     }
 }
