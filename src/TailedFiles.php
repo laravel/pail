@@ -22,7 +22,9 @@ class TailedFiles
      */
     public function all(): Collection
     {
-        return collect(glob($this->path.'/*.pail'))
+        $files = glob($this->path.'/*.pail') ?: [];
+
+        return collect($files)
             ->map(fn (string $file) => new TailedFile($file));
     }
 }
