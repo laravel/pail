@@ -18,11 +18,11 @@ class PailCommand extends Command
      * {@inheritdoc}
      */
     protected $signature = 'pail
-        {--filter= : Filter the tail}
-        {--message= : Filter the tail by the message}
-        {--level= : Filter the tail by the level}
-        {--auth= : Filter the tail by the authenticated ID}
-        {--user= : Filter the tail by the authenticated ID}';
+        {--filter= : Filter the logs}
+        {--message= : Filter the logs by the message}
+        {--level= : Filter the logs by the level}
+        {--auth= : Filter the logs by the authenticated ID}
+        {--user= : Filter the logs by the authenticated ID}';
 
     /**
      * {@inheritdoc}
