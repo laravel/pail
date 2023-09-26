@@ -2,10 +2,11 @@
 
 namespace Laravel\Pail;
 
-use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pail\Console\Commands\PailCommand;
 
@@ -42,14 +43,18 @@ class PailServiceProvider extends ServiceProvider
             $handler->log($messageLogged);
         });
 
-        $events->listen([
-            CommandStarting::class,
-            CommandFinished::class,
-        ], function (CommandStarting|CommandFinished $lifecycleEvent) {
+        $events->listen([CommandStarting::class, JobProcessing::class], function (CommandStarting|JobProcessing $lifecycleEvent) {
             /** @var Handler $handler */
             $handler = $this->app->make(Handler::class);
 
             $handler->setLastLifecycleEvent($lifecycleEvent);
+        });
+
+        $events->listen([JobProcessed::class], function () {
+            /** @var Handler $handler */
+            $handler = $this->app->make(Handler::class);
+
+            $handler->setLastLifecycleEvent(null);
         });
 
         if ($this->app->runningInConsole()) {

@@ -2,9 +2,9 @@
 
 namespace Laravel\Pail;
 
-use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Auth;
 
 class Handler
@@ -12,7 +12,7 @@ class Handler
     /**
      * The last lifecycle captured event.
      */
-    protected CommandStarting|CommandFinished|null $lastLifecycleEvent = null;
+    protected CommandStarting|JobProcessing|null $lastLifecycleEvent = null;
 
     /**
      * Creates a new instance of the handler.
@@ -49,7 +49,7 @@ class Handler
     /**
      * Sets the last application lifecycle event.
      */
-    public function setLastLifecycleEvent(CommandStarting|CommandFinished $event): void
+    public function setLastLifecycleEvent(CommandStarting|JobProcessing|null $event): void
     {
         $this->lastLifecycleEvent = $event;
     }
@@ -61,12 +61,15 @@ class Handler
      */
     protected function context(MessageLogged $messageLogged): array
     {
-        $lastLifecycleEventClass = $this->lastLifecycleEvent ? $this->lastLifecycleEvent::class : null;
-
         $context = ['__pail' => ['origin' => match (true) {
-            in_array($lastLifecycleEventClass, [CommandStarting::class, CommandFinished::class], true) => [
+            $this->runningInConsole && $this->lastLifecycleEvent instanceof CommandStarting => [
                 'type' => 'console',
-                'command' => $this->lastLifecycleEvent->command, // @phpstan-ignore-line
+                'command' => $this->lastLifecycleEvent->command,
+            ],
+            $this->runningInConsole && $this->lastLifecycleEvent instanceof JobProcessing => [
+                'type' => 'queue',
+                'queue' => $this->lastLifecycleEvent->job->getQueue(),
+                'job' => $this->lastLifecycleEvent->job->resolveName(),
             ],
             $this->runningInConsole => [
                 'type' => 'console',

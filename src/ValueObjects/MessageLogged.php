@@ -10,7 +10,7 @@ class MessageLogged implements Stringable
     /**
      * Creates a new instance of the message logged.
      *
-     * @param  array{__pail: array{origin: array{trace: array<int, array{file: string, line: int}>|null, type: string, command: string, method: string, path: string, auth_id: string}}, exception: array{class: string, file: string}}  $context
+     * @param  array{__pail: array{origin: array{trace: array<int, array{file: string, line: int}>|null, type: string, queue: string, job: string, command: string, method: string, path: string, auth_id: string}}, exception: array{class: string, file: string}}  $context
      */
     protected function __construct(
         protected string $message,
@@ -26,7 +26,7 @@ class MessageLogged implements Stringable
      */
     public static function fromJson(string $json): self
     {
-        /** @var array{message: string, context: array{__pail: array{origin: array{trace: array<int, array{file: string, line: int}>|null, type: string, command: string, method: string, path: string, auth_id: string}}, exception: array{class: string, file: string}}, level_name: string, datetime: string} $array */
+        /** @var array{message: string, context: array{__pail: array{origin: array{trace: array<int, array{file: string, line: int}>|null, type: string, queue: string, job: string, command: string, method: string, path: string, auth_id: string}}, exception: array{class: string, file: string}}, level_name: string, datetime: string} $array */
         $array = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         [
@@ -132,10 +132,11 @@ class MessageLogged implements Stringable
     /**
      * Gets the log message's origin.
      */
-    public function origin(): Origin\Console|Origin\Http
+    public function origin(): Origin\Console|Origin\Http|Origin\Queue
     {
         return match ($this->context['__pail']['origin']['type']) {
             'console' => Origin\Console::fromArray($this->context['__pail']['origin']),
+            'queue' => Origin\Queue::fromArray($this->context['__pail']['origin']),
             default => Origin\Http::fromArray($this->context['__pail']['origin']),
         };
     }

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Laravel\Pail\Contracts\Printer;
 use Laravel\Pail\ValueObjects\MessageLogged;
 use Laravel\Pail\ValueObjects\Origin\Http;
+use Laravel\Pail\ValueObjects\Origin\Queue;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function Termwind\render;
@@ -173,14 +174,21 @@ class CliPrinter implements Printer
                 strtoupper($origin->method) => $path,
                 'Auth ID: ' => $origin->authId ?: 'guest',
             ];
+        } elseif ($origin instanceof Queue) {
+            $options = [
+                'queue:work',
+                $origin->queue,
+                $origin->job,
+            ];
         } else {
             $options = [
-                '' => $origin->command ? "artisan {$origin->command}" : 'artisan',
+                $origin->command ? "artisan {$origin->command}" : 'artisan',
             ];
         }
 
         return collect($options)
-            ->map(fn (string $value, string $key) => "<span class=\"font-bold\">$key $value</span>")
+            ->map(fn (string $value, string|int $key) => is_string($key) ? "$key $value" : $value)
+            ->map(fn (string $value) => "<span class=\"font-bold\">$value</span>")
             ->implode(' • ');
     }
 
