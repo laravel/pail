@@ -64,7 +64,7 @@ class Handler
         $lastLifecycleEventClass = $this->lastLifecycleEvent ? $this->lastLifecycleEvent::class : null;
 
         $context = ['__pail' => ['origin' => match (true) {
-            $lastLifecycleEventClass === CommandStarting::class => [
+            in_array($lastLifecycleEventClass, [CommandStarting::class, CommandFinished::class], true) => [
                 'type' => 'console',
                 'command' => $this->lastLifecycleEvent->command, // @phpstan-ignore-line
             ],

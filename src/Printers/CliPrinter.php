@@ -175,12 +175,13 @@ class CliPrinter implements Printer
             ];
         } else {
             $options = [
-                '' => $origin->command ?: 'artisan',
+                '' => $origin->command ? "artisan {$origin->command}"  : 'artisan',
             ];
         }
 
         return collect($options)
-            ->map(fn (string $value, string $key) => "<span class=\"font-bold\">$key $value</span>")->implode(' • ');
+            ->map(fn (string $value, string $key) => "<span class=\"font-bold\">$key $value</span>")
+            ->implode(' • ');
     }
 
     /**
