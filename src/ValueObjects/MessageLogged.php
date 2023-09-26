@@ -160,6 +160,6 @@ class MessageLogged implements Stringable
             'datetime' => $this->datetime,
             'level_name' => $this->levelName,
             'context' => $this->context,
-        ], JSON_THROW_ON_ERROR);
+        ], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     }
 }

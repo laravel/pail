@@ -80,8 +80,12 @@ class Handler
         }]];
 
         $context['__pail']['origin']['trace'] = isset($messageLogged->context['exception'])
-            ? $messageLogged->context['exception']->getTrace()
-            : null;
+            ? collect($messageLogged->context['exception']->getTrace())->map(
+                fn (array $frame) => [
+                    'file' => $frame['file'],
+                    'line' => $frame['line'],
+                ],
+            ) : null;
 
         return collect($messageLogged->context)->merge($context)->toArray();
     }
