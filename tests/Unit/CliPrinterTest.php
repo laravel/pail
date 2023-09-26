@@ -43,7 +43,7 @@ test('output', function () {
     expect($output)->toBe(<<<'EOF'
         ┌ 03:04:05 INFO ─────────────────────────────────┐
         │ Hello World                                    │
-        └─────────────────────────────────────── inspire ┘
+        └─────────────────────────────── artisan inspire ┘
 
         EOF,
     );
@@ -69,7 +69,7 @@ test('responsive output', function () {
     expect($output)->toBe(<<<'EOF'
         ┌ 03:04:05 INFO ───┐
         │ My info message… │
-        └───────── inspire ┘
+        └─ artisan inspire ┘
 
         EOF,
     );
