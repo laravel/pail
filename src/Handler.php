@@ -18,7 +18,7 @@ class Handler
      * Creates a new instance of the handler.
      */
     public function __construct(
-        protected TailedFiles $tailedFiles,
+        protected Files $files,
         protected bool $runningInConsole,
     ) {
         //
@@ -29,16 +29,16 @@ class Handler
      */
     public function log(MessageLogged $messageLogged): void
     {
-        $tailedFiles = $this->tailedFiles->all();
+        $files = $this->files->all();
 
-        if ($tailedFiles->isEmpty()) {
+        if ($files->isEmpty()) {
             return;
         }
 
         $context = $this->context($messageLogged);
 
-        $tailedFiles->each(
-            fn (TailedFile $tailedFile) => $tailedFile->log(
+        $files->each(
+            fn (File $file) => $file->log(
                 $messageLogged->level,
                 $messageLogged->message,
                 $context,

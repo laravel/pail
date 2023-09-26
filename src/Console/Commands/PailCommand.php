@@ -3,10 +3,10 @@
 namespace Laravel\Pail\Console\Commands;
 
 use Illuminate\Console\Command;
+use Laravel\Pail\File;
 use Laravel\Pail\Guards\EnsurePcntlIsAvailable;
-use Laravel\Pail\TailedFile;
-use Laravel\Pail\TailOptions;
-use Laravel\Pail\TailProcessFactory;
+use Laravel\Pail\Options;
+use Laravel\Pail\ProcessFactory;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 
 use function Termwind\render;
@@ -32,7 +32,7 @@ class PailCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(TailProcessFactory $processFactory): void
+    public function handle(ProcessFactory $processFactory): void
     {
         EnsurePcntlIsAvailable::check();
 
@@ -53,11 +53,11 @@ class PailCommand extends Command
             HTML,
         );
 
-        $file = new TailedFile(storage_path('pail/'.uniqid().'.pail'));
+        $file = new File(storage_path('pail/'.uniqid().'.pail'));
         $file->create();
         $this->trap([SIGINT, SIGTERM], fn () => $file->destroy());
 
-        $options = TailOptions::fromCommand($this);
+        $options = Options::fromCommand($this);
 
         try {
             $processFactory->run($file, $this->output, $this->laravel->basePath(), $options);

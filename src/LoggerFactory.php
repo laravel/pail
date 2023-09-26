@@ -14,7 +14,7 @@ class LoggerFactory
      * Creates a new instance of the logger factory.
      */
     public function __construct(
-        protected TailedFile $tailedFile,
+        protected File $file,
     ) {
         //
     }
@@ -24,7 +24,7 @@ class LoggerFactory
      */
     public function create(): LoggerInterface
     {
-        $handler = new StreamHandler($this->tailedFile->__toString(), Level::Debug);
+        $handler = new StreamHandler($this->file->__toString(), Level::Debug);
         $handler->setFormatter(new JsonFormatter());
 
         return new Logger('pail', [$handler]);

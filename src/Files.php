@@ -4,10 +4,10 @@ namespace Laravel\Pail;
 
 use Illuminate\Support\Collection;
 
-class TailedFiles
+class Files
 {
     /**
-     * Creates a new instance of the tailed files.
+     * Creates a new instance of the files.
      */
     public function __construct(
         protected string $path,
@@ -16,15 +16,15 @@ class TailedFiles
     }
 
     /**
-     * Returns the list of tailed files.
+     * Returns the list of files.
      *
-     * @return \Illuminate\Support\Collection<int, TailedFile>
+     * @return \Illuminate\Support\Collection<int, File>
      */
     public function all(): Collection
     {
         $files = glob($this->path.'/*.pail') ?: [];
 
         return collect($files)
-            ->map(fn (string $file) => new TailedFile($file));
+            ->map(fn (string $file) => new File($file));
     }
 }

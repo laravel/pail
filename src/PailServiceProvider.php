@@ -17,12 +17,12 @@ class PailServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(
-            TailedFiles::class,
-            fn (Application $app) => new TailedFiles($app->storagePath('pail'))
+            Files::class,
+            fn (Application $app) => new Files($app->storagePath('pail'))
         );
 
         $this->app->singleton(Handler::class, fn (Application $app) => new Handler(
-            $app->make(TailedFiles::class), // @phpstan-ignore-line
+            $app->make(Files::class), // @phpstan-ignore-line
             $app->runningInConsole(),
         ));
     }

@@ -5,7 +5,7 @@ namespace Laravel\Pail;
 use Illuminate\Console\Command;
 use Laravel\Pail\ValueObjects\MessageLogged;
 
-class TailOptions
+class Options
 {
     /**
      * Creates a new instance of the tail options.

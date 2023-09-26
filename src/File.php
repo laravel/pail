@@ -4,15 +4,15 @@ namespace Laravel\Pail;
 
 use Stringable;
 
-class TailedFile implements Stringable
+class File implements Stringable
 {
     /**
-     * The time to live of the tailed file.
+     * The time to live of the file.
      */
     protected const TTL = 3600;
 
     /**
-     * Creates a new instance of the tailed file.
+     * Creates a new instance of the file.
      */
     public function __construct(
         protected string $file,
@@ -21,7 +21,7 @@ class TailedFile implements Stringable
     }
 
     /**
-     * Ensure the tailed file exists.
+     * Ensure the file exists.
      */
     public function create(): void
     {
@@ -37,7 +37,7 @@ class TailedFile implements Stringable
     }
 
     /**
-     * Determines if the tailed file exists.
+     * Determines if the file exists.
      */
     public function exists(): bool
     {
@@ -45,7 +45,7 @@ class TailedFile implements Stringable
     }
 
     /**
-     * Deletes the tailed file.
+     * Deletes the file.
      */
     public function destroy(): void
     {
@@ -75,7 +75,7 @@ class TailedFile implements Stringable
     }
 
     /**
-     * Returns the tailed file as string.
+     * Returns the file as string.
      */
     public function __toString(): string
     {
@@ -83,7 +83,7 @@ class TailedFile implements Stringable
     }
 
     /**
-     * Determines if the tailed file is staled.
+     * Determines if the file is staled.
      */
     protected function isStale(): bool
     {
