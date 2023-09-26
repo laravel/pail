@@ -16,14 +16,6 @@ use function Termwind\terminal;
 class CliPrinter implements Printer
 {
     /**
-     * Creates a new instance printer instance.
-     */
-    public function __construct(protected OutputInterface $output, protected string $basePath)
-    {
-        //
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function print(MessageLogged $messageLogged): void
@@ -34,7 +26,7 @@ class CliPrinter implements Printer
         $time = $messageLogged->time();
 
         $fileHtml = $this->fileHtml($messageLogged->file(), $classOrType);
-        $tagsHtml = $this->tagsHtml($messageLogged);
+        $optionsHtml = $this->optionsHtml($messageLogged);
         $traceHtml = $this->traceHtml($messageLogged);
 
         $messageClasses = $this->output->isVerbose() ? '' : 'truncate';
@@ -70,11 +62,19 @@ class CliPrinter implements Printer
                 <div class="flex text-gray">
                     <span>└</span>
                     <span class="mr-1 flex-1 content-repeat-[─]"></span>
-                    $tagsHtml
+                    $optionsHtml
                     <span class="ml-1">$endingBottomRight</span>
                 </div>
             </div>
         HTML);
+    }
+
+    /**
+     * Creates a new instance printer instance.
+     */
+    public function __construct(protected OutputInterface $output, protected string $basePath)
+    {
+        //
     }
 
     /**
@@ -158,9 +158,9 @@ class CliPrinter implements Printer
     }
 
     /**
-     * Gets the tags html.
+     * Gets the options html.
      */
-    public function tagsHtml(MessageLogged $messageLogged): string
+    public function optionsHtml(MessageLogged $messageLogged): string
     {
         $origin = $messageLogged->origin();
 
@@ -169,18 +169,18 @@ class CliPrinter implements Printer
                 $path = '/'.$origin->path;
             }
 
-            $tags = [
+            $options = [
                 strtoupper($origin->method) => $path,
                 'Auth ID: ' => $origin->authId ?: 'guest',
             ];
         } else {
-            $tags = [
+            $options = [
                 '' => $origin->command ?: 'artisan',
             ];
         }
 
-        return collect($tags)
-            ->map(fn (string $value, string $key) => "<span class=\"font-bold\">$key $value</span>")->implode(' | ');
+        return collect($options)
+            ->map(fn (string $value, string $key) => "<span class=\"font-bold\">$key $value</span>")->implode(' • ');
     }
 
     /**

@@ -99,7 +99,7 @@ test('output exceptions', function () {
     expect($output)->toBe(<<<'EOF'
         ┌ 03:04:05 Exception ──────── app/MyClass.php:12 ┐
         │ Exception message                              │
-        └──────────────────── GET /logs | Auth ID: guest ┘
+        └──────────────────── GET /logs • Auth ID: guest ┘
 
         EOF,
     );
@@ -131,7 +131,7 @@ test('responsive output exceptions', function () {
     expect($output)->toBe(<<<'EOF'
         ┌ 03:04:05 Exception  a… ┐
         │ Exception message tha… │
-        └ GET /logs | Auth ID: guest ┘
+        └ GET /logs • Auth ID: guest ┘
 
         EOF,
     );

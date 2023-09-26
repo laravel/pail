@@ -4,9 +4,8 @@ namespace Laravel\Pail;
 
 use Illuminate\Console\Command;
 use Laravel\Pail\ValueObjects\MessageLogged;
-use Stringable;
 
-class TailOptions implements Stringable
+class TailOptions
 {
     /**
      * Creates a new instance of the tail options.
@@ -62,20 +61,5 @@ class TailOptions implements Stringable
         }
 
         return true;
-    }
-
-    /**
-     * Returns the string representation of the tail options.
-     */
-    public function __toString(): string
-    {
-        return collect([
-            'authId' => $this->authId,
-            'level' => $this->level,
-            'filter' => $this->filter,
-            'message' => $this->message,
-        ])->filter(fn ($value) => $value !== null)
-            ->map(fn ($value, string $key) => "{$key}: {$value}")
-            ->implode(', ');
     }
 }

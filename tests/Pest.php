@@ -71,17 +71,9 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
         ->map(fn (string $line) => rtrim($line))
         ->implode("\n");
 
-    $filtersExplained = '';
-
-    if (count($options) > 0) {
-        $filtersExplained = ' (Filtering by '.collect($options)->map(fn ($value, $key) => "{$key}: {$value}")->implode(', ').')';
-    }
-
     expect($output)->toBe(<<<EOF
 
-           INFO  Tailing application logs$filtersExplained.
-
-          Press Ctrl+C to exit
+           INFO  Tailing application logs. Press Ctrl+C to exit
 
         $expectedOutput
         EOF,

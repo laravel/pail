@@ -36,25 +36,17 @@ class PailCommand extends Command
     {
         EnsurePcntlIsAvailable::check();
 
-        $options = TailOptions::fromCommand($this);
-        $optionsExplained = '';
-
-        if ((string) $options !== '') {
-            $optionsExplained = " (Filtering by {$options})";
-        }
-
         renderUsing($this->output);
-        render(<<<HTML
-            <div class="mx-2 mb-1 mt-1 flex">
+        render(<<<'HTML'
+            <div class="max-w-150 mx-2 mt-1 mb-1 flex">
                 <div>
                     <span class="px-1 bg-blue uppercase text-white">INFO</span>
                     <span class="flex-1">
                         <span class="ml-1 ">Tailing application logs.</span>
-                        <span class="ml-1">$optionsExplained</span>
                     </span>
                 </div>
                 <span class="flex-1"></span>
-                <span class="text-gray">
+                <span class="text-gray ml-1">
                     <span class="text-gray">Press Ctrl+C to exit</span>
                 </span>
             </div>
@@ -64,6 +56,8 @@ class PailCommand extends Command
         $file = new TailedFile(storage_path('pail/'.uniqid().'.pail'));
         $file->create();
         $this->trap([SIGINT, SIGTERM], fn () => $file->destroy());
+
+        $options = TailOptions::fromCommand($this);
 
         try {
             $processFactory->run($file, $this->output, $this->laravel->basePath(), $options);
