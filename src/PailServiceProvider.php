@@ -35,7 +35,7 @@ class PailServiceProvider extends ServiceProvider
         /** @var \Illuminate\Contracts\Events\Dispatcher $events */
         $events = $this->app->make('events');
 
-        $events->listen(MessageLogged::class, function (MessageLogged $messageLogged): void {
+        $events->listen(MessageLogged::class, function (MessageLogged $messageLogged) {
             /** @var Handler $handler */
             $handler = $this->app->make(Handler::class);
 
@@ -45,7 +45,7 @@ class PailServiceProvider extends ServiceProvider
         $events->listen([
             CommandStarting::class,
             CommandFinished::class,
-        ], function (CommandStarting|CommandFinished $lifecycleEvent): void {
+        ], function (CommandStarting|CommandFinished $lifecycleEvent) {
             /** @var Handler $handler */
             $handler = $this->app->make(Handler::class);
 

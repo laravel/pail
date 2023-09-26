@@ -21,7 +21,7 @@ class TailProcessFactory
             ->tty(false)
             ->run(
                 $this->command($file),
-                function (string $type, string $buffer) use ($options, $printer): void {
+                function (string $type, string $buffer) use ($options, $printer) {
                     Str::of($buffer)
                         ->explode("\n")
                         ->filter(fn (string $line) => $line !== '')
