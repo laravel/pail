@@ -80,8 +80,8 @@ class Handler
         }]];
 
         $context['__pail']['origin']['trace'] = isset($messageLogged->context['exception'])
-            ? collect($messageLogged->context['exception']->getTrace())->map(
-                fn (array $frame) => [
+            ? collect($messageLogged->context['exception']->getTrace())->map( // @phpstan-ignore-line
+                fn (array $frame) => [ // @phpstan-ignore-line
                     'file' => $frame['file'],
                     'line' => $frame['line'],
                 ],

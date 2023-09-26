@@ -65,6 +65,7 @@ class PailCommand extends Command
         $options = Options::fromCommand($this);
 
         try {
+            assert($this->file instanceof File);
             $processFactory->run($this->file, $this->output, $this->laravel->basePath(), $options);
         } catch (ProcessSignaledException $e) {
             if (in_array($e->getSignal(), [SIGINT, SIGTERM], true)) {
