@@ -42,10 +42,14 @@ uses(Tests\TestCase::class)
 |
 */
 
-expect()->extend('toPail', function (string $expectedOutput, array $options = []) {
+expect()->extend('toPail', function (string $expectedOutput, array $options = [], bool $verbose = false) {
     if ($GLOBALS['process'] === null) {
         $process = $GLOBALS['process'] = Process::path(__DIR__.'/Fixtures')
-            ->start('php artisan pail '.collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '));
+            ->start(sprintf(
+                'php artisan pail %s %s',
+                collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
+                $verbose ? '-v' : '',
+            ));
 
         $GLOBALS['process'] = $process;
 

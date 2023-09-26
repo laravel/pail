@@ -35,15 +35,13 @@ class Handler
             return;
         }
 
-        $context = $this->context();
+        $context = $this->context($messageLogged);
 
         $tailedFiles->each(
             fn (TailedFile $tailedFile) => $tailedFile->log(
                 $messageLogged->level,
-                $messageLogged->message, array_merge(
-                    $messageLogged->context,
-                    $context
-                ),
+                $messageLogged->message,
+                $context,
             ),
         );
     }
@@ -61,7 +59,7 @@ class Handler
      *
      * @return array<string, mixed>
      */
-    protected function context(): array
+    protected function context(MessageLogged $messageLogged): array
     {
         $lastLifecycleEventClass = $this->lastLifecycleEvent ? $this->lastLifecycleEvent::class : null;
 
@@ -81,6 +79,10 @@ class Handler
             ],
         }]];
 
-        return collect($context)->filter()->toArray();
+        $context['__pail']['origin']['trace'] = isset($messageLogged->context['exception'])
+            ? $messageLogged->context['exception']->getTrace()
+            : null;
+
+        return collect($messageLogged->context)->merge($context)->toArray();
     }
 }

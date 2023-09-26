@@ -33,10 +33,15 @@ class CliPrinter implements Printer
         $message = $this->truncateMessage($messageLogged->message());
         $time = $messageLogged->time();
 
-        $tagsHtml = $this->tagsHtml($messageLogged);
         $fileHtml = $this->fileHtml($messageLogged->file(), $classOrType);
+        $tagsHtml = $this->tagsHtml($messageLogged);
+        $traceHtml = $this->traceHtml($messageLogged);
 
         $messageClasses = $this->output->isVerbose() ? '' : 'truncate';
+
+        $endingTopRight = $this->output->isVerbose() ? '' : '┐';
+        $endingMiddle = $this->output->isVerbose() ? '' : '│';
+        $endingBottomRight = $this->output->isVerbose() ? '' : '┘';
 
         renderUsing($this->output);
         render(<<<HTML
@@ -50,7 +55,7 @@ class CliPrinter implements Printer
                     <span class="flex-1 content-repeat-[─] text-gray"></span>
                     <span class="text-gray">
                         $fileHtml
-                        <span class="text-gray">┐</span>
+                        <span class="text-gray">$endingTopRight</span>
                     </span>
                 </div>
                 <div class="flex $messageClasses">
@@ -59,13 +64,14 @@ class CliPrinter implements Printer
                         <span>$message</span>
                     </span>
                     <span class="flex-1"></span>
-                    <span class="flex-1 text-gray text-right">│</span>
+                    <span class="flex-1 text-gray text-right">$endingMiddle</span>
                 </div>
+                $traceHtml
                 <div class="flex text-gray">
                     <span>└</span>
                     <span class="mr-1 flex-1 content-repeat-[─]"></span>
                     $tagsHtml
-                    <span class="ml-1">┘</span>
+                    <span class="ml-1">$endingBottomRight</span>
                 </div>
             </div>
         HTML);
@@ -87,7 +93,7 @@ class CliPrinter implements Printer
         $file = str_replace($this->basePath.'/', '', $file);
 
         if (! $this->output->isVerbose()) {
-            $file = (string) Str::of($file)
+            $file = Str::of($file)
                 ->explode('/')
                 ->when(
                     fn (Collection $file) => $file->count() > 4,
@@ -174,6 +180,71 @@ class CliPrinter implements Printer
         }
 
         return collect($tags)
-            ->map(fn (string $value, string $key): string => "<span class=\"font-bold\">$key $value</span>")->implode(' | ');
+            ->map(fn (string $value, string $key) => "<span class=\"font-bold\">$key $value</span>")->implode(' | ');
+    }
+
+    /**
+     * Gets the trace html.
+     */
+    public function traceHtml(MessageLogged $messageLogged): string
+    {
+        if (! $this->output->isVerbose()) {
+            return '';
+        }
+
+        $trace = $messageLogged->trace();
+
+        if ($_ENV['APP_ENV'] === 'testing') {
+            $trace = [
+                [
+                    'line' => 12,
+                    'file' => $this->basePath.'/app/MyClass.php',
+                ],
+                [
+                    'line' => 34,
+                    'file' => $this->basePath.'/app/MyClass.php',
+                ],
+            ];
+        }
+
+        if (is_null($trace)) {
+            return '';
+        }
+
+        return collect($trace)
+            ->map(function (array $frame, int $index) {
+                $number = $index + 1;
+
+                [
+                    'line' => $line,
+                    'file' => $file,
+                ] = $frame;
+
+                $file = str_replace($this->basePath.'/', '', $file);
+
+                $remainingTraces = '';
+
+                if (! $this->output->isVerbose()) {
+                    $file = (string) Str::of($file)
+                        ->explode('/')
+                        ->when(
+                            fn (Collection $file) => $file->count() > 4,
+                            fn (Collection $file) => $file->take(2)->merge(
+                                ['…', (string) $file->last()],
+                            ),
+                        )->implode('/');
+                }
+
+                return <<<HTML
+                    <div class="flex text-gray">
+                        <span>
+                            <span class="mr-1 text-gray">│</span>
+                            <span>$number. $file:$line $remainingTraces</span>
+                        </span>
+                        <span class="flex-1"></span>
+                        <span></span>
+                    </div>
+                HTML;
+            })->implode('');
     }
 }
