@@ -8,6 +8,8 @@ use Laravel\Pail\TailedFile;
 use Laravel\Pail\TailOptions;
 use Laravel\Pail\TailProcessFactory;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
+use function Termwind\render;
+use function Termwind\renderUsing;
 
 class PailCommand extends Command
 {
@@ -40,9 +42,23 @@ class PailCommand extends Command
             $optionsExplained = " (Filtering by {$options})";
         }
 
-        $this->components->info('Tailing application logs'.$optionsExplained);
-        $this->comment('  <fg=yellow;options=bold>Press Ctrl+C to exit</>');
-        $this->newLine();
+        renderUsing($this->output);
+        render(<<<HTML
+            <div class="mx-2 mb-1 mt-1 flex">
+                <div>
+                    <span class="px-1 bg-blue uppercase text-white">INFO</span>
+                    <span class="flex-1">
+                        <span class="ml-1 ">Tailing application logs.</span>
+                        <span class="ml-1">$optionsExplained</span>
+                    </span>
+                </div>
+                <span class="flex-1"></span>
+                <span class="text-gray">
+                    <span class="text-gray">Press Ctrl+C to exit</span>
+                </span>
+            </div>
+            HTML,
+        );
 
         $file = new TailedFile(storage_path('pail/'.uniqid().'.pail'));
         $file->create();
