@@ -175,7 +175,7 @@ class CliPrinter implements Printer
             ];
         } else {
             $options = [
-                '' => $origin->command ? "artisan {$origin->command}"  : 'artisan',
+                '' => $origin->command ? "artisan {$origin->command}" : 'artisan',
             ];
         }
 
