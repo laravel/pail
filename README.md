@@ -15,7 +15,7 @@ In addition, Pail focuses on the developer experience: it provides a sleek CLI i
 
 ## Installation
 
-> **Requires [PHP 8.2+](https://php.net/releases/)**
+> **Requires [PHP 8.2+](https://php.net/releases/) with [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.**
 
 To get started, install Pail into your project using the Composer package manager:
 
