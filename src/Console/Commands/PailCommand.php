@@ -30,6 +30,11 @@ class PailCommand extends Command
     protected $description = 'Tails the application logs.';
 
     /**
+     * The file instance, if any.
+     */
+    protected ?File $file = null;
+
+    /**
      * {@inheritdoc}
      */
     public function handle(ProcessFactory $processFactory): void
@@ -53,20 +58,30 @@ class PailCommand extends Command
             HTML,
         );
 
-        $file = new File(storage_path('pail/'.uniqid().'.pail'));
-        $file->create();
-        $this->trap([SIGINT, SIGTERM], fn () => $file->destroy());
+        $this->file = new File(storage_path('pail/'.uniqid().'.pail'));
+        $this->file->create();
+        $this->trap([SIGINT, SIGTERM], fn () => $this->file->destroy());
 
         $options = Options::fromCommand($this);
 
         try {
-            $processFactory->run($file, $this->output, $this->laravel->basePath(), $options);
+            $processFactory->run($this->file, $this->output, $this->laravel->basePath(), $options);
         } catch (ProcessSignaledException $e) {
             if (in_array($e->getSignal(), [SIGINT, SIGTERM], true)) {
                 $this->newLine();
             }
         } finally {
-            $file->destroy();
+            $this->file->destroy();
+        }
+    }
+
+    /**
+     * Handles the object destruction.
+     */
+    public function __destruct()
+    {
+        if ($this->file) {
+            $this->file->destroy();
         }
     }
 }
