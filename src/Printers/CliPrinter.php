@@ -23,7 +23,7 @@ class CliPrinter implements Printer
         $classOrType = $this->truncateClassOrType($messageLogged->classOrType());
         $color = $messageLogged->color();
         $message = $this->truncateMessage($messageLogged->message());
-        $time = $messageLogged->time();
+        $date = $this->output->isVerbose() ? $messageLogged->date() : $messageLogged->time();
 
         $fileHtml = $this->fileHtml($messageLogged->file(), $classOrType);
         $optionsHtml = $this->optionsHtml($messageLogged);
@@ -41,7 +41,7 @@ class CliPrinter implements Printer
                 <div class="flex">
                     <div>
                         <span class="mr-1 text-gray">┌</span>
-                        <span class="text-gray">$time</span>
+                        <span class="text-gray">$date</span>
                         <span class="px-1 text-$color font-bold">$classOrType</span>
                     </div>
                     <span class="flex-1 content-repeat-[─] text-gray"></span>

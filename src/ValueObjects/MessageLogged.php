@@ -48,6 +48,22 @@ class MessageLogged implements Stringable
     }
 
     /**
+     * Gets the log message's date.
+     */
+    public function date(): string
+    {
+        if ($_ENV['APP_ENV'] === 'testing') {
+            return '2024-01-01 03:04:05';
+        }
+
+        $time = Carbon::createFromFormat('Y-m-d\TH:i:s.uP', $this->datetime);
+
+        assert($time instanceof Carbon);
+
+        return $time->format('Y-m-d H:i:s');
+    }
+
+    /**
      * Gets the log message's time.
      */
     public function time(): string
