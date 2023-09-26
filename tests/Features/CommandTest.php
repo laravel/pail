@@ -139,3 +139,28 @@ test('multiple exceptions and messages', function () {
         EOF,
     );
 });
+
+test('multiple exceptions and messages and verbose', function () {
+    expect([
+        'throw new RuntimeException("my runtime exception message")',
+        'app("log")->critical("my critical message")',
+        'throw new Exception("my exception message")',
+    ])->toPail(<<<'EOF'
+        ┌ 2024-01-01 03:04:05 RuntimeException  app/MyClass.php:12
+        │ my runtime exception message
+        │ 1. app/MyClass.php:12
+        │ 2. app/MyClass.php:34
+        └──────────────────────────────────────── artisan
+        ┌ 2024-01-01 03:04:05 CRITICAL ───────────────────
+        │ my critical message
+        │ 1. app/MyClass.php:12
+        │ 2. app/MyClass.php:34
+        └──────────────────────────────────────── artisan
+        ┌ 2024-01-01 03:04:05 Exception  app/MyClass.php:12
+        │ my exception message
+        │ 1. app/MyClass.php:12
+        │ 2. app/MyClass.php:34
+        └──────────────────────────────────────── artisan
+
+        EOF, verbose: true);
+});
