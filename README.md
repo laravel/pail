@@ -36,8 +36,10 @@ php artisan pail
 To increase the verbosity of the output, avoiding truncation (…), and displaying the entire log line including context and exception trace, use the `-v` option:
 
 ```bash
-php artisan pail -v
+php artisan pail -v # -vvv for maximum verbosity that includes the entire exception trace
 ```
+
+To stop tailing logs, press `Ctrl+C`.
 
 ### Filtering logs
 

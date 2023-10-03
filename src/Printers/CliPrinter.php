@@ -212,7 +212,7 @@ class CliPrinter implements Printer
      */
     public function traceHtml(MessageLogged $messageLogged): string
     {
-        if (! $this->output->isVerbose()) {
+        if (! $this->output->isVeryVerbose()) {
             return '';
         }
 
