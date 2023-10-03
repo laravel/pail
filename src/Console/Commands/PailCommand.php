@@ -22,7 +22,7 @@ class PailCommand extends Command
         {--message= : Filter the logs by the message}
         {--level= : Filter the logs by the level}
         {--auth= : Filter the logs by the authenticated ID}
-        {--user= : Filter the logs by the authenticated ID}';
+        {--user= : Filter the logs by the authenticated ID (alias for --auth)}';
 
     /**
      * {@inheritDoc}
