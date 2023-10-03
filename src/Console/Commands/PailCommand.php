@@ -36,7 +36,7 @@ class PailCommand extends Command
     protected ?File $file = null;
 
     /**
-     * {@inheritDoc}
+     * Handles the command execution.
      */
     public function handle(ProcessFactory $processFactory): void
     {
@@ -65,8 +65,9 @@ class PailCommand extends Command
 
         $options = Options::fromCommand($this);
 
+        assert($this->file instanceof File);
+
         try {
-            assert($this->file instanceof File);
             $processFactory->run($this->file, $this->output, $this->laravel->basePath(), $options);
         } catch (ProcessSignaledException $e) {
             if (in_array($e->getSignal(), [SIGINT, SIGTERM], true)) {
