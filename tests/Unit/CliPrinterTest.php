@@ -13,7 +13,7 @@ test('output', function () {
                 ],
             ],
         ],
-    ], null);
+    ]);
 
     expect($output)->toBe(<<<'EOF'
         ┌ 03:04:05 INFO ─────────────────────────────────┐
@@ -39,7 +39,7 @@ test('responsive output', function () {
                 ],
             ],
         ],
-    ], null);
+    ]);
 
     expect($output)->toBe(<<<'EOF'
         ┌ 03:04:05 INFO ───┐
@@ -70,7 +70,7 @@ test('output exceptions', function () {
                 ],
             ],
         ],
-    ], null);
+    ]);
 
     expect($output)->toBe(<<<'EOF'
         ┌ 03:04:05 Exception ──────── app/MyClass.php:12 ┐
@@ -103,7 +103,7 @@ test('responsive output exceptions', function () {
                 ],
             ],
         ],
-    ], null);
+    ]);
 
     expect($output)->toBe(<<<'EOF'
         ┌ 03:04:05 Exception  a… ┐
