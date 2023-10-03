@@ -53,7 +53,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             ->start(sprintf(
                 'php artisan pail %s %s',
                 collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
-                $verbose ? '-v' : '',
+                $verbose ? '-vvv' : '',
             ));
 
         $GLOBALS['process'] = $process;
@@ -91,7 +91,7 @@ function output(array $message, bool $verbose = false): string
 {
     $output = new BufferedOutput();
 
-    $output->setVerbosity($verbose ? OutputInterface::VERBOSITY_VERBOSE : OutputInterface::VERBOSITY_NORMAL);
+    $output->setVerbosity($verbose ? OutputInterface::VERBOSITY_VERY_VERBOSE : OutputInterface::VERBOSITY_NORMAL);
     $printer = new CliPrinter($output, base_path());
 
     $printer->print(

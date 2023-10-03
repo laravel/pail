@@ -130,7 +130,7 @@ class CliPrinter implements Printer
     protected function messageHtml(string $message): string
     {
         if (empty($message)) {
-            return "<span class=\"text-gray\">No message.</span>";
+            return '<span class="text-gray">No message.</span>';
         }
 
         return "<span>$message</span>";

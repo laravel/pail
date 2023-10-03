@@ -90,8 +90,8 @@ class Handler
                 ->map(fn (array $frame) => [ // @phpstan-ignore-line
                     'file' => $frame['file'],
                     'line' => $frame['line'] ?? null,
-                ],
-                ) : null;
+                ])->values()
+            : null;
 
         return collect($messageLogged->context)->merge($context)->toArray();
     }
