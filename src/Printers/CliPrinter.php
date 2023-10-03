@@ -27,6 +27,7 @@ class CliPrinter implements Printer
         $date = $this->output->isVerbose() ? $messageLogged->date() : $messageLogged->time();
 
         $fileHtml = $this->fileHtml($messageLogged->file(), $classOrType);
+        $messageHtml = $this->messageHtml($message);
         $optionsHtml = $this->optionsHtml($messageLogged);
         $traceHtml = $this->traceHtml($messageLogged);
 
@@ -54,7 +55,7 @@ class CliPrinter implements Printer
                 <div class="flex $messageClasses">
                     <span>
                         <span class="mr-1 text-gray">│</span>
-                        <span>$message</span>
+                        $messageHtml
                     </span>
                     <span class="flex-1"></span>
                     <span class="flex-1 text-gray text-right">$endingMiddle</span>
@@ -121,6 +122,18 @@ class CliPrinter implements Printer
                 $file
             </span>
         HTML;
+    }
+
+    /**
+     * Gets the message html.
+     */
+    protected function messageHtml(string $message): string
+    {
+        if (empty($message)) {
+            return "<span class=\"text-gray\">No message.</span>";
+        }
+
+        return "<span>$message</span>";
     }
 
     /**
