@@ -22,7 +22,7 @@ class Options
     /**
      * Creates a new instance of the tail options from the given console command.
      */
-    public static function fromCommand(Command $command): self
+    public static function fromCommand(Command $command): static
     {
         $authId = $command->option('auth') ?? $command->option('user');
         assert(is_string($authId) || $authId === null);

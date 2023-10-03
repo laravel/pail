@@ -20,7 +20,7 @@ class Http
      *
      * @param  array{method: string, path: string, auth_id: string}  $array
      */
-    public static function fromArray(array $array): self
+    public static function fromArray(array $array): static
     {
         ['method' => $method, 'path' => $path, 'auth_id' => $authId] = $array;
 

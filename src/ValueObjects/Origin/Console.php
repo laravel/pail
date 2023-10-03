@@ -18,7 +18,7 @@ class Console
      *
      * @param  array{command?: string}  $array
      */
-    public static function fromArray(array $array): self
+    public static function fromArray(array $array): static
     {
         $command = $array['command'] ?? null;
 

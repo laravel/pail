@@ -19,7 +19,7 @@ class Queue
      *
      * @param  array{queue: string, job: string}  $array
      */
-    public static function fromArray(array $array): self
+    public static function fromArray(array $array): static
     {
         [
             'queue' => $queue,
