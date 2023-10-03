@@ -33,6 +33,10 @@ class PailServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->runningUnitTests()) {
+            return;
+        }
+
         /** @var \Illuminate\Contracts\Events\Dispatcher $events */
         $events = $this->app->make('events');
 
