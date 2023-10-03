@@ -95,7 +95,7 @@ function output(array $message, bool $verbose = false): string
     $printer = new CliPrinter($output, base_path());
 
     $printer->print(
-        MessageLogged::fromJson(json_encode($message))
+        MessageLogged::fromJson((string) json_encode($message))
     );
 
     $output = $output->fetch();
