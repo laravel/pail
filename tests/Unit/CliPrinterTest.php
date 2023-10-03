@@ -1,30 +1,5 @@
 <?php
 
-use Illuminate\Support\Str;
-use Laravel\Pail\Printers\CliPrinter;
-use Laravel\Pail\ValueObjects\MessageLogged;
-use Symfony\Component\Console\Output\BufferedOutput;
-
-function output(array $message): string
-{
-    $output = new BufferedOutput();
-    $printer = new CliPrinter($output, base_path());
-
-    $printer->print(
-        MessageLogged::fromJson(json_encode($message))
-    );
-
-    $output = $output->fetch();
-    $output = preg_replace('/\e\[[\d;]*m/', '', $output);
-
-    $output = Str::of($output)
-        ->explode("\n")
-        ->map(fn (string $line) => rtrim($line))
-        ->implode("\n");
-
-    return $output;
-}
-
 test('output', function () {
     $output = output([
         'message' => 'Hello World',

@@ -19,6 +19,8 @@ require __DIR__.'/../../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../../vendor/orchestra/testbench-core/laravel/bootstrap/app.php';
 
+$_ENV['PAIL_TESTS'] = true;
+
 $app->register(\Laravel\Pail\PailServiceProvider::class);
 
 /*
@@ -35,8 +37,6 @@ $app->register(\Laravel\Pail\PailServiceProvider::class);
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
 $kernel->command('eval {code}', fn () => eval($this->argument('code')));
-
-$_ENV['APP_ENV'] = 'testing';
 
 $status = $kernel->handle(
     $input = new Symfony\Component\Console\Input\ArgvInput,

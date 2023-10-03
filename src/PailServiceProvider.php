@@ -33,7 +33,7 @@ class PailServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if ($this->app->runningUnitTests()) {
+        if (! $this->runningPailTests() && ($this->app->runningUnitTests() || ($_ENV['VAPOR_SSM_PATH'] ?? false))) {
             return;
         }
 
@@ -66,5 +66,13 @@ class PailServiceProvider extends ServiceProvider
                 PailCommand::class,
             ]);
         }
+    }
+
+    /**
+     * Determines if the Pail's test suite is running.
+     */
+    protected function runningPailTests(): bool
+    {
+        return $_ENV['PAIL_TESTS'] ?? false;
     }
 }

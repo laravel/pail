@@ -52,7 +52,7 @@ class MessageLogged implements Stringable
      */
     public function date(): string
     {
-        if ($_ENV['APP_ENV'] === 'testing') {
+        if ($_ENV['PAIL_TESTS'] ?? false) {
             return '2024-01-01 03:04:05';
         }
 
@@ -68,7 +68,7 @@ class MessageLogged implements Stringable
      */
     public function time(): string
     {
-        if ($_ENV['APP_ENV'] === 'testing') {
+        if ($_ENV['PAIL_TESTS'] ?? false) {
             return '03:04:05';
         }
 

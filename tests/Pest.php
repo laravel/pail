@@ -3,6 +3,10 @@
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Laravel\Pail\Printers\CliPrinter;
+use Laravel\Pail\ValueObjects\MessageLogged;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +22,7 @@ use Illuminate\Support\Str;
 $GLOBALS['process'] = null;
 
 uses(Tests\TestCase::class)
+    ->beforeAll(fn () => $_ENV['PAIL_TESTS'] = true)
     ->beforeEach(function () {
         putenv('COLUMNS=50');
         $_ENV['COLUMNS'] = 50;
@@ -81,3 +86,25 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
 
     return $this;
 });
+
+function output(array $message, bool $verbose = false): string
+{
+    $output = new BufferedOutput();
+
+    $output->setVerbosity($verbose ? OutputInterface::VERBOSITY_VERBOSE : OutputInterface::VERBOSITY_NORMAL);
+    $printer = new CliPrinter($output, base_path());
+
+    $printer->print(
+        MessageLogged::fromJson(json_encode($message))
+    );
+
+    $output = $output->fetch();
+    $output = preg_replace('/\e\[[\d;]*m/', '', $output);
+
+    $output = Str::of($output)
+        ->explode("\n")
+        ->map(fn (string $line) => rtrim($line))
+        ->implode("\n");
+
+    return $output;
+}
