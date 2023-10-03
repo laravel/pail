@@ -87,10 +87,6 @@ class File implements Stringable
      */
     protected function isStale(): bool
     {
-        if (($int = random_int(0, 10)) !== 10) {
-            return false;
-        }
-
-        return time() - filemtime($this->file) > self::TTL;
+        return time() - filemtime($this->file) > static::TTL;
     }
 }
