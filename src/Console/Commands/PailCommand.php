@@ -3,6 +3,7 @@
 namespace Laravel\Pail\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Process\Exceptions\ProcessTimedOutException;
 use Laravel\Pail\File;
 use Laravel\Pail\Guards\EnsurePcntlIsAvailable;
 use Laravel\Pail\Options;
@@ -71,6 +72,8 @@ class PailCommand extends Command
             if (in_array($e->getSignal(), [SIGINT, SIGTERM], true)) {
                 $this->newLine();
             }
+        } catch (ProcessTimedOutException $e) {
+            $this->components->info('Maximum execution time exceeded.');
         } finally {
             $this->file->destroy();
         }
