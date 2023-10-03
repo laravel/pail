@@ -3,6 +3,7 @@
 namespace Laravel\Pail;
 
 use Illuminate\Console\Events\CommandStarting;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Auth;
@@ -79,6 +80,7 @@ class Handler
                 'method' => request()->method(), // @phpstan-ignore-line
                 'path' => request()->path(), // @phpstan-ignore-line
                 'auth_id' => Auth::id(),
+                'auth_email' => Auth::user() instanceof User ? Auth::user()->email : null, // @phpstan-ignore-line
             ],
         }]];
 

@@ -10,7 +10,7 @@ class MessageLogged implements Stringable
     /**
      * Creates a new instance of the message logged.
      *
-     * @param  array{__pail: array{origin: array{trace: array<int, array{file: string, line: int}>|null, type: string, queue: string, job: string, command: string, method: string, path: string, auth_id: string}}, exception: array{class: string, file: string}}  $context
+     * @param  array{__pail: array{origin: array{trace: array<int, array{file: string, line: int}>|null, type: string, queue: string, job: string, command: string, method: string, path: string, auth_id: ?string, auth_email: ?string}}, exception: array{class: string, file: string}}  $context
      */
     protected function __construct(
         protected string $message,
@@ -26,7 +26,7 @@ class MessageLogged implements Stringable
      */
     public static function fromJson(string $json): static
     {
-        /** @var array{message: string, context: array{__pail: array{origin: array{trace: array<int, array{file: string, line: int}>|null, type: string, queue: string, job: string, command: string, method: string, path: string, auth_id: string}}, exception: array{class: string, file: string}}, level_name: string, datetime: string} $array */
+        /** @var array{message: string, context: array{__pail: array{origin: array{trace: array<int, array{file: string, line: int}>|null, type: string, queue: string, job: string, command: string, method: string, path: string, auth_id: ?string, auth_email: ?string}}, exception: array{class: string, file: string}}, level_name: string, datetime: string} $array */
         $array = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         [

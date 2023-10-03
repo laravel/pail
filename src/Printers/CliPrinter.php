@@ -171,8 +171,10 @@ class CliPrinter implements Printer
             }
 
             $options = [
-                strtoupper($origin->method) . ':' => $path,
-                'Auth ID: ' => $origin->authId ?: 'guest',
+                strtoupper($origin->method).':' => $path,
+                'Auth ID: ' => $origin->authId
+                    ? ($origin->authId.($origin->authEmail ? " ({$origin->authEmail})" : ''))
+                    : 'guest',
             ];
         } elseif ($origin instanceof Queue) {
             $options = [
