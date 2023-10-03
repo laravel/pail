@@ -15,7 +15,7 @@ use function Termwind\renderUsing;
 class PailCommand extends Command
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected $signature = 'pail
         {--filter= : Filter the logs}
@@ -25,7 +25,7 @@ class PailCommand extends Command
         {--user= : Filter the logs by the authenticated ID}';
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected $description = 'Tails the application logs.';
 
@@ -35,7 +35,7 @@ class PailCommand extends Command
     protected ?File $file = null;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function handle(ProcessFactory $processFactory): void
     {

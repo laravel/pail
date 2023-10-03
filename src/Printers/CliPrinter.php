@@ -17,7 +17,7 @@ use function Termwind\terminal;
 class CliPrinter implements Printer
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function print(MessageLogged $messageLogged): void
     {
