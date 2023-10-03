@@ -85,12 +85,13 @@ class Handler
         }]];
 
         $context['__pail']['origin']['trace'] = isset($messageLogged->context['exception'])
-            ? collect($messageLogged->context['exception']->getTrace())->map( // @phpstan-ignore-line
-                fn (array $frame) => [ // @phpstan-ignore-line
+            ? collect($messageLogged->context['exception']->getTrace()) // @phpstan-ignore-line
+                ->filter(fn (array $frame) => isset($frame['file'])) // @phpstan-ignore-line
+                ->map(fn (array $frame) => [ // @phpstan-ignore-line
                     'file' => $frame['file'],
-                    'line' => $frame['line'],
+                    'line' => $frame['line'] ?? null,
                 ],
-            ) : null;
+                ) : null;
 
         return collect($messageLogged->context)->merge($context)->toArray();
     }
