@@ -44,7 +44,7 @@ class PailCommand extends Command
 
         renderUsing($this->output);
         render(<<<'HTML'
-            <div class="max-w-150 mx-2 mt-1 mb-1 flex">
+            <div class="max-w-150 mx-2 mt-1 flex">
                 <div>
                     <span class="px-1 bg-blue uppercase text-white">INFO</span>
                     <span class="flex-1">
@@ -54,6 +54,18 @@ class PailCommand extends Command
                 <span class="flex-1"></span>
                 <span class="text-gray ml-1">
                     <span class="text-gray">Press Ctrl+C to exit</span>
+                </span>
+            </div>
+            HTML,
+        );
+
+        render(<<<'HTML'
+            <div class="max-w-150 mx-2 flex">
+                <div>
+                </div>
+                <span class="flex-1"></span>
+                <span class="text-gray ml-1">
+                    <span class="text-gray">Use -v|-vv to show more details</span>
                 </span>
             </div>
             HTML,
