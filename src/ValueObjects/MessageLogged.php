@@ -161,6 +161,7 @@ class MessageLogged implements Stringable
         return collect($this->context)->except([
             '__pail',
             'exception',
+            'userId',
         ])->toArray();
     }
 
