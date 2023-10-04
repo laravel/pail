@@ -5,6 +5,7 @@ namespace Laravel\Pail;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,7 @@ class Handler
     /**
      * The last lifecycle captured event.
      */
-    protected CommandStarting|JobProcessing|null $lastLifecycleEvent = null;
+    protected CommandStarting|JobProcessing|JobExceptionOccurred|null $lastLifecycleEvent = null;
 
     /**
      * Creates a new instance of the handler.
@@ -50,7 +51,7 @@ class Handler
     /**
      * Sets the last application lifecycle event.
      */
-    public function setLastLifecycleEvent(CommandStarting|JobProcessing|null $event): void
+    public function setLastLifecycleEvent(CommandStarting|JobProcessing|JobExceptionOccurred|null $event): void
     {
         $this->lastLifecycleEvent = $event;
     }
@@ -72,6 +73,11 @@ class Handler
                 'queue' => $this->lastLifecycleEvent->job->getQueue(),
                 'job' => $this->lastLifecycleEvent->job->resolveName(),
             ],
+            $this->runningInConsole && $this->lastLifecycleEvent instanceof JobExceptionOccurred => [
+                'type' => 'queue',
+                'queue' => $this->lastLifecycleEvent->job->getQueue(),
+                'job' => $this->lastLifecycleEvent->job->resolveName(),
+            ],
             $this->runningInConsole => [
                 'type' => 'console',
             ],
@@ -83,6 +89,12 @@ class Handler
                 'auth_email' => Auth::user() instanceof User ? Auth::user()->email : null, // @phpstan-ignore-line
             ],
         }]];
+
+        if (isset($messageLogged->context['exception']) && $this->lastLifecycleEvent instanceof JobExceptionOccurred) {
+            if ($messageLogged->context['exception'] === $this->lastLifecycleEvent->exception) {
+                $this->setLastLifecycleEvent(null);
+            }
+        }
 
         $context['__pail']['origin']['trace'] = isset($messageLogged->context['exception'])
             ? collect($messageLogged->context['exception']->getTrace()) // @phpstan-ignore-line

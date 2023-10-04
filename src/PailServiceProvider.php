@@ -5,6 +5,7 @@ namespace Laravel\Pail;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
@@ -47,7 +48,7 @@ class PailServiceProvider extends ServiceProvider
             $handler->log($messageLogged);
         });
 
-        $events->listen([CommandStarting::class, JobProcessing::class], function (CommandStarting|JobProcessing $lifecycleEvent) {
+        $events->listen([CommandStarting::class, JobProcessing::class, JobExceptionOccurred::class], function (CommandStarting|JobProcessing|JobExceptionOccurred $lifecycleEvent) {
             /** @var Handler $handler */
             $handler = $this->app->make(Handler::class);
 
