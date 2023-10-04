@@ -17,13 +17,27 @@ class ProcessFactory
     {
         $printer = new CliPrinter($output, $basePath);
 
+        $remainingBuffer = '';
+
         Process::timeout(3600)
             ->tty(false)
             ->run(
                 $this->command($file),
-                function (string $type, string $buffer) use ($options, $printer) {
-                    Str::of($buffer)
-                        ->explode("\n")
+                function (string $type, string $buffer) use ($options, $printer, &$remainingBuffer) {
+                    $lines = Str::of($buffer)->explode("\n");
+
+                    if ($remainingBuffer !== '' && isset($lines[0])) {
+                        $lines[0] = $remainingBuffer.$lines[0];
+                        $remainingBuffer = '';
+                    }
+
+                    if ($lines->last() === '') {
+                        $lines = $lines->slice(0, -1);
+                    } elseif (! str_ends_with((string) $lines->last(), "\n")) {
+                        $remainingBuffer = $lines->pop();
+                    }
+
+                    $lines
                         ->filter(fn (string $line) => $line !== '')
                         ->map(fn (string $line) => MessageLogged::fromJson($line))
                         ->filter(fn (MessageLogged $messageLogged) => $options->accepts($messageLogged))
