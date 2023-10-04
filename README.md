@@ -33,13 +33,19 @@ To start tailing logs, run the `pail` command:
 php artisan pail
 ```
 
-To increase the verbosity of the output, avoiding truncation (…), and displaying the entire log line including context and exception trace, use the `-v` option:
+To increase the verbosity of the output, avoiding truncation (…), and displaying the entire log line use the `-v` option:
 
 ```bash
-php artisan pail -v # -vvv for maximum verbosity that includes the entire exception trace
+php artisan pail -v
 ```
 
-To stop tailing logs, press `Ctrl+C`.
+For maximum verbosity, and display the exception stack trace, use the `-vv` option:
+
+```bash
+php artisan pail -vv
+```
+
+To stop tailing logs, press `Ctrl+C` at any time.
 
 ### Filtering logs
 
