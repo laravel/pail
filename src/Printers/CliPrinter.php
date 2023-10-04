@@ -184,14 +184,14 @@ class CliPrinter implements Printer
             }
 
             $options = [
-                strtoupper($origin->method).':' => $path,
-                'Auth ID: ' => $origin->authId
+                strtoupper($origin->method) => $path,
+                'Auth ID' => $origin->authId
                     ? ($origin->authId.($origin->authEmail ? " ({$origin->authEmail})" : ''))
                     : 'guest',
             ];
         } elseif ($origin instanceof Queue) {
             $options = [
-                'queue:work',
+                $origin->command ? "artisan {$origin->command}" : null,
                 $origin->queue,
                 $origin->job,
             ];
@@ -201,8 +201,11 @@ class CliPrinter implements Printer
             ];
         }
 
-        return collect($options)
-            ->map(fn (string $value, string|int $key) => is_string($key) ? "$key $value" : $value)
+        return collect($options)->merge(
+            $messageLogged->context() // @phpstan-ignore-line
+        )->reject(fn (mixed $value, string|int $key) => is_int($key) && is_null($value))
+            ->map(fn (mixed $value) => is_string($value) ? $value : var_export($value, true))
+            ->map(fn (string $value, string|int $key) => is_string($key) ? "$key: $value" : $value)
             ->map(fn (string $value) => "<span class=\"font-bold\">$value</span>")
             ->implode(' • ');
     }

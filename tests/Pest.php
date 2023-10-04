@@ -79,7 +79,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
     expect($output)->toBe(<<<EOF
 
            INFO  Tailing application logs. Press Ctrl+C to exit
-
+                         Use -v|-vv to show more details
         $expectedOutput
         EOF,
     );

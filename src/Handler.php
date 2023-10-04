@@ -17,6 +17,11 @@ class Handler
     protected CommandStarting|JobProcessing|JobExceptionOccurred|null $lastLifecycleEvent = null;
 
     /**
+     * The artisan command being executed, if any.
+     */
+    protected ?string $artisanCommand = null;
+
+    /**
      * Creates a new instance of the handler.
      */
     public function __construct(
@@ -53,6 +58,10 @@ class Handler
      */
     public function setLastLifecycleEvent(CommandStarting|JobProcessing|JobExceptionOccurred|null $event): void
     {
+        if ($event instanceof CommandStarting) {
+            $this->artisanCommand = $event->command;
+        }
+
         $this->lastLifecycleEvent = $event;
     }
 
@@ -64,22 +73,15 @@ class Handler
     protected function context(MessageLogged $messageLogged): array
     {
         $context = ['__pail' => ['origin' => match (true) {
-            $this->runningInConsole && $this->lastLifecycleEvent instanceof CommandStarting => [
-                'type' => 'console',
-                'command' => $this->lastLifecycleEvent->command,
-            ],
-            $this->runningInConsole && $this->lastLifecycleEvent instanceof JobProcessing => [
+            $this->artisanCommand && $this->lastLifecycleEvent && in_array($this->lastLifecycleEvent::class, [JobProcessing::class, JobExceptionOccurred::class]) => [
                 'type' => 'queue',
-                'queue' => $this->lastLifecycleEvent->job->getQueue(),
-                'job' => $this->lastLifecycleEvent->job->resolveName(),
-            ],
-            $this->runningInConsole && $this->lastLifecycleEvent instanceof JobExceptionOccurred => [
-                'type' => 'queue',
-                'queue' => $this->lastLifecycleEvent->job->getQueue(),
-                'job' => $this->lastLifecycleEvent->job->resolveName(),
+                'command' => $this->artisanCommand,
+                'queue' => $this->lastLifecycleEvent->job->getQueue(), // @phpstan-ignore-line
+                'job' => $this->lastLifecycleEvent->job->resolveName(), // @phpstan-ignore-line
             ],
             $this->runningInConsole => [
                 'type' => 'console',
+                'command' => $this->artisanCommand,
             ],
             default => [
                 'type' => 'http',

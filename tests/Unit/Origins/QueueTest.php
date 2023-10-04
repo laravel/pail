@@ -16,6 +16,7 @@ test('non verbose', function () {
                 'origin' => [
                     'type' => 'queue',
                     'queue' => 'emails',
+                    'command' => 'queue:work',
                     'job' => 'App\Jobs\WelcomeMail',
                 ],
             ],
@@ -25,7 +26,7 @@ test('non verbose', function () {
     expect($output)->toBe(<<<EOF
         ┌ 03:04:05 Exception ──────── app/MyClass.php:12 ┐
         │ my exception message                           │
-        └──── queue:work • emails • App\Jobs\WelcomeMail ┘
+        └ artisan queue:work • emails • App\Jobs\WelcomeMail ┘
 
         EOF,
     );
@@ -46,6 +47,7 @@ test('verbose', function () {
             '__pail' => [
                 'origin' => [
                     'type' => 'queue',
+                    'command' => null,
                     'queue' => 'emails',
                     'job' => 'App\Jobs\WelcomeMail',
                 ],
@@ -58,7 +60,7 @@ test('verbose', function () {
         │ my exception message
         │ 1. app/MyClass.php:12
         │ 2. app/MyClass.php:34
-        └───── queue:work • emails • App\Jobs\WelcomeMail
+        └────────────────── emails • App\Jobs\WelcomeMail
 
         EOF,
     );

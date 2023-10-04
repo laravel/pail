@@ -152,6 +152,19 @@ class MessageLogged implements Stringable
     }
 
     /**
+     * Gets the log message's context.
+     *
+     * @return array<string, mixed>
+     */
+    public function context(): array
+    {
+        return collect($this->context)->except([
+            '__pail',
+            'exception',
+        ])->toArray();
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function __toString(): string
