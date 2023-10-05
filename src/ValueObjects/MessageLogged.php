@@ -95,12 +95,8 @@ class MessageLogged implements Stringable
         return match ($this->levelName) {
             'DEBUG' => 'gray',
             'INFO' => 'blue',
-            'NOTICE' => 'yellow',
-            'WARNING' => 'yellow',
-            'ERROR' => 'red',
-            'CRITICAL' => 'red',
-            'ALERT' => 'red',
-            'EMERGENCY' => 'red',
+            'NOTICE', 'WARNING' => 'yellow',
+            'ERROR', 'CRITICAL', 'ALERT', 'EMERGENCY' => 'red',
             default => 'gray',
         };
     }
