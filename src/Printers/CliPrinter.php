@@ -268,8 +268,6 @@ class CliPrinter implements Printer
                             <span class="mr-1 text-gray">│</span>
                             <span>$number. $file:$line $remainingTraces</span>
                         </span>
-                        <span class="flex-1"></span>
-                        <span></span>
                     </div>
                 HTML;
             })->implode('');
