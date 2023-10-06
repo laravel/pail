@@ -19,7 +19,7 @@ In addition, Pail focuses on the developer experience: it provides a sleek CLI i
 
 To get started, install Pail into your project using the Composer package manager:
 
-> **Note:** Pail is currently in development and is not yet ready for production use.
+> **Note:** Pail is currently in beta and is not yet ready for production use.
 
 ```bash
 composer require laravel/pail:1.x-dev
