@@ -22,7 +22,7 @@ To get started, install Pail into your project using the Composer package manage
 > **Note:** Pail is currently in beta and is not yet ready for production use.
 
 ```bash
-composer require laravel/pail:1.x-dev
+composer require laravel/pail:^1.0@beta
 ```
 
 ## Usage
