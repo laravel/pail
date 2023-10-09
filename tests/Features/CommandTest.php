@@ -120,6 +120,16 @@ test('runtime exceptions', function () {
     );
 });
 
+test('reported strings', function () {
+    expect('report("my reported string")')->toPail(<<<'EOF'
+        ┌ 03:04:05 Exception ──────── app/MyClass.php:12 ┐
+        │ my reported string                             │
+        └─────────────────────────────────────── artisan ┘
+
+        EOF,
+    );
+});
+
 test('multiple exceptions and messages', function () {
     expect([
         'throw new RuntimeException("my runtime exception message")',
