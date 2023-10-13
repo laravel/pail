@@ -204,6 +204,7 @@ class CliPrinter implements Printer
         return collect($options)->merge(
             $messageLogged->context() // @phpstan-ignore-line
         )->reject(fn (mixed $value, string|int $key) => is_int($key) && is_null($value))
+            ->map(fn (mixed $value) => is_string($value) ? e($value): $value)
             ->map(fn (mixed $value) => is_string($value) ? $value : var_export($value, true))
             ->map(fn (string $value, string|int $key) => is_string($key) ? "$key: $value" : $value)
             ->map(fn (string $value) => "<span class=\"font-bold\">$value</span>")
