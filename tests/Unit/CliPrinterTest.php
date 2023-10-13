@@ -113,3 +113,31 @@ test('responsive output exceptions', function () {
         EOF,
     );
 });
+
+test('escaping html options', function () {
+    $output = output([
+        'message' => 'Context that contains html',
+        'level_name' => 'info',
+        'datetime' => '2021-01-01 00:00:00',
+        'context' => [
+            'html' => '<div class=3D"gmail-adL" style=3D"box-sizing:border-box"></div>',
+            '__pail' => [
+                'origin' => [
+                    'type' => 'http',
+                    'method' => 'GET',
+                    'path' => '/logs',
+                    'auth_id' => null,
+                    'auth_email' => null
+                ],
+            ],
+        ],
+    ]);
+
+    expect($output)->toBe(<<<'EOF'
+    ┌ 03:04:05 INFO ─────────────────────────────────┐
+    │ Context that contains html                     │
+    └ GET: /logs • Auth ID: guest • html: <div class=3D"gmail-adL" style=3D"box-sizing:border-box"></div> ┘
+
+    EOF
+    );
+});
