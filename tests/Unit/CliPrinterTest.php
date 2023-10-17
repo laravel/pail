@@ -127,7 +127,7 @@ test('escaping html options', function () {
                     'method' => 'GET',
                     'path' => '/logs',
                     'auth_id' => null,
-                    'auth_email' => null
+                    'auth_email' => null,
                 ],
             ],
         ],
