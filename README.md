@@ -1,4 +1,4 @@
-<p align="center"><img src="/art/logo.jpg" style="width:70%;" alt="Logo Laravel Pail"></p>
+<p align="center"><img width="300" src="/art/logo.svg" alt="Pail Package Logo"></p>
 
 <p align="center">
 <a href="https://github.com/laravel/pail/actions"><img src="https://github.com/laravel/pail/workflows/tests/badge.svg" alt="Build Status"></a>
