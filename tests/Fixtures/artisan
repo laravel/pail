@@ -17,11 +17,13 @@ define('LARAVEL_START', microtime(true));
 
 require __DIR__.'/../../vendor/autoload.php';
 
-$app = require_once __DIR__.'/../../vendor/orchestra/testbench-core/laravel/bootstrap/app.php';
-
 $_ENV['PAIL_TESTS'] = true;
 
-$app->register(\Laravel\Pail\PailServiceProvider::class);
+$app = Orchestra\Testbench\Foundation\Application::create(
+    resolvingCallback: function ($app) {
+        $app->register(Laravel\Pail\PailServiceProvider::class);
+    }
+);
 
 /*
 |--------------------------------------------------------------------------
