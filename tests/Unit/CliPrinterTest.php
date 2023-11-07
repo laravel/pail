@@ -114,13 +114,12 @@ test('responsive output exceptions', function () {
     );
 });
 
-test('escaping html options', function () {
+test('escaping message', function () {
     $output = output([
-        'message' => 'Context that contains html',
+        'message' => '<div class=3D"gmail-adL" style=3D"box-sizing:border-box">escaping message</div>',
         'level_name' => 'info',
         'datetime' => '2021-01-01 00:00:00',
         'context' => [
-            'html' => '<div class=3D"gmail-adL" style=3D"box-sizing:border-box"></div>',
             '__pail' => [
                 'origin' => [
                     'type' => 'http',
@@ -131,12 +130,80 @@ test('escaping html options', function () {
                 ],
             ],
         ],
-    ]);
+    ], true);
 
     expect($output)->toBe(<<<'EOF'
-    ┌ 03:04:05 INFO ─────────────────────────────────┐
-    │ Context that contains html                     │
-    └ GET: /logs • Auth ID: guest • html: <div class=3D"gmail-adL" style=3D"box-sizing:border-box"></div> ┘
+    ┌ 2024-01-01 03:04:05 INFO ───────────────────────
+    │ <div class=3D"gmail-adL" style=3D"box-sizing:border-box">escaping message</div>
+    │ 1. app/MyClass.php:12
+    │ 2. app/MyClass.php:34
+    └──────────────────── GET: /logs • Auth ID: guest
+
+    EOF
+    );
+});
+
+test('escaping html options', function () {
+    $output = output([
+        'message' => 'Context that contains html',
+        'level_name' => 'info',
+        'datetime' => '2021-01-01 00:00:00',
+        'context' => [
+            'html' => '<div class=3D"gmail-adL" style=3D"box-sizing:border-box">escaping html options</div>',
+            '__pail' => [
+                'origin' => [
+                    'type' => 'http',
+                    'method' => 'GET',
+                    'path' => '/logs',
+                    'auth_id' => null,
+                    'auth_email' => null,
+                ],
+            ],
+        ],
+    ], true);
+
+    expect($output)->toBe(<<<'EOF'
+    ┌ 2024-01-01 03:04:05 INFO ───────────────────────
+    │ Context that contains html
+    │ 1. app/MyClass.php:12
+    │ 2. app/MyClass.php:34
+    └ GET: /logs • Auth ID: guest • html: <div class=3D"gmail-adL" style=3D"box-sizing:border-box">escaping html options</div>
+
+    EOF
+    );
+});
+
+test('escaping html arrayable options', function () {
+    $output = output([
+        'message' => 'Context that contains html',
+        'level_name' => 'info',
+        'datetime' => '2021-01-01 00:00:00',
+        'context' => [
+            'html' => [
+                'first' => '<span class=3D"gmail-adL">first</span>',
+                'second' => [
+                    'a' => '<span class=3D"gmail-adL">a</span>',
+                    'b' => '<span class=3D"gmail-adL">b</span>',
+                ],
+            ],
+            '__pail' => [
+                'origin' => [
+                    'type' => 'http',
+                    'method' => 'GET',
+                    'path' => '/logs',
+                    'auth_id' => null,
+                    'auth_email' => null,
+                ],
+            ],
+        ],
+    ], true);
+
+    expect($output)->toBe(<<<'EOF'
+    ┌ 2024-01-01 03:04:05 INFO ───────────────────────
+    │ Context that contains html
+    │ 1. app/MyClass.php:12
+    │ 2. app/MyClass.php:34
+    └ GET: /logs • Auth ID: guest • html: array ( 'first' => '<span class=3D"gmail-adL">first</span>', 'second' => array ( 'a' => '<span class=3D"gmail-adL">a</span>', 'b' => '<span class=3D"gmail-adL">b</span>', ), )
 
     EOF
     );
