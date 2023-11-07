@@ -13,77 +13,17 @@ Laravel Pail is a package that allows you to easily dive into your Laravel appli
 
 In addition, Pail focuses on the developer experience: it provides a sleek CLI interface with a user-friendly design and a set of useful filters to help you find what you're looking for.
 
-## Installation
+<p align="center">
+    <img src="https://laravel.com/img/docs/pail-example.png">
+</p>
 
-> **Requires [PHP 8.2+](https://php.net/releases/) with [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.**
+## Official Documentation
 
-To get started, install Pail into your project using the Composer package manager:
-
-> **Note:** Pail is currently in beta and is not yet ready for production use.
-
-```bash
-composer require laravel/pail:^1.0@beta
-```
-
-## Usage
-
-To start tailing logs, run the `pail` command:
-
-```bash
-php artisan pail
-```
-
-To increase the verbosity of the output, avoiding truncation (…), use the `-v` option:
-
-```bash
-php artisan pail -v
-```
-
-For maximum verbosity and to display exception stack traces, use the `-vv` option:
-
-```bash
-php artisan pail -vv
-```
-
-To stop tailing logs, press `Ctrl+C` at any time.
-
-### Filtering Logs
-
-#### `--filter`
-
-You may use the `--filter` option to filter logs by their type, file, message, and stack trace content:
-
-```bash
-php artisan pail --filter="QueryException"
-```
-
-#### `--message`
-
-To filter logs by only their message, you may use the `--message` option:
-
-```bash
-php artisan pail --message="User created"
-```
-
-#### `--level`
-
-The `--level` option may be used to filter logs by their log level:
-
-```bash
-php artisan pail --level=error
-```
-
-#### `--user`
-
-To only display logs that were written while a given user was authenticated, you may use the `--user` option:
-
-```bash
-php artisan pail --user=1
-```
+Documentation for Pail can be found on the [Laravel website](https://laravel.com/docs/logging#tailing-log-messages-using-pail).
 
 ## Contributing
 
-Thank you for considering contributing to Laravel Pail! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Thank you for considering contributing to Pail! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
 ## Code of Conduct
 
@@ -91,7 +31,7 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 ## Security Vulnerabilities
 
-Please review [our security policy](https://github.com/laravel/folio/security/policy) on how to report security vulnerabilities.
+Please review [our security policy](https://github.com/laravel/pail/security/policy) on how to report security vulnerabilities.
 
 ## License
 
