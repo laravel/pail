@@ -184,7 +184,7 @@ test('escaping html arrayable options', function () {
                 'second' => [
                     'a' => '<span class=3D"gmail-adL">a</span>',
                     'b' => '<span class=3D"gmail-adL">b</span>',
-                ]
+                ],
             ],
             '__pail' => [
                 'origin' => [
