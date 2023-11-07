@@ -19,7 +19,7 @@ In addition, Pail focuses on the developer experience: it provides a sleek CLI i
 
 ## Official Documentation
 
-Documentation for Pail can be found on the [Laravel website](https://laravel.com/docs/logging#tailing-log-messages).
+Documentation for Pail can be found on the [Laravel website](https://laravel.com/docs/logging#tailing-log-messages-using-pail).
 
 ## Contributing
 
