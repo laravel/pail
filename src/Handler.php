@@ -8,6 +8,7 @@ use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class Handler
 {
@@ -99,7 +100,7 @@ class Handler
         }
 
         $context['__pail']['origin']['trace'] = isset($messageLogged->context['exception'])
-            ? collect($messageLogged->context['exception']->getTrace()) // @phpstan-ignore-line
+            && $messageLogged->context['exception'] instanceof Throwable ? collect($messageLogged->context['exception']->getTrace()) // @phpstan-ignore-line
                 ->filter(fn (array $frame) => isset($frame['file'])) // @phpstan-ignore-line
                 ->map(fn (array $frame) => [ // @phpstan-ignore-line
                     'file' => $frame['file'],
