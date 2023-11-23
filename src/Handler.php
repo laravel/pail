@@ -100,10 +100,10 @@ class Handler
         }
 
         $context['__pail']['origin']['trace'] = isset($messageLogged->context['exception'])
-            && $messageLogged->context['exception'] instanceof Throwable ? collect($messageLogged->context['exception']->getTrace()) // @phpstan-ignore-line
-                ->filter(fn (array $frame) => isset($frame['file'])) // @phpstan-ignore-line
-                ->map(fn (array $frame) => [ // @phpstan-ignore-line
-                    'file' => $frame['file'],
+            && $messageLogged->context['exception'] instanceof Throwable ? collect($messageLogged->context['exception']->getTrace())
+                ->filter(fn (array $frame) => isset($frame['file']))
+                ->map(fn (array $frame) => [
+                    'file' => $frame['file'], // @phpstan-ignore-line
                     'line' => $frame['line'] ?? null,
                 ])->values()
             : null;
