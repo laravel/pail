@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - develop
       - '*.x'
   pull_request:
   schedule:
@@ -19,8 +20,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2]
-        laravel: [10]
+        php: [8.2, 8.3]
+        laravel: [10, 11]
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
