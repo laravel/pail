@@ -13,13 +13,13 @@ class ProcessFactory
     /**
      * Creates a new instance of the process factory.
      */
-    public function run(File $file, OutputInterface $output, string $basePath, Options $options): void
+	public function run(File $file, OutputInterface $output, string $basePath, Options $options, bool $noTimeout): void
     {
         $printer = new CliPrinter($output, $basePath);
 
         $remainingBuffer = '';
-
-        Process::timeout(3600)
+	    
+	    Process::timeout($noTimeout ? PHP_INT_MAX : 3600)
             ->tty(false)
             ->run(
                 $this->command($file),

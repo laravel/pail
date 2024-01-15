@@ -23,7 +23,8 @@ class PailCommand extends Command
         {--message= : Filter the logs by the message}
         {--level= : Filter the logs by the level}
         {--auth= : Filter the logs by the authenticated ID}
-        {--user= : Filter the logs by the authenticated ID (alias for --auth)}';
+        {--user= : Filter the logs by the authenticated ID (alias for --auth)}
+        {--no-timeout : Disable timeout of command. Default 1 hour }';
 
     /**
      * {@inheritDoc}
@@ -76,11 +77,13 @@ class PailCommand extends Command
         $this->trap([SIGINT, SIGTERM], fn () => $this->file->destroy());
 
         $options = Options::fromCommand($this);
+	    
+	    $noTimeout = $this->option('no-timeout');
 
         assert($this->file instanceof File);
 
         try {
-            $processFactory->run($this->file, $this->output, $this->laravel->basePath(), $options);
+            $processFactory->run($this->file, $this->output, $this->laravel->basePath(), $options, $noTimeout);
         } catch (ProcessSignaledException $e) {
             if (in_array($e->getSignal(), [SIGINT, SIGTERM], true)) {
                 $this->newLine();
