@@ -78,7 +78,7 @@ class PailCommand extends Command
 
         $options = Options::fromCommand($this);
 	    
-	    $noTimeout = $this->option('no-timeout');
+	    $noTimeout = (bool) $this->option('no-timeout');
 
         assert($this->file instanceof File);
 
