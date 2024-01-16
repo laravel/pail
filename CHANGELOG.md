@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.0.1...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.1.0...main)
+
+## [v1.1.0](https://github.com/laravel/pail/compare/v1.0.1...v1.1.0) - 2024-01-15
+
+* [1.x] Laravel v11 support by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/pail/pull/28
 
 ## [v1.0.1](https://github.com/laravel/pail/compare/v1.0.0-beta.2...v1.0.1) - 2023-11-23
 
