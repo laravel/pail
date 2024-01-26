@@ -87,6 +87,16 @@ class File implements Stringable
      */
     protected function isStale(): bool
     {
-        return time() - filemtime($this->file) > static::TTL;
+        if (!$this->exists()) {           
+            return false;
+        }
+
+        $fileTime = @filemtime($this->file);
+
+        if ($fileTime === false) {   
+            return true;
+        }
+
+        return time() - $fileTime > static::TTL;
     }
 }
