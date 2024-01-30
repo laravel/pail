@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.1.0...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.1.1...main)
+
+## [v1.1.1](https://github.com/laravel/pail/compare/v1.1.0...v1.1.1) - 2024-01-26
+
+* [1.x] Update isStale to avoid errors from filemtime by [@cyppe](https://github.com/cyppe) in https://github.com/laravel/pail/pull/30
 
 ## [v1.1.0](https://github.com/laravel/pail/compare/v1.0.1...v1.1.0) - 2024-01-15
 
