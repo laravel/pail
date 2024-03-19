@@ -27,7 +27,8 @@
         "illuminate/log": "^10.24|^11.0",
         "illuminate/process": "^10.24|^11.0",
         "illuminate/support": "^10.24|^11.0",
-        "nunomaduro/termwind": "^1.15|^2.0"
+        "nunomaduro/termwind": "^1.15|^2.0",
+        "symfony/console": "^6.0|^7.0"
     },
     "require-dev": {
         "laravel/pint": "^1.13",
