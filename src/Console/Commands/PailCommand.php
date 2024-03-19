@@ -8,11 +8,13 @@ use Laravel\Pail\File;
 use Laravel\Pail\Guards\EnsurePcntlIsAvailable;
 use Laravel\Pail\Options;
 use Laravel\Pail\ProcessFactory;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 
 use function Termwind\render;
 use function Termwind\renderUsing;
 
+#[AsCommand(name: 'pail')]
 class PailCommand extends Command
 {
     /**
