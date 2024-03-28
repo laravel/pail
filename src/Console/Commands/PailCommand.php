@@ -90,7 +90,7 @@ class PailCommand extends Command
         } catch (ProcessTimedOutException $e) {
             $this->components->info('Maximum execution time exceeded.');
         } finally {
-            $this->file->destroy();
+            $this->file?->destroy();
         }
     }
 
