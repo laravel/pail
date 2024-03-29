@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Context;
+
 test('debug messages', function () {
     expect('app("log")->debug("my debug message")')->toPail(<<<'EOF'
         ┌ 03:04:05 DEBUG ────────────────────────────────┐
@@ -193,3 +195,13 @@ test('exception key as string', function () {
 
         EOF, verbose: true);
 });
+
+test('using context facade', function () {
+    expect('Context::add("user_id", 1); Context::push("breadcrumbs", "first_value"); Log::error("log message", ["exception" => "an exception occured"])')->toPail(<<<'EOF'
+        ┌ 03:04:05 ERROR ────────────────────────────────┐
+        │ log message                                    │
+        └ artisan • user_id: 1 • breadcrumbs: array ( 0 => 'first_value', ) ┘
+
+        EOF,
+    );
+})->skip(! class_exists(Context::class), 'Context facade is not available in this version of Laravel');

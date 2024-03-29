@@ -3,10 +3,13 @@
 namespace Laravel\Pail;
 
 use Illuminate\Console\Events\CommandStarting;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Log\Context\Repository as ContextRepository;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 
@@ -26,6 +29,7 @@ class Handler
      * Creates a new instance of the handler.
      */
     public function __construct(
+        protected Container $container,
         protected Files $files,
         protected bool $runningInConsole,
     ) {
@@ -108,6 +112,10 @@ class Handler
                 ])->values()
             : null;
 
-        return collect($messageLogged->context)->merge($context)->toArray();
+        return collect($messageLogged->context)
+            ->merge($context)
+            ->when($this->container->bound(ContextRepository::class), function (Collection $context) {
+                return $context->merge($this->container->make(ContextRepository::class)->all()); // @phpstan-ignore-line
+            })->toArray();
     }
 }
