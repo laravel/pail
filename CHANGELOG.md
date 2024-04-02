@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.1.1...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.1.2...main)
+
+## [v1.1.2](https://github.com/laravel/pail/compare/v1.1.1...v1.1.2) - 2024-04-02
+
+* [1.x] Make commands lazy by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/pail/pull/32
+* [1.x] Adds `Context` support by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/pail/pull/34
 
 ## [v1.1.1](https://github.com/laravel/pail/compare/v1.1.0...v1.1.1) - 2024-01-26
 
