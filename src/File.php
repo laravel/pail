@@ -30,6 +30,8 @@ class File implements Stringable
 
             if (! is_dir($directory)) {
                 mkdir($directory, 0755, true);
+
+                file_put_contents($directory . '/.gitignore', "*\n!.gitignore\n");
             }
 
             touch($this->file);
