@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.1.2...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.1.3...main)
+
+## [v1.1.3](https://github.com/laravel/pail/compare/v1.1.2...v1.1.3) - 2024-05-08
+
+* Add gitignore to ignore pail files in storage by [@ahinkle](https://github.com/ahinkle) in https://github.com/laravel/pail/pull/35
 
 ## [v1.1.2](https://github.com/laravel/pail/compare/v1.1.1...v1.1.2) - 2024-04-02
 
