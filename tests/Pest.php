@@ -89,7 +89,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
 
 function output(array $message, bool $verbose = false): string
 {
-    $output = new BufferedOutput();
+    $output = new BufferedOutput;
 
     $output->setVerbosity($verbose ? OutputInterface::VERBOSITY_VERY_VERBOSE : OutputInterface::VERBOSITY_NORMAL);
     $printer = new CliPrinter($output, base_path());
