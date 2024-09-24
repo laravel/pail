@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.1.3...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.1.4...main)
+
+## [v1.1.4](https://github.com/laravel/pail/compare/v1.1.3...v1.1.4) - 2024-09-16
+
+* Replace dead link in Security Policy by [@Jubeki](https://github.com/Jubeki) in https://github.com/laravel/pail/pull/38
 
 ## [v1.1.3](https://github.com/laravel/pail/compare/v1.1.2...v1.1.3) - 2024-05-08
 
