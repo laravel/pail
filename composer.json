@@ -32,7 +32,7 @@
     },
     "require-dev": {
         "laravel/pint": "^1.13",
-        "orchestra/testbench": "^8.12|^9.0",
+        "orchestra/testbench": "^8.26|^9.4",
         "pestphp/pest": "^2.20",
         "pestphp/pest-plugin-type-coverage": "^2.3",
         "phpstan/phpstan": "^1.10",
@@ -45,7 +45,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/"
         }
     },
     "extra": {

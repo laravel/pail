@@ -8,6 +8,7 @@ use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Env;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pail\Console\Commands\PailCommand;
 
@@ -75,6 +76,6 @@ class PailServiceProvider extends ServiceProvider
      */
     protected function runningPailTests(): bool
     {
-        return $_ENV['PAIL_TESTS'] ?? false;
+        return Env::get('PAIL_TESTS') ?? false;
     }
 }

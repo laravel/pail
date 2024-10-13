@@ -3,6 +3,7 @@
 namespace Laravel\Pail\Printers;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use Laravel\Pail\Contracts\Printer;
 use Laravel\Pail\ValueObjects\MessageLogged;
@@ -88,7 +89,7 @@ class CliPrinter implements Printer
             return null;
         }
 
-        if ($_ENV['PAIL_TESTS'] ?? false) {
+        if (Env::get('PAIL_TESTS') ?? false) {
             $file = $this->basePath.'/app/MyClass.php:12';
         }
 
@@ -224,7 +225,7 @@ class CliPrinter implements Printer
 
         $trace = $messageLogged->trace();
 
-        if ($_ENV['PAIL_TESTS'] ?? false) {
+        if (Env::get('PAIL_TESTS') ?? false) {
             $trace = [
                 [
                     'line' => 12,

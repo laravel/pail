@@ -13,4 +13,7 @@
             <directory suffix=".php">./tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="PAIL_TESTS" value="true"/>
+    </php>
 </phpunit>

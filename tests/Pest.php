@@ -8,6 +8,8 @@ use Laravel\Pail\ValueObjects\MessageLogged;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function Orchestra\Testbench\package_path;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -22,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 $GLOBALS['process'] = null;
 
 uses(Tests\TestCase::class)
-    ->beforeAll(fn () => $_ENV['PAIL_TESTS'] = true)
     ->beforeEach(function () {
         putenv('COLUMNS=50');
         $_ENV['COLUMNS'] = 50;
@@ -49,7 +50,8 @@ uses(Tests\TestCase::class)
 
 expect()->extend('toPail', function (string $expectedOutput, array $options = [], bool $verbose = false) {
     if ($GLOBALS['process'] === null) {
-        $process = $GLOBALS['process'] = Process::path(__DIR__.'/Fixtures')
+        $process = $GLOBALS['process'] = Process::path(base_path())
+            ->env(['TESTBENCH_WORKING_PATH' => package_path()])
             ->start(sprintf(
                 'php artisan pail %s %s',
                 collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
@@ -64,7 +66,8 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
     }
 
     collect(Arr::wrap($this->value))
-        ->each(fn (string $code) => Process::path(__DIR__.'/Fixtures')
+        ->each(fn (string $code) => Process::path(base_path())
+            ->env(['TESTBENCH_WORKING_PATH' => package_path()])
             ->run(sprintf("php artisan eval '%s;'", $code))
         );
 
