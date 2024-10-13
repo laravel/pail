@@ -81,8 +81,8 @@ class Handler
             $this->artisanCommand && $this->lastLifecycleEvent && in_array($this->lastLifecycleEvent::class, [JobProcessing::class, JobExceptionOccurred::class]) => [
                 'type' => 'queue',
                 'command' => $this->artisanCommand,
-                'queue' => $this->lastLifecycleEvent->job->getQueue(), // @phpstan-ignore-line
-                'job' => $this->lastLifecycleEvent->job->resolveName(), // @phpstan-ignore-line
+                'queue' => $this->lastLifecycleEvent->job->getQueue(),
+                'job' => $this->lastLifecycleEvent->job->resolveName(),
             ],
             $this->runningInConsole => [
                 'type' => 'console',
@@ -90,8 +90,8 @@ class Handler
             ],
             default => [
                 'type' => 'http',
-                'method' => request()->method(), // @phpstan-ignore-line
-                'path' => request()->path(), // @phpstan-ignore-line
+                'method' => request()->method(),
+                'path' => request()->path(),
                 'auth_id' => Auth::id(),
                 'auth_email' => Auth::user() instanceof User ? Auth::user()->email : null, // @phpstan-ignore-line
             ],
