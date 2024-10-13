@@ -76,6 +76,7 @@ class PailServiceProvider extends ServiceProvider
      */
     protected function runningPailTests(): bool
     {
+        /** @phpstan-ignore return.type */
         return Env::get('PAIL_TESTS') ?? false;
     }
 }
