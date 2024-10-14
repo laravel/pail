@@ -53,7 +53,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
         $process = $GLOBALS['process'] = Process::path(base_path())
             ->env(['TESTBENCH_WORKING_PATH' => package_path()])
             ->start(sprintf(
-                'php artisan pail %s %s',
+                'php artisan pail %s %s --no-ansi',
                 collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
                 $verbose ? '-vvv' : '',
             ));
@@ -68,7 +68,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
     collect(Arr::wrap($this->value))
         ->each(fn (string $code) => Process::path(base_path())
             ->env(['TESTBENCH_WORKING_PATH' => package_path()])
-            ->run(sprintf("php artisan eval '%s;'", $code))
+            ->run(sprintf("php artisan eval '%s;' --no-ansi", $code))
         );
 
     $output = $GLOBALS['process']->output();
