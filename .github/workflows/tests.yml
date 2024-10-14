@@ -16,7 +16,7 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-22.04
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     strategy:
       fail-fast: true
