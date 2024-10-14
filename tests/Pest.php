@@ -21,20 +21,12 @@ use function Orchestra\Testbench\package_path;
 |
 */
 
-$GLOBALS['process'] = null;
-
 uses(Tests\TestCase::class)
     ->beforeEach(function () {
         putenv('COLUMNS=50');
         $_ENV['COLUMNS'] = 50;
     })->afterEach(function () {
-        if ($GLOBALS['process']) {
-            (fn () => $this->process->stop())->call($GLOBALS['process']);
-
-            $GLOBALS['process'] = null;
-
-            File::deleteDirectory(storage_path('pail'));
-        }
+        File::deleteDirectory(storage_path('pail'));
     })->in(__DIR__);
 
 /*
@@ -49,43 +41,50 @@ uses(Tests\TestCase::class)
 */
 
 expect()->extend('toPail', function (string $expectedOutput, array $options = [], bool $verbose = false) {
-    if ($GLOBALS['process'] === null) {
-        $process = $GLOBALS['process'] = Process::path(base_path())
-            ->env(['TESTBENCH_WORKING_PATH' => package_path()])
-            ->start(sprintf(
-                'php artisan pail %s %s --no-ansi',
-                collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
-                $verbose ? '-vvv' : '',
-            ));
-
-        $GLOBALS['process'] = $process;
-
-        while ($process->output() === '') {
-            usleep(10);
-        }
-    }
-
-    collect(Arr::wrap($this->value))
-        ->each(fn (string $code) => Process::path(base_path())
-            ->env(['TESTBENCH_WORKING_PATH' => package_path()])
-            ->run(sprintf("php artisan eval '%s;' --no-ansi", $code))
-        );
-
-    $output = $GLOBALS['process']->output();
-    $output = preg_replace('/\e\[[\d;]*m/', '', $output);
-
-    $output = Str::of($output)
-        ->explode("\n")
-        ->map(fn (string $line) => rtrim($line))
-        ->implode("\n");
-
-    expect($output)->toBe(<<<EOF
+    $receivedExpectedOutput = false;
+    $expectedOutput = <<<EOF
 
            INFO  Tailing application logs. Press Ctrl+C to exit
                          Use -v|-vv to show more details
         $expectedOutput
-        EOF,
-    );
+        EOF;
+    $formattedOutput = function ($process) {
+        $output = $process->output();
+        $output = preg_replace('/\e\[[\d;]*m/', '', $output);
+
+        return Str::of($output)
+            ->explode("\n")
+            ->map(fn (string $line) => rtrim($line))
+            ->implode("\n");
+    };
+
+    $process = Process::path(base_path())
+        ->env(['TESTBENCH_WORKING_PATH' => package_path()])
+        ->timeout(20)
+        ->start(sprintf(
+            'php artisan pail %s %s',
+            collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
+            $verbose ? '-vvv' : '',
+        ));
+
+    collect(Arr::wrap($this->value))
+        ->each(fn (string $code) => Process::path(base_path())
+            ->env(['TESTBENCH_WORKING_PATH' => package_path()])
+            ->timeout(20)
+            ->run(sprintf("php artisan eval '%s;'", $code))
+        );
+
+    do {
+        if (ray()->pass($formattedOutput($process)) === $expectedOutput) {
+            $receivedExpectedOutput = true;
+        } else {
+            usleep(10);
+        }
+    } while ($receivedExpectedOutput === false);
+
+    expect($formattedOutput($process))->toBe($expectedOutput);
+
+    $process->stop();
 
     return $this;
 });
