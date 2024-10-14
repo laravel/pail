@@ -42,12 +42,6 @@ uses(Tests\TestCase::class)
 
 expect()->extend('toPail', function (string $expectedOutput, array $options = [], bool $verbose = false) {
     $receivedExpectedOutput = false;
-    $expectedOutput = <<<EOF
-
-           INFO  Tailing application logs. Press Ctrl+C to exit
-                         Use -v|-vv to show more details
-        $expectedOutput
-        EOF;
     $formattedOutput = function ($process) {
         $output = $process->output();
         $output = preg_replace('/\e\[[\d;]*m/', '', $output);
@@ -61,6 +55,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
     $process = Process::path(base_path())
         ->env(['TESTBENCH_WORKING_PATH' => package_path()])
         ->timeout(20)
+        ->idleTimeout(5)
         ->start(sprintf(
             'php artisan pail %s %s',
             collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
@@ -75,14 +70,19 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
         );
 
     do {
-        if (ray()->pass($formattedOutput($process)) === $expectedOutput) {
+        if (str_contains($formattedOutput($process), $expectedOutput)) {
             $receivedExpectedOutput = true;
-        } else {
-            usleep(10);
         }
+
+        usleep(10);
     } while ($receivedExpectedOutput === false);
 
-    expect($formattedOutput($process))->toBe($expectedOutput);
+    expect($formattedOutput($process))->toBe(<<<EOF
+
+           INFO  Tailing application logs. Press Ctrl+C to exit
+                         Use -v|-vv to show more details
+        $expectedOutput
+        EOF);
 
     $process->stop();
 
