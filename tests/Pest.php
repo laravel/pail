@@ -9,8 +9,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function Orchestra\Testbench\package_path;
-use function Orchestra\Testbench\remote;
-
 
 putenv('COLUMNS=50');
 $_ENV['COLUMNS'] = 50;
