@@ -8,7 +8,7 @@ test('accepts message', function () {
     ])->toPail(<<<'EOF'
         ┌ 03:04:05 RuntimeException ─ app/MyClass.php:12 ┐
         │ my re exception                                │
-        └─────────────────────────────────────── artisan ┘
+        └────────────────────────────────── artisan eval ┘
 
         EOF,
         [
@@ -24,10 +24,10 @@ test('is case insensitive', function () {
     ])->toPail(<<<'EOF'
         ┌ 03:04:05 RuntimeException ─ app/MyClass.php:12 ┐
         │ my re MESSAGE                                  │
-        └─────────────────────────────────────── artisan ┘
+        └────────────────────────────────── artisan eval ┘
         ┌ 03:04:05 Exception ──────── app/MyClass.php:12 ┐
         │ my e MESSAGE                                   │
-        └─────────────────────────────────────── artisan ┘
+        └────────────────────────────────── artisan eval ┘
 
         EOF,
         [

@@ -8,7 +8,7 @@ test('accepts filter', function () {
     ])->toPail(<<<'EOF'
         ┌ 03:04:05 CRITICAL ─────────────────────────────┐
         │ my cr message                                  │
-        └─────────────────────────────────────── artisan ┘
+        └────────────────────────────────── artisan eval ┘
 
         EOF,
         [
@@ -24,7 +24,7 @@ test('filters by entire log message', function () {
     ])->toPail(<<<'EOF'
         ┌ 03:04:05 CRITICAL ─────────────────────────────┐
         │ my cr message                                  │
-        └─────────────────────────────────────── artisan ┘
+        └────────────────────────────────── artisan eval ┘
 
         EOF,
         [
