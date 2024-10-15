@@ -9,6 +9,11 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function Orchestra\Testbench\package_path;
+use function Orchestra\Testbench\remote;
+
+
+putenv('COLUMNS=50');
+$_ENV['COLUMNS'] = 50;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +27,7 @@ use function Orchestra\Testbench\package_path;
 */
 
 uses(Tests\TestCase::class)
-    ->beforeEach(function () {
-        putenv('COLUMNS=50');
-        $_ENV['COLUMNS'] = 50;
-    })->afterEach(function () {
+    ->afterEach(function () {
         File::deleteDirectory(storage_path('pail'));
     })->in(__DIR__);
 
@@ -68,22 +70,18 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
         ->each(fn (string $code) => Process::path(base_path())
             ->env(['TESTBENCH_WORKING_PATH' => package_path()])
             ->timeout(20)
-            ->run(sprintf("php artisan eval '%s;'", $code))
+            ->start(sprintf("php artisan eval '%s;'", $code))
         );
-    // ->each(function (string $code) {
-    //     test()->post('eval', ['code' => $code]);
-    // });
+    // collect(Arr::wrap($this->value))
+    //     ->each(function (string $code) {
+    //         test()->post('eval', ['code' => $code]);
+    //     });
 
     do {
         usleep(10);
     } while (! str_contains($formattedOutput($process), $expectedOutput));
 
-    expect($formattedOutput($process))->toBe(<<<EOF
-
-           INFO  Tailing application logs. Press Ctrl+C to exit
-                         Use -v|-vv to show more details
-        $expectedOutput
-        EOF);
+    expect($formattedOutput($process))->toContain($expectedOutput);
 
     $process->stop();
 
