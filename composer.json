@@ -20,7 +20,6 @@
     ],
     "require": {
         "php": "^8.2",
-        "ext-pcntl": "*",
         "ext-mbstring": "*",
         "illuminate/console": "^10.24|^11.0",
         "illuminate/contracts": "^10.24|^11.0",
