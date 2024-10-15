@@ -81,8 +81,8 @@ class Handler
             $this->artisanCommand && $this->lastLifecycleEvent && in_array($this->lastLifecycleEvent::class, [JobProcessing::class, JobExceptionOccurred::class]) => [
                 'type' => 'queue',
                 'command' => $this->artisanCommand,
-                'queue' => $this->lastLifecycleEvent->job->getQueue(), // @phpstan-ignore-line
-                'job' => $this->lastLifecycleEvent->job->resolveName(), // @phpstan-ignore-line
+                'queue' => $this->lastLifecycleEvent->job->getQueue(),
+                'job' => $this->lastLifecycleEvent->job->resolveName(),
             ],
             $this->runningInConsole => [
                 'type' => 'console',
@@ -90,10 +90,10 @@ class Handler
             ],
             default => [
                 'type' => 'http',
-                'method' => request()->method(), // @phpstan-ignore-line
-                'path' => request()->path(), // @phpstan-ignore-line
+                'method' => request()->method(),
+                'path' => request()->path(),
                 'auth_id' => Auth::id(),
-                'auth_email' => Auth::user() instanceof User ? Auth::user()->email : null, // @phpstan-ignore-line
+                'auth_email' => Auth::user() instanceof User ? Auth::user()->email : null, // @phpstan-ignore property.notFound
             ],
         }]];
 
@@ -107,7 +107,7 @@ class Handler
             && $messageLogged->context['exception'] instanceof Throwable ? collect($messageLogged->context['exception']->getTrace())
                 ->filter(fn (array $frame) => isset($frame['file']))
                 ->map(fn (array $frame) => [
-                    'file' => $frame['file'], // @phpstan-ignore-line
+                    'file' => $frame['file'], // @phpstan-ignore offsetAccess.notFound
                     'line' => $frame['line'] ?? null,
                 ])->values()
             : null;
@@ -115,7 +115,7 @@ class Handler
         return collect($messageLogged->context)
             ->merge($context)
             ->when($this->container->bound(ContextRepository::class), function (Collection $context) {
-                return $context->merge($this->container->make(ContextRepository::class)->all()); // @phpstan-ignore-line
+                return $context->merge($this->container->make(ContextRepository::class)->all()); // @phpstan-ignore method.nonObject
             })->toArray();
     }
 }
