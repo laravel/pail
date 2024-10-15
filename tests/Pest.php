@@ -70,9 +70,9 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             ->timeout(20)
             ->run(sprintf("php artisan eval '%s;'", $code))
         );
-        // ->each(function (string $code) {
-        //     test()->post('eval', ['code' => $code]);
-        // });
+    // ->each(function (string $code) {
+    //     test()->post('eval', ['code' => $code]);
+    // });
 
     do {
         usleep(10);
