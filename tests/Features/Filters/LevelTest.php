@@ -8,7 +8,7 @@ test('accepts level', function () {
     ])->toPail(<<<'EOF'
         ┌ 03:04:05 CRITICAL ─────────────────────────────┐
         │ my cr message                                  │
-        └─────────────────────────────────────── artisan ┘
+        └────────────────────────────────── artisan eval ┘
 
         EOF,
         [
@@ -22,7 +22,7 @@ test('is case insensitive', function () {
     ])->toPail(<<<'EOF'
         ┌ 03:04:05 CRITICAL ─────────────────────────────┐
         │ my cr message                                  │
-        └─────────────────────────────────────── artisan ┘
+        └────────────────────────────────── artisan eval ┘
 
         EOF,
         [
