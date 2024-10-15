@@ -41,7 +41,6 @@ uses(Tests\TestCase::class)
 */
 
 expect()->extend('toPail', function (string $expectedOutput, array $options = [], bool $verbose = false) {
-    $receivedExpectedOutput = false;
     $formattedOutput = function ($process) {
         $output = $process->output();
         $output = preg_replace('/\e\[[\d;]*m/', '', $output);
@@ -54,13 +53,16 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
 
     $process = Process::path(base_path())
         ->env(['TESTBENCH_WORKING_PATH' => package_path()])
-        ->timeout(20)
-        ->idleTimeout(5)
+        ->timeout(10)
         ->start(sprintf(
             'php artisan pail %s %s',
             collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
             $verbose ? '-vvv' : '',
         ));
+
+    do {
+        usleep(10);
+    } while (! str_contains($formattedOutput($process), 'Tailing application logs. Press Ctrl+C to exit'));
 
     collect(Arr::wrap($this->value))
         ->each(fn (string $code) => Process::path(base_path())
@@ -68,14 +70,13 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             ->timeout(20)
             ->run(sprintf("php artisan eval '%s;'", $code))
         );
+        // ->each(function (string $code) {
+        //     test()->post('eval', ['code' => $code]);
+        // });
 
     do {
-        if (str_contains($formattedOutput($process), $expectedOutput)) {
-            $receivedExpectedOutput = true;
-        }
-
         usleep(10);
-    } while ($receivedExpectedOutput === false);
+    } while (! str_contains($formattedOutput($process), $expectedOutput));
 
     expect($formattedOutput($process))->toBe(<<<EOF
 
