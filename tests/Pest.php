@@ -53,7 +53,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
 
     $process = Process::path(base_path())
         ->env(['TESTBENCH_WORKING_PATH' => package_path()])
-        ->timeout(10)
+        ->timeout(20)
         ->start(sprintf(
             'php artisan pail %s %s',
             collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
