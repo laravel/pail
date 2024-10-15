@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.1.4...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.1.5...main)
+
+## [v1.1.5](https://github.com/laravel/pail/compare/v1.1.4...v1.1.5) - 2024-10-15
+
+* [1.x] Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/pail/pull/42
 
 ## [v1.1.4](https://github.com/laravel/pail/compare/v1.1.3...v1.1.4) - 2024-09-16
 
