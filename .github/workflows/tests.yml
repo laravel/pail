@@ -22,9 +22,9 @@ jobs:
       matrix:
         php: [8.2, 8.3]
         laravel: [10, 11]
-      include:
-        - php: 8.4
-          laravel: 11
+        include:
+          - php: 8.4
+            laravel: 11
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
