@@ -67,10 +67,10 @@ class Options
     }
 
     /**
-     * Returns the number of seconds before the process is killed or null if no timeout is set.
+     * Returns the number of seconds before the process is killed.
      */
-    public function timeout(): ?int
+    public function timeout(): int
     {
-        return $this->timeout === 0 ? null : $this->timeout;
+        return $this->timeout;
     }
 }
