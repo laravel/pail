@@ -11,7 +11,7 @@ class Options
      * Creates a new instance of the tail options.
      */
     public function __construct(
-        protected ?int $timeout,
+        protected int $timeout,
         protected ?string $authId,
         protected ?string $level,
         protected ?string $filter,
