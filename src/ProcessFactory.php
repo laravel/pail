@@ -19,7 +19,7 @@ class ProcessFactory
 
         $remainingBuffer = '';
 
-        Process::timeout(3600)
+        Process::timeout($options->timeout())
             ->tty(false)
             ->run(
                 $this->command($file),

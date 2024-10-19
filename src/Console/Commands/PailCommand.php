@@ -25,7 +25,8 @@ class PailCommand extends Command
         {--message= : Filter the logs by the given message}
         {--level= : Filter the logs by the given level}
         {--auth= : Filter the logs by the given authenticated ID}
-        {--user= : Filter the logs by the given authenticated ID (alias for --auth)}';
+        {--user= : Filter the logs by the given authenticated ID (alias for --auth)}
+        {--timeout=3600 : The maximum execution time in seconds}';
 
     /**
      * {@inheritDoc}
