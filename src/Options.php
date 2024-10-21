@@ -11,6 +11,7 @@ class Options
      * Creates a new instance of the tail options.
      */
     public function __construct(
+        protected int $timeout,
         protected ?string $authId,
         protected ?string $level,
         protected ?string $filter,
@@ -36,7 +37,9 @@ class Options
         $message = $command->option('message');
         assert(is_string($message) || $message === null);
 
-        return new static($authId, $level, $filter, $message);
+        $timeout = (int) $command->option('timeout');
+
+        return new static($timeout, $authId, $level, $filter, $message);
     }
 
     /**
@@ -61,5 +64,13 @@ class Options
         }
 
         return true;
+    }
+
+    /**
+     * Returns the number of seconds before the process is killed.
+     */
+    public function timeout(): int
+    {
+        return $this->timeout;
     }
 }
