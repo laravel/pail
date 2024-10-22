@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.1.5...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.2.0...main)
+
+## [v1.2.0](https://github.com/laravel/pail/compare/v1.1.5...v1.2.0) - 2024-10-21
+
+* [1.x] Supports PHP 8.4 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/pail/pull/44
+* [1.x] Adds `--timeout` option by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/pail/pull/45
 
 ## [v1.1.5](https://github.com/laravel/pail/compare/v1.1.4...v1.1.5) - 2024-10-15
 
