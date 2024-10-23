@@ -30,8 +30,9 @@
         "symfony/console": "^6.0|^7.0"
     },
     "require-dev": {
+        "laravel/framework": "^10.24|^11.0",
         "laravel/pint": "^1.13",
-        "orchestra/testbench": "^8.12|^9.0",
+        "orchestra/testbench-core": "^8.12|^9.0",
         "pestphp/pest": "^2.20",
         "pestphp/pest-plugin-type-coverage": "^2.3",
         "phpstan/phpstan": "^1.10",
