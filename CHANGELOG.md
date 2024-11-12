@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.2.0...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.2.1...main)
+
+## [v1.2.1](https://github.com/laravel/pail/compare/v1.2.0...v1.2.1) - 2024-10-23
+
+* Use `testbench-core` instead of `testbench` by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/pail/pull/46
 
 ## [v1.2.0](https://github.com/laravel/pail/compare/v1.1.5...v1.2.0) - 2024-10-21
 
