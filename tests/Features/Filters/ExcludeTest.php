@@ -29,6 +29,25 @@ test('accepts multiple excludes', function () {
         ]);
 });
 
+test('accepts multiple excludes and ignores spaces after commas', function () {
+    expect([
+        'throw new RuntimeException("my excluded exception")',
+        'app("log")->critical("my excluded message")',
+        'throw new Exception("my excluded message")',
+        'throw new RuntimeException("my other-excl exception")',
+        'app("log")->critical("my other-excl message")',
+        'throw new Exception("my other-excl message")',
+        'throw new RuntimeException("my third-excl exception")',
+        'app("log")->critical("my third-excl message")',
+        'throw new Exception("my third-excl message")',
+    ])->toPail(<<<'EOF'
+
+        EOF,
+        [
+            'exclude' => 'excluded, other-excl, third',
+        ]);
+});
+
 test('accepts excludes case-insensitive', function () {
     expect([
         'throw new RuntimeException("my excluded exception")',

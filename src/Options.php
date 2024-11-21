@@ -64,7 +64,7 @@ class Options
             return false;
         }
 
-        if (is_string($this->exclude) && array_reduce(explode(',', $this->exclude), fn($a, $b) => $a || str_contains(strtolower((string) $messageLogged), strtolower($b)), false)) {
+        if (is_string($this->exclude) && array_reduce(explode(',', $this->exclude), fn($a, $b) => $a || str_contains(strtolower((string) $messageLogged), trim(strtolower($b))), false)) {
             return false;
         }
 
