@@ -15,6 +15,7 @@ class Options
         protected ?string $authId,
         protected ?string $level,
         protected ?string $filter,
+        protected ?string $exclude,
         protected ?string $message,
     ) {
         //
@@ -34,12 +35,15 @@ class Options
         $filter = $command->option('filter');
         assert(is_string($filter) || $filter === null);
 
+        $exclude = $command->option('exclude');
+        assert(is_string($exclude) || $exclude === null);
+
         $message = $command->option('message');
         assert(is_string($message) || $message === null);
 
         $timeout = (int) $command->option('timeout');
 
-        return new static($timeout, $authId, $level, $filter, $message);
+        return new static($timeout, $authId, $level, $filter, $exclude, $message);
     }
 
     /**
@@ -56,6 +60,11 @@ class Options
         }
 
         if (is_string($this->filter) && ! str_contains(strtolower((string) $messageLogged), strtolower($this->filter))) {
+
+            return false;
+        }
+
+        if (is_string($this->exclude) && array_reduce(explode(',', $this->exclude), fn($a, $b) => $a || str_contains(strtolower((string) $messageLogged), strtolower($b)), false)) {
             return false;
         }
 

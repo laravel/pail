@@ -22,6 +22,7 @@ class PailCommand extends Command
      */
     protected $signature = 'pail
         {--filter= : Filter the logs by the given value}
+        {--exclude= : Exclude the logs by the given value(s) separated by commas e.g. value1,value2}
         {--message= : Filter the logs by the given message}
         {--level= : Filter the logs by the given level}
         {--auth= : Filter the logs by the given authenticated ID}
