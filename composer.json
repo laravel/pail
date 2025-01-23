@@ -34,7 +34,6 @@
         "laravel/pint": "^1.13",
         "orchestra/testbench-core": "^8.12|^9.0",
         "pestphp/pest": "^2.20|^3.0",
-        "pestphp/pest-plugin-laravel": "^2.0|^3.0",
         "pestphp/pest-plugin-type-coverage": "^2.3|^3.0",
         "phpstan/phpstan": "^1.10",
         "symfony/var-dumper": "^6.3|^7.0"
