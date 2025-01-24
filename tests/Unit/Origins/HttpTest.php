@@ -1,5 +1,13 @@
 <?php
 
+beforeEach(function () {
+    $_ENV['PAIL_TESTS'] = true;
+});
+
+afterEach(function () {
+    unset($_ENV['PAIL_TESTS']);
+});
+
 test('non verbose', function () {
     $output = output([
         'message' => 'my exception message',
