@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.2.1...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.2.2...main)
+
+## [v1.2.2](https://github.com/laravel/pail/compare/v1.2.1...v1.2.2) - 2025-01-28
+
+* Supports Laravel 12 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/pail/pull/49
 
 ## [v1.2.1](https://github.com/laravel/pail/compare/v1.2.0...v1.2.1) - 2024-10-23
 
