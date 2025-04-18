@@ -135,7 +135,7 @@ class CliPrinter implements Printer
 
         $message = htmlspecialchars($message);
 
-        return "<span>$message</span>";
+        return "<pre>$message</pre>";
     }
 
     /**
