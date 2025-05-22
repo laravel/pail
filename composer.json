@@ -1,7 +1,7 @@
 {
     "name": "laravel/pail",
     "description": "Easily delve into your Laravel application's log files directly from the command line.",
-    "keywords": ["php", "tail", "laravel", "logs"],
+    "keywords": ["php", "tail", "laravel", "logs", "dev"],
     "homepage": "https://github.com/laravel/pail",
     "license": "MIT",
     "support": {
