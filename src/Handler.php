@@ -11,6 +11,8 @@ use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Psr\Log\LogLevel;
 use Throwable;
 
 class Handler
@@ -44,6 +46,13 @@ class Handler
         $files = $this->files->all();
 
         if ($files->isEmpty()) {
+            return;
+        }
+
+        if (
+            $messageLogged->level === LogLevel::WARNING
+            && Str::contains($messageLogged->message, ['deprecated', 'Deprecated', '[\ReturnTypeWillChange]'])
+        ) {
             return;
         }
 
@@ -115,7 +124,7 @@ class Handler
         return collect($messageLogged->context)
             ->merge($context)
             ->when($this->container->bound(ContextRepository::class), function (Collection $context) {
-                return $context->merge($this->container->make(ContextRepository::class)->all()); // @phpstan-ignore method.nonObject
+                return $context->merge($this->container->make(ContextRepository::class)->all());
             })->toArray();
     }
 }
