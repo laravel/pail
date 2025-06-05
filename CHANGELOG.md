@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.2.2...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.2.3...main)
+
+## [v1.2.3](https://github.com/laravel/pail/compare/v1.2.2...v1.2.3) - 2025-06-05
+
+* Support multiline logs by [@gabus](https://github.com/gabus) in https://github.com/laravel/pail/pull/55
+* Suggests `laravel/pail` as dev dependencies by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/pail/pull/56
+* Disable deprecation notice from being displayed via Pail by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/pail/pull/57
 
 ## [v1.2.2](https://github.com/laravel/pail/compare/v1.2.1...v1.2.2) - 2025-01-28
 
