@@ -124,7 +124,7 @@ class Handler
         return collect($messageLogged->context)
             ->merge($context)
             ->when($this->container->bound(ContextRepository::class), function (Collection $context) {
-                return $context->merge($this->container->make(ContextRepository::class)->all()); // @phpstan-ignore method.nonObject
+                return $context->merge($this->container->make(ContextRepository::class)->all());
             })->toArray();
     }
 }

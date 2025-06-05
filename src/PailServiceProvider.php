@@ -25,7 +25,7 @@ class PailServiceProvider extends ServiceProvider
 
         $this->app->singleton(Handler::class, fn (Application $app) => new Handler(
             $app,
-            $app->make(Files::class), // @phpstan-ignore argument.type
+            $app->make(Files::class),
             $app->runningInConsole(),
         ));
     }

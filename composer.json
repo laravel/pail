@@ -35,7 +35,7 @@
         "orchestra/testbench-core": "^8.13|^9.0|^10.0",
         "pestphp/pest": "^2.20|^3.0",
         "pestphp/pest-plugin-type-coverage": "^2.3|^3.0",
-        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan": "^1.12.27",
         "symfony/var-dumper": "^6.3|^7.0"
     },
     "autoload": {
