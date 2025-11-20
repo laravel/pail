@@ -13,4 +13,7 @@
             <directory suffix=".php">./tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="COLUMNS" value="50"/>
+    </php>
 </phpunit>
