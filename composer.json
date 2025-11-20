@@ -32,9 +32,9 @@
     "require-dev": {
         "laravel/framework": "^10.24|^11.0|^12.0",
         "laravel/pint": "^1.13",
-        "orchestra/testbench-core": "^8.13|^9.0|^10.0",
-        "pestphp/pest": "^2.20|^3.0",
-        "pestphp/pest-plugin-type-coverage": "^2.3|^3.0",
+        "orchestra/testbench-core": "^8.13|^9.17|^10.8",
+        "pestphp/pest": "^2.20|^3.0|^4.0",
+        "pestphp/pest-plugin-type-coverage": "^2.3|^3.0|^4.0",
         "phpstan/phpstan": "^1.12.27",
         "symfony/var-dumper": "^6.3|^7.0"
     },
