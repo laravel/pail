@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.2.3...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.2.4...main)
+
+## [v1.2.4](https://github.com/laravel/pail/compare/v1.2.3...v1.2.4) - 2025-11-20
+
+* [1.x] PHP 8.5 Compatibility by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/pail/pull/59
 
 ## [v1.2.3](https://github.com/laravel/pail/compare/v1.2.2...v1.2.3) - 2025-06-05
 
