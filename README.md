@@ -1,4 +1,7 @@
-<p align="center"><img width="300" src="/art/logo.svg" alt="Pail Package Logo"></p>
+<p align="center">
+    <img alt="Pail Logo Dark Mode" src="/art/pail-light.svg#gh-light-mode-only"/>
+    <img alt="Pail Logo Dark Mode" src="/art/pail-dark.svg#gh-dark-mode-only"/>
+</p>
 
 <p align="center">
 <a href="https://github.com/laravel/pail/actions"><img src="https://github.com/laravel/pail/workflows/tests/badge.svg" alt="Build Status"></a>
