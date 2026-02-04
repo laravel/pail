@@ -74,6 +74,8 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             remote(['eval', ProcessUtils::escapeArgument(base64_encode($code.';'))])->run();
         });
 
+    usleep(10);
+
     $output = $process->getOutput();
     $output = preg_replace('/\e\[[\d;]*m/', '', $output);
 
