@@ -74,6 +74,8 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             ])->run();
         });
 
+    usleep(10);
+
     $output = $GLOBALS['process']->getOutput();
     $output = preg_replace('/\e\[[\d;]*m/', '', $output);
 
