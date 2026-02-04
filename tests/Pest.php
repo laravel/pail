@@ -76,7 +76,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
         });
 
     do {
-        $output = preg_replace('/\e\[[\d;]*m/', '', $process->getOutput());
+        $output = preg_replace('/\e\[[\d;]*m/', '', $GLOBALS['process']->getOutput());
         usleep(10);
     } while (! str_contains($output, 'artisan eval'));
 
