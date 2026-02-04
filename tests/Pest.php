@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\ProcessUtils;
 use Illuminate\Support\Str;
 use Laravel\Pail\Printers\CliPrinter;
 use Laravel\Pail\ValueObjects\MessageLogged;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use function Orchestra\Testbench\default_skeleton_path;
+use function Orchestra\Testbench\remote;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,26 +52,29 @@ uses(Tests\TestCase::class)
 
 expect()->extend('toPail', function (string $expectedOutput, array $options = [], bool $verbose = false) {
     if ($GLOBALS['process'] === null) {
-        $process = $GLOBALS['process'] = Process::path(default_skeleton_path())
-            ->start(sprintf(
-                'php artisan pail %s %s',
-                collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
-                $verbose ? '-vvv' : '',
-            ));
+        $process = $GLOBALS['process'] = remote([
+            'pail',
+            collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
+            $verbose ? '-vvv' : '',
+        ], env: [
+            'PAIL_TESTS' => true,
+        ]);
 
         $GLOBALS['process'] = $process;
 
-        while ($process->output() === '') {
+        $process->start();
+
+        while ($process->getOutput() === '') {
             usleep(10);
         }
     }
 
     collect(Arr::wrap($this->value))
-        ->each(fn (string $code) => Process::path(default_skeleton_path())
-            ->run(sprintf("php artisan eval '%s'", base64_encode($code.';')))
-        );
+        ->each(function (string $code) {
+            remote(['eval', ProcessUtils::escapeArgument(base64_encode($code.';'))])->run();
+        });
 
-    $output = $process->output();
+    $output = $process->getOutput();
     $output = preg_replace('/\e\[[\d;]*m/', '', $output);
 
     $output = Str::of($output)
