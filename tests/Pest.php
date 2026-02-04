@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\ProcessUtils;
 use Illuminate\Support\Str;
 use Laravel\Pail\Printers\CliPrinter;
 use Laravel\Pail\ValueObjects\MessageLogged;
