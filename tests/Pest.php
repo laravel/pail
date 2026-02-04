@@ -57,6 +57,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
             $verbose ? '-vvv' : '',
         ], env: [
+            'APP_DEBUG' => '(true)',
             'PAIL_TESTS' => '(true)',
         ]);
 
