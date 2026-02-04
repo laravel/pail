@@ -75,10 +75,12 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             remote(['eval', ProcessUtils::escapeArgument(base64_encode($code.';'))])->run();
         });
 
-    usleep(1000);
+    do {
+        $output = preg_replace('/\e\[[\d;]*m/', '', $process->getOutput());
+        usleep(10);
+    } while (! str_contains($output, 'artisan eval'));
 
-    $output = $process->getOutput();
-    $output = preg_replace('/\e\[[\d;]*m/', '', $output);
+    //$output = preg_replace('/\e\[[\d;]*m/', '', $output);
 
     $output = Str::of($output)
         ->explode("\n")
