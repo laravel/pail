@@ -52,14 +52,16 @@ uses(Tests\TestCase::class)
 
 expect()->extend('toPail', function (string $expectedOutput, array $options = [], bool $verbose = false) {
     if ($GLOBALS['process'] === null) {
-        $GLOBALS['process'] = Process::path(default_skeleton_path())
+        $process = $GLOBALS['process'] = Process::path(default_skeleton_path())
             ->start(sprintf(
                 'php artisan pail %s %s',
                 collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
                 $verbose ? '-vvv' : '',
             ));
 
-        while ($GLOBALS['process']->output() === '') {
+        $GLOBALS['process'] = $process;
+
+        while ($process->output() === '') {
             usleep(10);
         }
     }
@@ -69,7 +71,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             ->run(sprintf("php artisan eval '%s'", base64_encode($code.';')))
         );
 
-    $output = $GLOBALS['process']->output();
+    $output = $process->output();
     $output = preg_replace('/\e\[[\d;]*m/', '', $output);
 
     $output = Str::of($output)
