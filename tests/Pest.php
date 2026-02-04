@@ -65,9 +65,9 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
 
         $process->start();
 
-        while ($process->getOutput() === '') {
-            usleep(10);
-        }
+        $process->waitUntil(function ($type, $output): bool {
+            return $output !== '';
+        });
     }
 
     collect(Arr::wrap($this->value))
@@ -75,7 +75,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             remote(['eval', ProcessUtils::escapeArgument(base64_encode($code.';'))])->run();
         });
 
-    sleep(1);
+    usleep(500);
 
     $output = $process->getOutput();
     $output = preg_replace('/\e\[[\d;]*m/', '', $output);
