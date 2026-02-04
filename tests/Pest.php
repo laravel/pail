@@ -80,8 +80,6 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
         usleep(10);
     } while (! str_contains($output, 'artisan eval'));
 
-    // $output = preg_replace('/\e\[[\d;]*m/', '', $output);
-
     $output = Str::of($output)
         ->explode("\n")
         ->map(fn (string $line) => rtrim($line))
