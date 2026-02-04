@@ -76,6 +76,6 @@ class PailServiceProvider extends ServiceProvider
      */
     protected function runningPailTests(): bool
     {
-        return Env::get('PAIL_TESTS') ?? false;
+        return (bool) (Env::get('PAIL_TESTS') ?? false);
     }
 }
