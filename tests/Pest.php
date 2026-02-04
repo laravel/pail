@@ -57,7 +57,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
             collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
             $verbose ? '-vvv' : '',
         ], env: [
-            'PAIL_TESTS' => true,
+            'PAIL_TESTS' => '(true)',
         ]);
 
         $GLOBALS['process'] = $process;

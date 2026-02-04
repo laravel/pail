@@ -3,6 +3,7 @@
 namespace Laravel\Pail\ValueObjects;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Env;
 use Stringable;
 
 class MessageLogged implements Stringable
@@ -52,7 +53,7 @@ class MessageLogged implements Stringable
      */
     public function date(): string
     {
-        if ($_ENV['PAIL_TESTS'] ?? false) {
+        if (Env::get('PAIL_TESTS') ?? false) {
             return '2024-01-01 03:04:05';
         }
 
@@ -68,7 +69,7 @@ class MessageLogged implements Stringable
      */
     public function time(): string
     {
-        if ($_ENV['PAIL_TESTS'] ?? false) {
+        if (Env::get('PAIL_TESTS') ?? false) {
             return '03:04:05';
         }
 
