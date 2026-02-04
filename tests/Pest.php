@@ -9,7 +9,7 @@ use Laravel\Pail\ValueObjects\MessageLogged;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use function Orchestra\Testbench\remote;
+use function Orchestra\Testbench\default_skeleton_path;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,31 +52,24 @@ uses(Tests\TestCase::class)
 
 expect()->extend('toPail', function (string $expectedOutput, array $options = [], bool $verbose = false) {
     if ($GLOBALS['process'] === null) {
-        $GLOBALS['process'] = remote([
-            'pail',
-            collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
-            $verbose ? '-vvv' : '',
-        ], env: [
-            'PAIL_TESTS' => '(true)',
-        ], tty: false);
+        $GLOBALS['process'] = Process::path(default_skeleton_path())
+            ->start(sprintf(
+                'php artisan pail %s %s',
+                collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
+                $verbose ? '-vvv' : '',
+            ));
 
-        $GLOBALS['process']->start();
-
-        while ($GLOBALS['process']->getOutput() === '') {
+        while ($GLOBALS['process']->output() === '') {
             usleep(10);
         }
     }
 
     collect(Arr::wrap($this->value))
-        ->each(function (string $code) {
-            return remote(['eval', ProcessUtils::escapeArgument(base64_encode($code))], env: [
-                'PAIL_TESTS' => '(true)',
-            ])->run();
-        });
+        ->each(fn (string $code) => Process::path(default_skeleton_path())
+            ->run(sprintf("php artisan eval '%s'", base64_encode($code.';')))
+        );
 
-    usleep(10);
-
-    $output = $GLOBALS['process']->getOutput();
+    $output = $GLOBALS['process']->output();
     $output = preg_replace('/\e\[[\d;]*m/', '', $output);
 
     $output = Str::of($output)
