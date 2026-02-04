@@ -1,0 +1,6 @@
+providers:
+  - Laravel\Pail\PailServiceProvider
+
+workbench:
+  discovers:
+    commands: true

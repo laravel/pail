@@ -2,11 +2,14 @@
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\ProcessUtils;
 use Illuminate\Support\Str;
 use Laravel\Pail\Printers\CliPrinter;
 use Laravel\Pail\ValueObjects\MessageLogged;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use function Orchestra\Testbench\remote;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,30 +52,29 @@ uses(Tests\TestCase::class)
 
 expect()->extend('toPail', function (string $expectedOutput, array $options = [], bool $verbose = false) {
     if ($GLOBALS['process'] === null) {
-        $process = $GLOBALS['process'] = Process::path(__DIR__.'/Fixtures')
-            ->env([
-                'COLUMNS' => 50,
-                'PAIL_TESTS' => true,
-            ])
-            ->start(sprintf(
-                'php artisan pail %s %s',
-                collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
-                $verbose ? '-vvv' : '',
-            ));
+        $GLOBALS['process'] = remote([
+            'pail',
+            collect($options)->map(fn ($value, $key) => "--{$key}=\"{$value}\"")->implode(' '),
+            $verbose ? '-vvv' : '',
+        ], env: [
+            'PAIL_TESTS' => '(true)',
+        ], tty: false);
 
-        $GLOBALS['process'] = $process;
+        $GLOBALS['process']->start();
 
-        while ($process->output() === '') {
+        while ($GLOBALS['process']->getOutput() === '') {
             usleep(10);
         }
     }
 
     collect(Arr::wrap($this->value))
-        ->each(fn (string $code) => Process::path(__DIR__.'/Fixtures')
-            ->run(sprintf("php artisan eval '%s;'", $code))
-        );
+        ->each(function (string $code) {
+            return remote(['eval', ProcessUtils::escapeArgument(base64_encode($code))], env: [
+                'PAIL_TESTS' => '(true)',
+            ])->run();
+        });
 
-    $output = $GLOBALS['process']->output();
+    $output = $GLOBALS['process']->getOutput();
     $output = preg_replace('/\e\[[\d;]*m/', '', $output);
 
     $output = Str::of($output)
