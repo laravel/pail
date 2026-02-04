@@ -66,7 +66,7 @@ expect()->extend('toPail', function (string $expectedOutput, array $options = []
         $process->start();
 
         $process->waitUntil(function ($type, $output): bool {
-            return $output !== '';
+            return str_contains($output, 'Tailing application logs.');
         });
     }
 
