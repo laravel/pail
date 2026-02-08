@@ -31,7 +31,7 @@ class PailCommand extends Command
     /**
      * {@inheritDoc}
      */
-    protected $description = 'Tails the application logs.';
+    protected $description = 'Tails the application logs';
 
     /**
      * The file instance, if any.
