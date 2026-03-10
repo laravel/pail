@@ -8,6 +8,7 @@ use Laravel\Pail\Printers\CliPrinter;
 use Laravel\Pail\ValueObjects\MessageLogged;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Tests\TestCase;
 
 use function Orchestra\Testbench\remote;
 
@@ -24,7 +25,7 @@ use function Orchestra\Testbench\remote;
 
 $GLOBALS['process'] = null;
 
-uses(Tests\TestCase::class)
+uses(TestCase::class)
     ->beforeAll(fn () => $_ENV['PAIL_TESTS'] = true)
     ->beforeEach(function () {
         putenv('COLUMNS=50');

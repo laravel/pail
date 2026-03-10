@@ -3,6 +3,7 @@
 namespace Laravel\Pail;
 
 use Illuminate\Console\Events\CommandStarting;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Queue\Events\JobExceptionOccurred;
@@ -40,7 +41,7 @@ class PailServiceProvider extends ServiceProvider
             return;
         }
 
-        /** @var \Illuminate\Contracts\Events\Dispatcher $events */
+        /** @var Dispatcher $events */
         $events = $this->app->make('events');
 
         $events->listen(MessageLogged::class, function (MessageLogged $messageLogged) {

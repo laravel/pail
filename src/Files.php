@@ -18,7 +18,7 @@ class Files
     /**
      * Returns the list of files.
      *
-     * @return \Illuminate\Support\Collection<int, File>
+     * @return Collection<int, File>
      */
     public function all(): Collection
     {
