@@ -39,7 +39,8 @@ class ProcessFactory
 
                     $lines
                         ->filter(fn (string $line) => $line !== '')
-                        ->map(fn (string $line) => MessageLogged::fromJson($line))
+                        ->map(fn (string $line) => MessageLogged::tryFromJson($line))
+                        ->filter()
                         ->filter(fn (MessageLogged $messageLogged) => $options->accepts($messageLogged))
                         ->each(fn (MessageLogged $messageLogged) => $printer->print($messageLogged));
                 }

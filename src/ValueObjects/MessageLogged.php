@@ -41,6 +41,20 @@ class MessageLogged implements Stringable
     }
 
     /**
+     * Attempt to create a new instance of the message logged from a json string.
+     *
+     * Returns null if the JSON is malformed or missing required fields.
+     */
+    public static function tryFromJson(string $json): ?static
+    {
+        try {
+            return static::fromJson($json);
+        } catch (\JsonException|\ValueError) {
+            return null;
+        }
+    }
+
+    /**
      * Gets the log message's message.
      */
     public function message(): string
