@@ -50,7 +50,8 @@ class Handler
         }
 
         if (
-            $messageLogged->level === LogLevel::WARNING
+            ! config('logging.deprecations.channel')
+            && $messageLogged->level === LogLevel::WARNING
             && Str::contains($messageLogged->message, ['deprecated', 'Deprecated', '[\ReturnTypeWillChange]'])
         ) {
             return;
