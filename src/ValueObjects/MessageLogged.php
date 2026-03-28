@@ -49,7 +49,7 @@ class MessageLogged implements Stringable
     {
         try {
             return static::fromJson($json);
-        } catch (\JsonException|\ValueError) {
+        } catch (\Throwable) {
             return null;
         }
     }
