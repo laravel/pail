@@ -24,7 +24,7 @@ class LoggerFactory
      */
     public function create(): LoggerInterface
     {
-        $handler = new StreamHandler($this->file->__toString(), Level::Debug);
+        $handler = new StreamHandler($this->file->__toString(), Level::Debug, true, null, true);
         $handler->setFormatter(new JsonFormatter);
 
         return new Logger('pail', [$handler]);

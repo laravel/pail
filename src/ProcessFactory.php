@@ -23,7 +23,7 @@ class ProcessFactory
             ->tty(false)
             ->run(
                 $this->command($file),
-                function (string $type, string $buffer) use ($options, $printer, &$remainingBuffer) {
+                function (string $type, string $buffer) use ($options, $printer, &$remainingBuffer, $output) {
                     $lines = Str::of($buffer)->explode("\n");
 
                     if ($remainingBuffer !== '' && isset($lines[0])) {
@@ -39,11 +39,28 @@ class ProcessFactory
 
                     $lines
                         ->filter(fn (string $line) => $line !== '')
-                        ->map(fn (string $line) => MessageLogged::fromJson($line))
+                        ->map(fn (string $line) => $this->parseMessageLogged($line, $output))
+                        ->filter()
                         ->filter(fn (MessageLogged $messageLogged) => $options->accepts($messageLogged))
                         ->each(fn (MessageLogged $messageLogged) => $printer->print($messageLogged));
                 }
             );
+    }
+
+    /**
+     * Parse the given log line, ignoring invalid JSON.
+     */
+    protected function parseMessageLogged(string $line, OutputInterface $output): ?MessageLogged
+    {
+        try {
+            return MessageLogged::fromJson($line);
+        } catch (\Throwable) {
+            if ($output->isVerbose()) {
+                $output->writeln('  <fg=yellow>⚠ Pail skipped a malformed log line.</>');
+            }
+
+            return null;
+        }
     }
 
     /**
