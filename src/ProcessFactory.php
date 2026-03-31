@@ -55,9 +55,7 @@ class ProcessFactory
         try {
             return MessageLogged::fromJson($line);
         } catch (\Throwable) {
-            if ($output->isVerbose()) {
-                $output->writeln('  <fg=yellow>⚠ Pail skipped a malformed log line.</>');
-            }
+            $output->writeln('  <fg=yellow>⚠ Pail skipped a malformed log line.</>');
 
             return null;
         }
