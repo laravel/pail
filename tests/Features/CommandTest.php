@@ -205,3 +205,17 @@ test('using context facade', function () {
         EOF,
     );
 })->skip(! class_exists(Context::class), 'Context facade is not available in this version of Laravel');
+
+test('malformed logs', function () {
+    expect([
+        'file_put_contents(collect(glob(storage_path("pail/*.pail")))->last(), "invalid json\n", FILE_APPEND)',
+        'app("log")->debug("test debug message")',
+    ])->toPail(<<<'EOF'
+          ⚠ Pail skipped a malformed log line.
+        ┌ 03:04:05 DEBUG ────────────────────────────────┐
+        │ test debug message                             │
+        └────────────────────────────────── artisan eval ┘
+
+        EOF,
+    );
+});
