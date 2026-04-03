@@ -39,26 +39,20 @@ class ProcessFactory
 
                     $lines
                         ->filter(fn (string $line) => $line !== '')
-                        ->map(fn (string $line) => $this->parseMessageLogged($line, $output))
+                        ->map(function (string $line) use ($output): ?MessageLogged {
+                            try {
+                                return MessageLogged::fromJson($line);
+                            } catch (\Throwable) {
+                                $output->writeln('  <fg=yellow>⚠ Pail skipped a malformed log line.</>');
+
+                                return null;
+                            }
+                        })
                         ->filter()
                         ->filter(fn (MessageLogged $messageLogged) => $options->accepts($messageLogged))
                         ->each(fn (MessageLogged $messageLogged) => $printer->print($messageLogged));
                 }
             );
-    }
-
-    /**
-     * Parse the given log line, ignoring invalid JSON.
-     */
-    protected function parseMessageLogged(string $line, OutputInterface $output): ?MessageLogged
-    {
-        try {
-            return MessageLogged::fromJson($line);
-        } catch (\Throwable) {
-            $output->writeln('  <fg=yellow>⚠ Pail skipped a malformed log line.</>');
-
-            return null;
-        }
     }
 
     /**
