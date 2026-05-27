@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.2.6...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.2.7...main)
+
+## [v1.2.7](https://github.com/laravel/pail/compare/v1.2.6...v1.2.7) - 2026-05-20
+
+* Makes imports consistent by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/pail/pull/64
+* fix: prevent Pail from crashing on malformed JSON log lines by [@SagorIslamOfficial](https://github.com/SagorIslamOfficial) in https://github.com/laravel/pail/pull/67
+* fix: avoid resolving the auth user when building log context by [@cosmicspork](https://github.com/cosmicspork) in https://github.com/laravel/pail/pull/70
 
 ## [v1.2.6](https://github.com/laravel/pail/compare/v1.2.5...v1.2.6) - 2026-02-09
 
