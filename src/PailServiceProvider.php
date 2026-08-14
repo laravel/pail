@@ -5,6 +5,7 @@ namespace Laravel\Pail;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Foundation\DevCommands;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessed;
@@ -30,6 +31,10 @@ class PailServiceProvider extends ServiceProvider
             $app->make(Files::class),
             $app->runningInConsole(),
         ));
+
+        if (class_exists(DevCommands::class)) {
+            DevCommands::artisan('pail --timeout=0', 'logs');
+        }
     }
 
     /**
