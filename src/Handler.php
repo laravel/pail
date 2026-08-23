@@ -52,6 +52,7 @@ class Handler
         if (
             $messageLogged->level === LogLevel::WARNING
             && Str::contains($messageLogged->message, ['deprecated', 'Deprecated', '[\ReturnTypeWillChange]'])
+            && $this->deprecationsChannelNotConfigured()
         ) {
             return;
         }
@@ -65,6 +66,19 @@ class Handler
                 $context,
             ),
         );
+    }
+
+    /**
+     * Determines if the application has not configured a deprecation log channel.
+     *
+     * The framework's default config sets this to the string "null" (the null log
+     * channel) rather than an actual PHP null, so both are treated as unconfigured.
+     */
+    protected function deprecationsChannelNotConfigured(): bool
+    {
+        $channel = $this->container->make('config')->get('logging.deprecations.channel');
+
+        return ! $channel || $channel === 'null';
     }
 
     /**
