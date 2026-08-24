@@ -102,7 +102,7 @@ class Handler
                 'method' => request()->method(),
                 'path' => request()->path(),
                 'auth_id' => Auth::hasUser() ? Auth::id() : null,
-                'auth_email' => Auth::hasUser() && Auth::user() instanceof User ? Auth::user()->email : null, // @phpstan-ignore property.notFound
+                'auth_email' => Auth::hasUser() && Auth::user() instanceof User ? Auth::user()->email ?? null : null,
             ],
         }]];
 
