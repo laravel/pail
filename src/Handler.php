@@ -97,13 +97,7 @@ class Handler
                 'type' => 'console',
                 'command' => $this->artisanCommand,
             ],
-            default => [
-                'type' => 'http',
-                'method' => request()->method(),
-                'path' => request()->path(),
-                'auth_id' => Auth::hasUser() ? Auth::id() : null,
-                'auth_email' => Auth::hasUser() && Auth::user() instanceof User ? Auth::user()->email : null, // @phpstan-ignore property.notFound
-            ],
+            default => $this->httpOrigin(),
         }]];
 
         if (isset($messageLogged->context['exception']) && $this->lastLifecycleEvent instanceof JobExceptionOccurred) {
@@ -126,5 +120,23 @@ class Handler
             ->when($this->container->bound(ContextRepository::class), function (Collection $context) {
                 return $context->merge($this->container->make(ContextRepository::class)->all());
             })->toArray();
+    }
+
+    /**
+     * Builds the HTTP origin context.
+     *
+     * @return array<string, mixed>
+     */
+    protected function httpOrigin(): array
+    {
+        $user = Auth::hasUser() ? Auth::user() : null;
+
+        return [
+            'type' => 'http',
+            'method' => request()->method(),
+            'path' => request()->path(),
+            'auth_id' => $user?->getAuthIdentifier(),
+            'auth_email' => $user instanceof User && $user->hasAttribute('email') ? $user->getAttribute('email') : null,
+        ];
     }
 }
