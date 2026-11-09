@@ -39,16 +39,15 @@ class ProcessFactory
 
                     $lines
                         ->filter(fn (string $line) => $line !== '')
-                        ->map(function (string $line) use ($output): ?MessageLogged {
+                        ->flatMap(function (string $line) use ($output): array {
                             try {
-                                return MessageLogged::fromJson($line);
+                                return [MessageLogged::fromJson($line)];
                             } catch (\Throwable) {
                                 $output->writeln('  <fg=yellow>⚠ Pail skipped a malformed log line.</>');
 
-                                return null;
+                                return [];
                             }
                         })
-                        ->filter()
                         ->filter(fn (MessageLogged $messageLogged) => $options->accepts($messageLogged))
                         ->each(fn (MessageLogged $messageLogged) => $printer->print($messageLogged));
                 }
