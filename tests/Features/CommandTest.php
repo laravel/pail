@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Context;
-
 test('debug messages', function () {
     expect('app("log")->debug("my debug message")')->toPail(<<<'EOF'
         ┌ 03:04:05 DEBUG ────────────────────────────────┐
@@ -204,7 +202,7 @@ test('using context facade', function () {
 
         EOF,
     );
-})->skip(! class_exists(Context::class), 'Context facade is not available in this version of Laravel');
+});
 
 test('malformed logs', function () {
     expect([
