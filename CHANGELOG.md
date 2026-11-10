@@ -1,6 +1,32 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/pail/compare/v1.2.7...main)
+## [Unreleased](https://github.com/laravel/pail/compare/v1.3.0...main)
+
+## [v1.3.0](https://github.com/laravel/pail/compare/v1.2.7...v1.3.0) - 2026-11-09
+
+### What's Changed
+
+* GitHub Actions hardening by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/pail/pull/71
+* Bump actions/checkout from 4.3.1 to 6.0.3 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/pail/pull/72
+* Add Dependabot cooldown of 5 days by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/pail/pull/73
+* Enable Dependabot auto-merge by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/pail/pull/74
+* Fix reusable workflow pin to match granted permissions by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/pail/pull/75
+* Bump shivammathur/setup-php from 2.37.1 to 2.37.2 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/pail/pull/76
+* Bump actions/checkout from 6.0.3 to 7.0.0 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/pail/pull/77
+* Bump actions/checkout from 7.0.0 to 7.0.1 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/pail/pull/78
+* Avoid accessing missing authenticated user email attributes by [@rossvasquez](https://github.com/rossvasquez) in https://github.com/laravel/pail/pull/83
+* Remove security policy in favor of the org-wide default by [@pushpak1300](https://github.com/pushpak1300) in https://github.com/laravel/pail/pull/84
+* Bump shivammathur/setup-php from 2.37.2 to 2.40.0 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/pail/pull/85
+* Raise dependency floor by [@joetannenbaum](https://github.com/joetannenbaum) in https://github.com/laravel/pail/pull/86
+
+### New Contributors
+
+* [@dependabot](https://github.com/dependabot)[bot] made their first contribution in https://github.com/laravel/pail/pull/72
+* [@rossvasquez](https://github.com/rossvasquez) made their first contribution in https://github.com/laravel/pail/pull/83
+* [@pushpak1300](https://github.com/pushpak1300) made their first contribution in https://github.com/laravel/pail/pull/84
+* [@joetannenbaum](https://github.com/joetannenbaum) made their first contribution in https://github.com/laravel/pail/pull/86
+
+**Full Changelog**: https://github.com/laravel/pail/compare/v1.2.7...v1.3.0
 
 ## [v1.2.7](https://github.com/laravel/pail/compare/v1.2.6...v1.2.7) - 2026-05-20
 
